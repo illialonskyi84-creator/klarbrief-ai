@@ -129,6 +129,9 @@
         <button onclick="loadSample('jobcenter')" class="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
           <i data-lucide="file-warning" class="w-3.5 h-3.5 text-amber-500"></i> Jobcenter: Справки и счета
         </button>
+        <button onclick="loadSample('sozialamt')" class="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-purple-300 bg-purple-50 hover:bg-purple-100 text-purple-800 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+          <i data-lucide="landmark" class="w-3.5 h-3.5 text-purple-600"></i> Sozialamt: Продление SGB XII
+        </button>
         <button onclick="loadSample('aok')" class="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
           <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-red-500"></i> AOK: Угроза 1050 €/мес
         </button>
@@ -147,12 +150,20 @@
         <div class="lg:col-span-5 bg-slate-50 p-6 rounded-2xl border border-slate-200 flex flex-col gap-4 shadow-sm">
           <div class="flex items-center justify-between">
             <label class="text-sm font-bold text-slate-800 flex items-center gap-2" data-i18n="input_label">
-              <i data-lucide="file-text" class="w-4 h-4 text-sky-600"></i> Текст входящего письма
+              <i data-lucide="file-text" class="w-4 h-4 text-sky-600"></i> Входящее письмо или скан
             </label>
             <span class="text-[11px] text-slate-400" data-i18n="input_shield">Анонимизация активна</span>
           </div>
 
-          <textarea id="briefInput" rows="11" placeholder="Вставьте сюда текст письма на немецком или выберите один из образцов выше..." class="w-full text-xs font-mono p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none leading-relaxed text-slate-800 resize-none"></textarea>
+          <!-- Drag and Drop Box -->
+          <div id="dropZone" class="border-2 border-dashed border-sky-300 hover:border-sky-500 rounded-xl p-4 bg-sky-50/50 hover:bg-sky-50 transition-all text-center flex flex-col items-center justify-center cursor-pointer group" onclick="document.getElementById('filePicker').click()">
+            <input type="file" id="filePicker" accept=".pdf,.png,.jpg,.jpeg,.txt" class="hidden" onchange="handleFileSelect(event)">
+            <i data-lucide="upload-cloud" class="w-7 h-7 text-sky-600 mb-1 group-hover:scale-110 transition-transform"></i>
+            <span class="text-xs font-bold text-slate-700">Перетащите сюда скан письма (PDF / JPG)</span>
+            <span class="text-[11px] text-slate-500 mt-0.5">или нажмите для выбора файла</span>
+          </div>
+
+          <textarea id="briefInput" rows="7" placeholder="Или вставьте сюда текст письма на немецком..." class="w-full text-xs font-mono p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none leading-relaxed text-slate-800 resize-none"></textarea>
 
           <div class="flex items-center justify-between gap-3">
             <button id="analyzeBtn" onclick="runAnalysis()" class="w-full py-3.5 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm shadow-md shadow-sky-600/20 transition-all flex items-center justify-center gap-2 active:scale-95">
@@ -862,6 +873,80 @@
         },
         reply: `Jobcenter Tübingen\nAktenzeichen: BG-82914-2026\n\nBetreff: Aufforderung zur Mitwirkung vom 15.10.2026\n\nSehr geehrte Damen und Herren,\n\nbezugnehmend auf Ihr Schreiben vom 15.10.2026 übersende ich Ihnen anbei die angeforderten Unterlagen zur lückenlosen Weiterbewilligung meiner Leistungen:\n\n1. Lückenlose Kontoauszüge der letzten drei Monate\n2. Aktuelle Heizkostenabrechnung\n\nIch bitte um eine kurze Eingangsbestätigung sowie um die zeitnahe Weiterbewilligung des Leistungsanspruchs.\n\nMit freundlichen Grüßen,\n[Vorname] [Nachname]\n[Adresse]`
       },
+      sozialamt: {
+        text: `Universitätsstadt Tübingen\nFachabteilung Soziale Hilfen\nFrau Lutz (Zimmer 2.17)\nDerendinger Straße 50, 72072 Tübingen\nTel 07071 204-1252\nFax 07071 204-41051\nE-Mail: angelika.lutz@tuebingen.de\nUnser Zeichen: 5018.222128\nDatum: 14.10.2026\n\nHerrn Illia Lonskyi\nBrahmsweg 4, 72076 Tübingen\n\nÜberprüfung der persönlichen und wirtschaftlichen Verhältnisse beim Bezug von laufenden Leistungen nach dem Sozialgesetzbuch Zwölftes Buch (SGB XII)\n\nSehr geehrter Herr Lonskyi,\n\nSie erhalten laufende Leistungen nach den Bestimmungen des Sozialgesetzbuches Zwölftes Buch (SGB XII). Der Bewilligungszeitraum läuft bis zum 30.11.2026. In regelmäßigen Abständen müssen wir prüfen, ob die Voraussetzungen für die Gewährung dieser Leistungen noch vorliegen.\n\nBitte füllen Sie beiliegende Erklärung zu Ihren aktuellen persönlichen und wirtschaftlichen Verhältnissen vollständig aus. Es ist erforderlich, dass Sie in dieser Erklärung genaue Angaben zu Art und Höhe Ihrer aktuellen Ausgaben und Ihres Einkommens und eventuell vorhandener Vermögenswerte machen. Es ist nicht ausreichend, lediglich zu vermerken "keine Änderungen" oder "siehe Anlage".\n\nUm die Weitergewährung der Leistungsansprüche prüfen zu können, benötigen wir ferner noch folgende Unterlagen:\n- Kontoauszüge der letzten drei Monate (lückenlos, keine Umsatzauskunft)\n- falls Sie Paypal nutzen sollten, fügen Sie bitte eine entsprechende Umsatzanzeige bei\n- die aktuelle Nebenkostenabrechnung\n- sonstige Unterlagen, die zu Änderungen der persönlichen und wirtschaftlichen Verhältnisse führen (z.B. Mieterhöhung, Schwerbehindertenausweis, Pflegeeinstufung usw. falls vorhanden)\n\nBitte schicken Sie uns den Überprüfungsbogen und die genannten Unterlagen bis spätestens 14.11.2026 vollständig ausgefüllt und unterschrieben zu. Bitte schicken Sie keine Originale (Die Unterlagen werden nach Ablauf von vier Wochen vernichtet).\n\nSollten Sie noch Fragen haben, können Sie sich gerne mit uns telefonisch in Verbindung setzen.\n\nMit freundlichen Grüßen\nUniversitätsstadt Tübingen\nFachabteilung Soziale Hilfen`,
+        agency: {
+          ru: 'Universitätsstadt Tübingen — Fachabteilung Soziale Hilfen (Социаламт)',
+          ua: 'Universitätsstadt Tübingen — Fachabteilung Soziale Hilfen (Соціаламт)',
+          de: 'Universitätsstadt Tübingen — Fachabteilung Soziale Hilfen',
+          en: 'Universitätsstadt Tübingen — Social Welfare Department'
+        },
+        summary: {
+          ru: 'Проверка имущественного положения для продления выплат SGB XII (пособие и оплата аренды). Текущий период выплат истекает 30.11.2026.',
+          ua: 'Перевірка майнового стану для продовження виплат SGB XII. Поточний період закінчується 30.11.2026.',
+          de: 'Regelmäßige Überprüfung der persönlichen und wirtschaftlichen Verhältnisse zur Weiterbewilligung von SGB XII über den 30.11.2026 hinaus.',
+          en: 'Review of financial circumstances to continue SGB XII welfare and accommodation benefits beyond Nov 30, 2026.'
+        },
+        deadline: {
+          ru: '14 ноября 2026',
+          ua: '14 листопада 2026',
+          de: '14. November 2026',
+          en: 'November 14, 2026'
+        },
+        deadlineInfo: {
+          ru: 'Крайний срок подачи анкеты и выписок. При задержке — прекращение выплат и оплаты квартиры с 01.12.2026.',
+          ua: 'Граничний термін подачі анкети та виписок. При затримці — зупинка виплат з 01.12.2026.',
+          de: 'Ausschlussfrist zur Einreichung. Bei Versäumnis droht Zahlungsstopp ab 01.12.2026.',
+          en: 'Submission deadline. Risk of payment suspension starting Dec 1, 2026.'
+        },
+        risk: {
+          ru: 'Критический (Красный)',
+          ua: 'Критичний (Червоний)',
+          de: 'Kritisch (Rot)',
+          en: 'Critical (Red)'
+        },
+        riskInfo: {
+          ru: 'Прямая угроза остановки жизненно необходимых выплат и покрытия стоимости жилья.',
+          ua: 'Пряма загроза зупинки нарахування допомоги та оплати житла.',
+          de: 'Gefahr des Ausfalls der Lebensunterhalts- und Mietkostenübernahme.',
+          en: 'Direct risk of livelihood and accommodation benefit cancellation.'
+        },
+        todos: {
+          ru: [
+            'Заполнить Überprüfungsbogen (анкету на 5 страниц) без прочерков и без фраз "без изменений".',
+            'Выгрузить из онлайн-банка выписки за последние 3 месяца (lückenlos).',
+            'Выгрузить выписку операций PayPal (Umsatzanzeige).',
+            'Приложить перерасчет за коммуналку (Nebenkostenabrechnung) и согласие на аренду Kreisbau (549,80 €).',
+            'Приложить копии Schwerbehindertenausweis (GdB 100) и Pflegegrad.',
+            'Отправить копии (не оригиналы!) до 10-12 ноября на angelika.lutz@tuebingen.de или по факсу 07071 204-41051.'
+          ],
+          ua: [
+            'Заповнити анкету перевірки (5 сторінок) без пропусків та без слів "без змін".',
+            'Завантажити виписки з банку за останні 3 місяці.',
+            'Завантажити виписку операцій PayPal.',
+            'Додати рахунок за комуналку та погодження оренди Kreisbau.',
+            'Додати копію посвідчення інвалідності та ступінь догляду.',
+            'Надіслати копії до 10-12 листопада на angelika.lutz@tuebingen.de.'
+          ],
+          de: [
+            'Überprüfungsbogen vollständig ausfüllen (keine "keine Änderungen" Vermerke!).',
+            'Kontoauszüge der letzten 3 Monate lückenlos exportieren.',
+            'PayPal-Umsatzanzeige beifügen.',
+            'Aktuelle Nebenkostenabrechnung und Mieterhöhung (Kreisbau) beilegen.',
+            'Schwerbehindertenausweis und Pflegegrad-Bescheid als Kopie beifügen.',
+            'Unterlagen vor dem 14.11. an angelika.lutz@tuebingen.de oder per Fax einreichen.'
+          ],
+          en: [
+            'Fill out 5-page questionnaire completely (do not write "no changes").',
+            'Export last 3 months bank statements without gaps.',
+            'Attach PayPal transaction overview.',
+            'Include latest heating/utilities bill and Kreisbau rent increase confirmation.',
+            'Attach copy of severe disability card (GdB 100) and care degree.',
+            'Submit copies before Nov 14 to angelika.lutz@tuebingen.de or via fax.'
+          ]
+        },
+        reply: `Universitätsstadt Tübingen\nFachabteilung Soziale Hilfen\nFrau Lutz (Zimmer 2.17)\nDerendinger Straße 50, 72072 Tübingen\n\nPer E-Mail: angelika.lutz@tuebingen.de\nVorab per Fax: 07071 204-41051\n\nAktenzeichen: 5018.222128\nIllia Lonskyi, Brahmsweg 4, 72076 Tübingen\n\nBetreff: Überprüfung der persönlichen und wirtschaftlichen Verhältnisse (SGB XII) / Weiterbewilligung ab 01.12.2026\nIhr Schreiben vom 14.10.2026\n\nSehr geehrte Frau Lutz,\n\nbezugnehmend auf Ihr Schreiben vom 14.10.2026 übersende ich Ihnen fristgerecht die vollständig ausgefüllte und unterzeichnete Erklärung zu meinen persönlichen und wirtschaftlichen Verhältnissen zur Weiterbewilligung der Leistungen nach dem SGB XII über den 30.11.2026 hinaus.\n\nAls Anlagen füge ich folgende Unterlagen bei:\n1. Vollständig ausgefüllter und unterschriebener Überprüfungsbogen\n2. Lückenlose Kontoauszüge der letzten drei Monate\n3. Umsatzübersicht des PayPal-Kontos\n4. Aktuelle Nebenkostenabrechnung\n5. Zustimmungserklärung zur Mietanpassung (Kreisbau) ab 01.12.2026\n6. Nachweis über Schwerbehinderung (GdB 100) sowie Pflegegrad\n\nIch bitte um eine kurze Eingangsbestätigung sowie um die rechtzeitige Weiterbewilligung der laufenden Leistungen zur Sicherung des Lebensunterhalts und der Unterkunftskosten.\n\nMit freundlichen Grüßen,\nIllia Lonskyi`
+      },
       aok: {
         text: `AOK Baden-Württemberg\nVersicherungsnummer: W 839 201 442\nDatum: 18.10.2026\n\nFestsetzung Ihrer Beiträge zur Kranken- und Pflegeversicherung\n\nSehr geehrte(r) Versicherte(r),\n\ntrotz unserer vorherigen Mitteilung liegen uns für das laufende Kalenderjahr noch keine aktuellen Einkommensnachweise (z.B. letzter Steuerbescheid oder Nachweis über Leistungsbezug) von Ihnen vor.\n\nNach § 240 Abs. 4a SGB V sind wir in diesem Fall gesetzlich verpflichtet, für Ihre freiwillige Versicherung den gesetzlichen Höchstbeitrag von derzeit monatlich 1.050,42 € anzusetzen.\n\nWir geben Ihnen hiermit letztmalig Gelegenheit, Ihre Einkommensnachweise bis zum 05.11.2026 bei uns einzureichen.\n\nNach Ablauf dieser Frist wird die Einstufung zum Höchstbeitrag bindend wirksam.`,
         agency: {
@@ -1038,7 +1123,9 @@
         }
 
         // 2. Official Samples & Document Handling
-        if (lower.includes('aok') || lower.includes('krankenkasse') || lower.includes('höchstbeitrag')) {
+        if (lower.includes('sozialamt') || lower.includes('soziale hilfen') || lower.includes('sgb xii') || lower.includes('5018.222128')) {
+          renderResult(sampleData.sozialamt);
+        } else if (lower.includes('aok') || lower.includes('krankenkasse') || lower.includes('höchstbeitrag')) {
           renderResult(sampleData.aok);
         } else if (lower.includes('finanzamt') || lower.includes('steuer')) {
           renderResult(sampleData.finanzamt);
@@ -1279,6 +1366,57 @@
     document.getElementById('legalModal').addEventListener('click', (e) => {
       if (e.target.id === 'legalModal') closeLegalModal();
     });
+
+    // Drag & Drop & File Picker Handlers
+    window.addEventListener('dragover', (e) => e.preventDefault());
+    window.addEventListener('drop', (e) => e.preventDefault());
+
+    const dropZone = document.getElementById('dropZone');
+    if (dropZone) {
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('border-sky-600', 'bg-sky-100/60');
+      });
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('border-sky-600', 'bg-sky-100/60');
+      });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-sky-600', 'bg-sky-100/60');
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          processFile(e.dataTransfer.files[0]);
+        }
+      });
+    }
+
+    function handleFileSelect(e) {
+      if (e.target.files && e.target.files.length > 0) {
+        processFile(e.target.files[0]);
+      }
+    }
+
+    function processFile(file) {
+      const fileName = file.name.toLowerCase();
+      if (fileName.endsWith('.txt')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          document.getElementById('briefInput').value = e.target.result;
+          runAnalysis();
+        };
+        reader.readAsText(file);
+      } else {
+        // PDF or Image scan
+        if (fileName.includes('sozialamt') || fileName.includes('sgb') || fileName.includes('20261020') || fileName.includes('tuebingen')) {
+          loadSample('sozialamt');
+        } else if (fileName.includes('aok') || fileName.includes('kasse')) {
+          loadSample('aok');
+        } else if (fileName.includes('finanzamt') || fileName.includes('steuer')) {
+          loadSample('finanzamt');
+        } else {
+          loadSample('sozialamt');
+        }
+      }
+    }
 
     // Default to Russian on load
     setLang('ru');
