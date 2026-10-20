@@ -1136,6 +1136,13 @@
         }
 
         if (rejectReason) {
+          if (rejectReason === 'english') {
+            setLang('en');
+          } else if (rejectReason === 'ukrainian') {
+            setLang('ua');
+          } else if (rejectReason === 'russian') {
+            setLang('ru');
+          }
           renderGuardrailError(rejectReason);
           return;
         }
@@ -1212,6 +1219,15 @@
     }
 
     function renderGuardrailError(reason = 'junk') {
+      // Auto-detect response language: if input was in a specific non-German language, switch UI and respond in that exact language
+      if (reason === 'english' && currentLang !== 'en') {
+        setLang('en');
+      } else if (reason === 'ukrainian' && currentLang !== 'ua') {
+        setLang('ua');
+      } else if (reason === 'russian' && currentLang !== 'ru') {
+        setLang('ru');
+      }
+
       document.getElementById('emptyOutput').classList.add('hidden');
       document.getElementById('resultContent').classList.remove('hidden');
 
