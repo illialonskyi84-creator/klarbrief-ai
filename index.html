@@ -1106,19 +1106,37 @@
 
         const lower = text.toLowerCase();
 
-        // 1. Guardrail / Safety & Nonsense Filter
+        // 1. Guardrail / Safety, Non-German & Nonsense Filter
         const badWords = ['хуй', 'пизд', 'ебат', 'нах', 'бля', 'сука', 'дурак', 'дебил', 'говно', 'fuck', 'shit', 'bitch', 'scheiß', 'arsch', 'wichser', 'рецепт', 'борщ', 'пирог', 'погода', 'анекдот', 'стих', 'ignore previous', 'system prompt', 'не является официальным', 'заблокирована'];
         const isOffensiveOrJunk = badWords.some(w => lower.includes(w));
         const isTooShort = text.length < 25;
 
-        // Count Cyrillic vs Latin characters to detect if user pasted purely Russian text discussing the bot
-        const cyrillicMatches = text.match(/[а-яА-ЯёЁ]/g) || [];
-        const isPredominantlyRussian = cyrillicMatches.length > 20 && !lower.includes('sehr geehrte') && !lower.includes('aktenzeichen') && !lower.includes('versicherungsnummer');
+        // Language & Character Detection
+        const cyrillicMatches = text.match(/[а-яА-ЯёЁіІїЇєЄґҐ]/g) || [];
+        const uaSpecificMatches = text.match(/[іІїЇєЄґҐ]/g) || [];
+        const isUkrainianInput = uaSpecificMatches.length >= 2 || (cyrillicMatches.length > 15 && /\b(листа|допоможіть|лист|будь ласка|підкажіть|німецьк|що робити|довідк)\b/i.test(lower));
+        const isRussianInput = !isUkrainianInput && cyrillicMatches.length > 15 && !lower.includes('sehr geehrte') && !lower.includes('aktenzeichen') && !lower.includes('versicherungsnummer');
+
+        const englishWords = lower.match(/\b(the|this|that|letter|help|please|what|does|mean|have|from|with|need|agency|deadline|received)\b/g) || [];
+        const isEnglishInput = cyrillicMatches.length === 0 && englishWords.length >= 2 && !lower.match(/\b(der|die|das|und|oder|nicht|sehr|geehrte|bezug)\b/);
 
         const lacksOfficialGermanMarkers = !lower.match(/(sehr geehrte|bescheid|aufforderung|mitwirkungspflicht|rechtsbehelfsbelehrung|rechtsfolgenbelehrung|aktenzeichen|steuernummer|versicherungsnummer|versicherte|sgb|bgb|ao\b|§|weiterbewilligung|nachweis|leistungen)/i);
 
-        if (isOffensiveOrJunk || isPredominantlyRussian || (isTooShort && lacksOfficialGermanMarkers)) {
-          renderGuardrailError(isPredominantlyRussian);
+        let rejectReason = null;
+        if (isOffensiveOrJunk) {
+          rejectReason = 'toxic';
+        } else if (isUkrainianInput) {
+          rejectReason = 'ukrainian';
+        } else if (isRussianInput) {
+          rejectReason = 'russian';
+        } else if (isEnglishInput) {
+          rejectReason = 'english';
+        } else if (isTooShort && lacksOfficialGermanMarkers) {
+          rejectReason = 'junk';
+        }
+
+        if (rejectReason) {
+          renderGuardrailError(rejectReason);
           return;
         }
 
@@ -1193,72 +1211,113 @@
       }, 600);
     }
 
-    function renderGuardrailError(isRussianText = false) {
+    function renderGuardrailError(reason = 'junk') {
       document.getElementById('emptyOutput').classList.add('hidden');
       document.getElementById('resultContent').classList.remove('hidden');
 
-      const customSummary = isRussianText
-        ? 'Вы вставили поясняющий текст или вопрос на русском языке. KlarBrief AI анализирует оригинальные письма от немецких ведомств на немецком языке. Скопируйте фрагмент из полученного немецкого письма или воспользуйтесь кнопками быстрого примера вверху.'
-        : 'Введенный текст не является официальным немецким письмом, либо содержит нерелевантные/недопустимые выражения. KlarBrief AI строго сфокусирован на ведомственной корреспонденции Германии (Jobcenter, Finanzamt, Krankenkasse, Ausländerbehörde).';
+      const isLanguageMismatch = ['ukrainian', 'russian', 'english'].includes(reason);
 
-      const msgs = {
-        ru: {
-          title: isRussianText ? 'ℹ️ Требуется немецкий оригинал письма' : '⚠️ Фильтр безопасности: Запрос отклонен',
-          badge: isRussianText ? 'Нужен текст на немецком' : 'Отклонено фильтром',
-          summary: customSummary,
-          deadline: 'Дедлайн не определен',
-          deadlineInfo: 'В тексте нет процессуальных дат.',
-          risk: 'Ожидание письма',
-          riskInfo: 'Генерация официальных писем приостановлена.',
-          todo: 'Пожалуйста, вставьте реальный текст письма на немецком языке или нажмите образец выше.'
+      const summaries = {
+        ukrainian: {
+          ru: 'Вы вставили сопроводительный текст на украинском языке. KlarBrief AI анализирует оригинальные письма от немецких ведомств на немецком языке. Скопируйте фрагмент из полученного немецкого письма или воспользуйтесь кнопками быстрого примера вверху.',
+          ua: 'Ви ввели супровідний текст українською мовою. KlarBrief AI аналізує виключно оригінальні листи від установ Німеччини німецькою мовою. Будь ласка, вставте німецький текст листа або скористайтеся зразками вгорі.',
+          de: 'Sie haben Begleittext auf Ukrainisch eingegeben. KlarBrief AI analysiert originale deutsche Behördenschreiben auf Deutsch. Bitte fügen Sie das deutsche Originalschreiben ein.',
+          en: 'You entered explanatory text in Ukrainian. KlarBrief AI strictly analyzes original German agency letters in German. Please paste the German document text.'
         },
-        ua: {
-          title: '⚠️ Фільтр безпеки: Запит відхилено',
-          badge: 'Відхилено фільтром',
-          summary: 'Введений текст не є офіційним німецьким листом або містить нерелевантні вирази. KlarBrief AI обробляє виключно службову кореспонденцію установ Німеччини.',
-          deadline: 'Дедлайн не визначено',
-          deadlineInfo: 'Текст не містить адміністративних строків.',
-          risk: 'Нерелевантний запит',
-          riskInfo: 'Генерацію офіційних листів заблоковано.',
-          todo: 'Будь ласка, вставте реальний фрагмент листа або виберіть зразок вгорі.'
+        russian: {
+          ru: 'Вы вставили поясняющий текст или вопрос на русском языке. KlarBrief AI анализирует оригинальные письма от немецких ведомств на немецком языке. Скопируйте фрагмент из полученного немецкого письма или воспользуйтесь кнопками быстрого примера вверху.',
+          ua: 'Ви ввели текст російською мовою. KlarBrief AI аналізує виключно офіційні листи німецькою мовою. Будь ласка, завантажте оригінал німецького документа.',
+          de: 'Sie haben Begleittext auf Russisch eingegeben. KlarBrief AI analysiert originale deutsche Behördenschreiben auf Deutsch. Bitte fügen Sie das deutsche Originalschreiben ein.',
+          en: 'You entered explanatory text in Russian. KlarBrief AI strictly analyzes original German agency letters in German. Please paste the German document text.'
         },
-        de: {
-          title: '⚠️ Sicherheitsfilter: Anfrage abgelehnt',
-          badge: 'Abgelehnt',
-          summary: 'Der eingegebene Text wurde nicht als deutsches Behördenschreiben erkannt oder enthält unzulässige Inhalte. KlarBrief AI bearbeitet ausschließlich offizielle Verwaltungspost.',
-          deadline: 'Keine Frist erkannt',
-          deadlineInfo: 'Keine verwaltungsrechtliche Frist vorhanden.',
-          risk: 'Ungültige Anfrage',
-          riskInfo: 'Briefgenerierung blockiert.',
-          todo: 'Bitte fügen Sie ein echtes Behördenschreiben ein oder wählen Sie ein Muster oben.'
+        english: {
+          ru: 'Вы ввели вопрос или текст на английском языке. Сервис KlarBrief AI сфокусирован на ведомственной корреспонденции Германии на немецком языке. Пожалуйста, вставьте оригинальный немецкий текст письма.',
+          ua: 'Ви ввели текст англійською мовою. Сервіс KlarBrief AI обробляє службову кореспонденцію Німеччини німецькою мовою. Будь ласка, вставте оригінальний німецький текст.',
+          de: 'Sie haben englischen Text eingegeben. KlarBrief AI ist auf deutsche Behördenpost spezialisiert. Bitte fügen Sie das originale behördliche Schreiben auf Deutsch ein.',
+          en: 'You entered text in English. KlarBrief AI is designed to analyze and resolve official German agency correspondence written in German. Please paste the original German letter.'
         },
-        en: {
-          title: '⚠️ Safety Filter: Request Rejected',
-          badge: 'Rejected',
-          summary: 'The input is not recognized as a German official agency letter or contains inappropriate language. KlarBrief AI is strictly dedicated to German administrative correspondence.',
-          deadline: 'No deadline detected',
-          deadlineInfo: 'No statutory deadlines found.',
-          risk: 'Out of scope',
-          riskInfo: 'Letter generation blocked.',
-          todo: 'Please provide genuine German official correspondence or choose a sample above.'
+        toxic: {
+          ru: 'Запрос заблокирован: обнаружены оскорбительные, ненормативные или недопустимые выражения. Пожалуйста, соблюдайте нормы вежливости.',
+          ua: 'Запит заблоковано: виявлено ненормативну або образливу лексику. Будь ласка, дотримуйтесь норм спілкування.',
+          de: 'Anfrage blockiert: Unzulässige oder beleidigende Inhalte erkannt. Bitte achten Sie auf einen sachlichen Ton.',
+          en: 'Request blocked: Inappropriate, offensive, or abusive content detected. Please maintain a professional tone.'
+        },
+        junk: {
+          ru: 'Введенный текст не распознан как официальное немецкое письмо либо не содержит релевантных ведомственных реквизитов (Jobcenter, Finanzamt, Krankenkasse, Ausländerbehörde).',
+          ua: 'Введений текст не розпізнано як офіційний лист німецьких установ (Jobcenter, Finanzamt, Krankenkasse, Ausländerbehörde).',
+          de: 'Der eingegebene Text wurde nicht als deutsches Behördenschreiben erkannt. KlarBrief AI bearbeitet ausschließlich offizielle Verwaltungspost.',
+          en: 'The input is not recognized as a German official administrative letter. KlarBrief AI is strictly dedicated to German government correspondence.'
         }
       };
 
-      const m = msgs[currentLang] || msgs.ru;
-      document.getElementById('resAgency').innerText = m.title;
-      document.getElementById('resSummary').innerText = m.summary;
-      document.getElementById('resDeadline').innerText = m.deadline;
-      document.getElementById('resDeadlineInfo').innerText = m.deadlineInfo;
-      document.getElementById('resRisk').innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span> ${m.risk}`;
-      document.getElementById('resRiskInfo').innerText = m.riskInfo;
+      const titles = {
+        ukrainian: {
+          ru: 'ℹ️ Требуется немецкий оригинал письма',
+          ua: 'ℹ️ Потрібен німецький оригінал листа',
+          de: 'ℹ️ Deutsches Originalschreiben erforderlich',
+          en: 'ℹ️ Original German Letter Required'
+        },
+        russian: {
+          ru: 'ℹ️ Требуется немецкий оригинал письма',
+          ua: 'ℹ️ Потрібен німецький оригінал листа',
+          de: 'ℹ️ Deutsches Originalschreiben erforderlich',
+          en: 'ℹ️ Original German Letter Required'
+        },
+        english: {
+          ru: 'ℹ️ Требуется немецкий оригинал письма',
+          ua: 'ℹ️ Потрібен німецький оригінал листа',
+          de: 'ℹ️ Deutsches Originalschreiben erforderlich',
+          en: 'ℹ️ Original German Letter Required'
+        },
+        toxic: {
+          ru: '⚠️ Фильтр безопасности: Запрос заблокирован',
+          ua: '⚠️ Фільтр безпеки: Запит заблоковано',
+          de: '⚠️ Sicherheitsfilter: Anfrage blockiert',
+          en: '⚠️ Safety Filter: Request Blocked'
+        },
+        junk: {
+          ru: '⚠️ Фильтр соответствия: Запрос отклонен',
+          ua: '⚠️ Фільтр відповідності: Запит відхилено',
+          de: '⚠️ Inhaltsfilter: Anfrage abgelehnt',
+          en: '⚠️ Scope Filter: Request Rejected'
+        }
+      };
+
+      const badges = {
+        ukrainian: { ru: 'Нужен текст на немецком', ua: 'Потрібен німецький текст', de: 'Deutsch erforderlich', en: 'German required' },
+        russian: { ru: 'Нужен текст на немецком', ua: 'Потрібен німецький текст', de: 'Deutsch erforderlich', en: 'German required' },
+        english: { ru: 'Нужен текст на немецком', ua: 'Потрібен німецький текст', de: 'Deutsch erforderlich', en: 'German required' },
+        toxic: { ru: 'Заблокировано фильтром', ua: 'Заблоковано фільтром', de: 'Blockiert', en: 'Blocked' },
+        junk: { ru: 'Отклонено фильтром', ua: 'Відхилено фільтром', de: 'Abgelehnt', en: 'Rejected' }
+      };
+
+      const lang = currentLang || 'ru';
+      const reasonObj = summaries[reason] || summaries.junk;
+      const titleObj = titles[reason] || titles.junk;
+      const badgeObj = badges[reason] || badges.junk;
+
+      const title = titleObj[lang] || titleObj.ru;
+      const summary = reasonObj[lang] || reasonObj.ru;
+      const badge = badgeObj[lang] || badgeObj.ru;
+
+      document.getElementById('resAgency').innerText = title;
+      document.getElementById('resSummary').innerText = summary;
+      document.getElementById('resDeadline').innerText = lang === 'de' ? 'Keine Frist erkannt' : (lang === 'en' ? 'No deadline detected' : (lang === 'ua' ? 'Дедлайн не визначено' : 'Дедлайн не определен'));
+      document.getElementById('resDeadlineInfo').innerText = lang === 'de' ? 'Im Text wurden keine verwaltungsrechtlichen Fristen gefunden.' : (lang === 'en' ? 'No procedural deadlines detected in this text.' : (lang === 'ua' ? 'У тексті немає процесуальних дат.' : 'В тексте нет процессуальных дат.'));
+      document.getElementById('resRisk').innerHTML = `<span class="w-2.5 h-2.5 rounded-full ${reason === 'toxic' ? 'bg-red-500' : 'bg-amber-400'}"></span> ${isLanguageMismatch ? (lang === 'de' ? 'Warten auf Dokument' : (lang === 'en' ? 'Awaiting German text' : (lang === 'ua' ? 'Очікування німецького тексту' : 'Ожидание немецкого текста'))) : (lang === 'de' ? 'Anfrage abgewiesen' : (lang === 'en' ? 'Request declined' : (lang === 'ua' ? 'Запит відхилено' : 'Запрос отклонен')))}`;
+      document.getElementById('resRiskInfo').innerText = lang === 'de' ? 'Generierung von Behördenschreiben pausiert.' : (lang === 'en' ? 'Official letter generation paused.' : (lang === 'ua' ? 'Генерацію листів призупинено.' : 'Генерация официальных писем приостановлена.'));
+
+      const todoText = isLanguageMismatch
+        ? (lang === 'ua' ? 'Вставте оригінальний фрагмент листа німецькою мовою або скористайтеся зразками вище.' : (lang === 'de' ? 'Bitte fügen Sie einen Textauszug auf Deutsch ein oder wählen Sie ein Muster oben.' : (lang === 'en' ? 'Please paste genuine German text from your agency notice or select a sample above.' : 'Пожалуйста, вставьте реальный текст письма на немецком языке или нажмите образец выше.')))
+        : (lang === 'ua' ? 'Спробуйте скопіювати офіційний текст листа або скористатися кнопками зразків.' : (lang === 'de' ? 'Bitte prüfen Sie Ihre Eingabe und verwenden Sie offizielle Behördentexte.' : (lang === 'en' ? 'Please review your input and supply authentic German administrative correspondence.' : 'Пожалуйста, скопируйте текст из реального письма или выберите готовый образец выше.')));
 
       const ul = document.getElementById('resTodoList');
-      ul.innerHTML = `<li class="flex items-start gap-2 text-amber-700 font-medium"><i data-lucide="alert-circle" class="w-4 h-4 text-amber-600 mt-0.5 shrink-0"></i> <span>${m.todo}</span></li>`;
+      ul.innerHTML = `<li class="flex items-start gap-2 ${reason === 'toxic' ? 'text-red-700' : 'text-amber-700'} font-medium"><i data-lucide="alert-circle" class="w-4 h-4 ${reason === 'toxic' ? 'text-red-600' : 'text-amber-600'} mt-0.5 shrink-0"></i> <span>${todoText}</span></li>`;
 
       document.getElementById('resReply').innerText = `[BEHÖRDEN-ANTWORT BLOCKIERT / LETTER GENERATION BLOCKED]\n\nDer Assistent verfasst offizielle Schreiben ausschließlich für verifizierte behördliche Angelegenheiten.\nBitte geben Sie ein gültiges Schreiben ein.`;
 
-      document.getElementById('statusBadge').innerText = m.badge;
-      document.getElementById('statusBadge').className = 'text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-700 font-semibold';
+      document.getElementById('statusBadge').innerText = badge;
+      document.getElementById('statusBadge').className = `text-xs px-2.5 py-1 rounded-full ${reason === 'toxic' ? 'bg-red-100 text-red-700' : (isLanguageMismatch ? 'bg-sky-100 text-sky-800' : 'bg-amber-100 text-amber-800')} font-semibold`;
       lucide.createIcons();
     }
 
