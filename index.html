@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KlarBrief AI — Разбор немецких писем и готовый ответ за 10 секунд</title>
+  <meta name="description" content="KlarBrief AI мгновенно расшифровывает официальные письма из Jobcenter, Finanzamt и AOK на понятном русском языке. Точный расчет дедлайнов и готовый ответ на немецком.">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased font-sans selection:bg-sky-500 selection:text-white">
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-sky-500/20">
+          <i data-lucide="mail-check" class="w-6 h-6"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold text-xl tracking-tight text-slate-900 flex items-center gap-1.5">
+            KlarBrief <span class="text-xs px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 font-semibold tracking-normal uppercase">AI</span>
+          </span>
+          <span class="text-[10px] text-slate-500 -mt-1 font-medium tracking-wide" data-i18n="tagline">Amtsdeutsch Навигатор</span>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+        <a href="#demo" class="hover:text-sky-600 transition-colors" data-i18n="nav_demo">Симулятор</a>
+        <a href="#vorteile" class="hover:text-sky-600 transition-colors" data-i18n="nav_features">Преимущества</a>
+        <a href="#funktionsweise" class="hover:text-sky-600 transition-colors" data-i18n="nav_how">Как работает</a>
+        <a href="#vergleich" class="hover:text-sky-600 transition-colors" data-i18n="nav_compare">Сравнение</a>
+        <a href="#faq" class="hover:text-sky-600 transition-colors" data-i18n="nav_faq">FAQ</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <!-- Language Switcher -->
+        <div class="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs font-bold text-slate-600">
+          <button onclick="setLang('ru')" id="lang-ru" class="px-2 py-1 rounded-md bg-white text-sky-700 shadow-sm transition-all">RU</button>
+          <button onclick="setLang('ua')" id="lang-ua" class="px-2 py-1 rounded-md hover:text-slate-900 transition-all">UA</button>
+          <button onclick="setLang('de')" id="lang-de" class="px-2 py-1 rounded-md hover:text-slate-900 transition-all">DE</button>
+          <button onclick="setLang('en')" id="lang-en" class="px-2 py-1 rounded-md hover:text-slate-900 transition-all">EN</button>
+        </div>
+
+        <a href="#demo" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-sky-600 hover:bg-sky-700 rounded-lg shadow-sm transition-all shadow-sky-600/20 active:scale-95" data-i18n="btn_header_cta">
+          Разобрать письмо
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
+    <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-100 via-slate-50 to-white opacity-70"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-xs font-semibold mb-6 shadow-sm">
+        <span class="flex h-2 w-2 rounded-full bg-sky-500 animate-pulse"></span>
+        <span data-i18n="hero_badge">Забудьте про страх перед желтыми конвертами</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 max-w-4xl mx-auto leading-[1.18]" data-i18n="hero_title">
+        Разбери любое письмо из амта за <span class="bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">10 секунд</span> и получи готовый ответ.
+      </h1>
+
+      <p class="mt-6 text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed" data-i18n="hero_subtitle">
+        Jobcenter, Finanzamt или Krankenkasse? KlarBrief AI объяснит суть на понятном языке, рассчитает точный юридический срок (Frist) и составит официальный ответ ведомству.
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#demo" class="w-full sm:w-auto px-7 py-3.5 text-base font-semibold text-white bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 rounded-xl shadow-lg shadow-sky-500/25 transition-all flex items-center justify-center gap-2 active:scale-95" data-i18n="hero_cta">
+          <i data-lucide="zap" class="w-5 h-5"></i>
+          Попробовать бесплатно в демо
+        </a>
+        <a href="#funktionsweise" class="w-full sm:w-auto px-6 py-3.5 text-base font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl transition-all flex items-center justify-center gap-2" data-i18n="hero_secondary">
+          <i data-lucide="play-circle" class="w-5 h-5 text-slate-500"></i>
+          Как это устроено
+        </a>
+      </div>
+
+      <!-- Trust Badges -->
+      <div class="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm font-medium text-slate-500">
+        <span class="flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i> <span data-i18n="badge_dsgvo">100% DSGVO (маскирование налоговых данных)</span></span>
+        <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4 text-sky-600"></i> <span data-i18n="badge_frist">Расчет сроков по § 41 VwVfG</span></span>
+        <span class="flex items-center gap-2"><i data-lucide="file-check" class="w-4 h-4 text-indigo-600"></i> <span data-i18n="badge_law">Немецкий юридический язык (Behördendeutsch)</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Demo Section (Simulator / Бот) -->
+  <section id="demo" class="py-16 bg-white border-y border-slate-200 scroll-mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-100" data-i18n="sim_badge">Интерактивный тренажер</span>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight text-slate-900" data-i18n="sim_title">Протестируйте ассистента KlarBrief прямо сейчас</h2>
+        <p class="mt-2 text-slate-600" data-i18n="sim_desc">Выберите типовой образец письма от немецких ведомств или вставьте собственный текст.</p>
+      </div>
+
+      <!-- Quick Select Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-3 mb-6">
+        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="sim_samples">Быстрый пример:</span>
+        <button onclick="loadSample('jobcenter')" class="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+          <i data-lucide="file-warning" class="w-3.5 h-3.5 text-amber-500"></i> Jobcenter: Справки и счета
+        </button>
+        <button onclick="loadSample('aok')" class="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+          <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-red-500"></i> AOK: Угроза 1050 €/мес
+        </button>
+        <button onclick="loadSample('finanzamt')" class="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+          <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-sky-600"></i> Finanzamt: Налоговая декларация
+        </button>
+        <button onclick="clearText()" class="text-xs font-medium px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition-all" data-i18n="btn_reset">
+          Очистить
+        </button>
+      </div>
+
+      <!-- Simulator Workspace -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Input Area (Left) -->
+        <div class="lg:col-span-5 bg-slate-50 p-6 rounded-2xl border border-slate-200 flex flex-col gap-4 shadow-sm">
+          <div class="flex items-center justify-between">
+            <label class="text-sm font-bold text-slate-800 flex items-center gap-2" data-i18n="input_label">
+              <i data-lucide="file-text" class="w-4 h-4 text-sky-600"></i> Текст входящего письма
+            </label>
+            <span class="text-[11px] text-slate-400" data-i18n="input_shield">Анонимизация активна</span>
+          </div>
+
+          <textarea id="briefInput" rows="11" placeholder="Вставьте сюда текст письма на немецком или выберите один из образцов выше..." class="w-full text-xs font-mono p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none leading-relaxed text-slate-800 resize-none"></textarea>
+
+          <div class="flex items-center justify-between gap-3">
+            <button id="analyzeBtn" onclick="runAnalysis()" class="w-full py-3.5 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm shadow-md shadow-sky-600/20 transition-all flex items-center justify-center gap-2 active:scale-95">
+              <i data-lucide="sparkles" class="w-4 h-4"></i> <span data-i18n="btn_analyze">Разобрать письмо за 10 секунд</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Output Area (Right / 5-Block Standard Protocol) -->
+        <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-md flex flex-col gap-5 min-h-[460px]">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <span class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="clipboard-check" class="w-4 h-4 text-emerald-600"></i> <span data-i18n="out_header">Структурированный разбор письма</span>
+            </span>
+            <span id="statusBadge" class="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium" data-i18n="status_ready">Ожидает проверки</span>
+          </div>
+
+          <!-- Empty State -->
+          <div id="emptyOutput" class="flex flex-col items-center justify-center flex-grow py-16 text-center text-slate-400">
+            <i data-lucide="scan-line" class="w-12 h-12 text-slate-300 stroke-[1.5] mb-3"></i>
+            <p class="text-sm font-medium text-slate-600" data-i18n="empty_title">Вставьте текст слева или кликните образец выше</p>
+            <p class="text-xs text-slate-400 mt-1 max-w-sm" data-i18n="empty_desc">Нейросеть выделит ведомство, точный дедлайн, степень риска и сформирует готовый ответ на немецком.</p>
+          </div>
+
+          <!-- Result Blocks (Hidden initially) -->
+          <div id="resultContent" class="hidden flex flex-col gap-4 text-sm">
+            <!-- 1. Ведомство и суть -->
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1" data-i18n="out_b1">1. Кто пишет и в чем суть (на понятном языке)</span>
+              <p id="resAgency" class="font-bold text-slate-900"></p>
+              <p id="resSummary" class="text-xs text-slate-600 mt-0.5 leading-relaxed"></p>
+            </div>
+
+            <!-- 2. & 3. Срок и риск -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="p-3.5 rounded-xl bg-red-50 border border-red-200">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-red-700 block mb-1" data-i18n="out_b2">2. Критический дедлайн (Frist)</span>
+                <p id="resDeadline" class="font-bold text-red-900 text-sm"></p>
+                <p id="resDeadlineInfo" class="text-[11px] text-red-700 mt-0.5"></p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700 block mb-1" data-i18n="out_b3">3. Уровень риска</span>
+                <p id="resRisk" class="font-bold text-amber-900 text-sm flex items-center gap-1.5"></p>
+                <p id="resRiskInfo" class="text-[11px] text-amber-700 mt-0.5"></p>
+              </div>
+            </div>
+
+            <!-- 4. Чек-лист действий -->
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1" data-i18n="out_b4">4. Что конкретно нужно сделать (Чек-лист)</span>
+              <ul id="resTodoList" class="text-xs text-slate-700 space-y-1.5 list-none pl-0"></ul>
+            </div>
+
+            <!-- 5. Ответ ведомству на немецком -->
+            <div class="p-3.5 rounded-xl bg-sky-50 border border-sky-200">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-sky-800" data-i18n="out_b5">5. Готовый официальный ответ (на немецком языке)</span>
+                <button onclick="copyReply()" class="text-[11px] font-semibold text-sky-700 hover:text-sky-900 bg-white px-2.5 py-1 rounded-md border border-sky-200 flex items-center gap-1 transition-all shadow-sm">
+                  <i data-lucide="copy" class="w-3 h-3"></i> <span data-i18n="btn_copy">Скопировать</span>
+                </button>
+              </div>
+              <pre id="resReply" class="text-[11px] font-mono text-slate-800 bg-white p-3 rounded-lg border border-sky-100 whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto"></pre>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem & Solution (Zetteln / KlarOo Synthese) -->
+  <section id="vorteile" class="py-20 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-100 px-3 py-1 rounded-full" data-i18n="prob_badge">Знакомая ситуация?</span>
+        <h2 class="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900" data-i18n="prob_title">Почему немецкая почта вызывает столько стресса</h2>
+        <p class="mt-4 text-slate-600 text-base" data-i18n="prob_subtitle">В Германии ежегодно рассылается свыше 400 миллионов ведомственных писем. Для иностранцев и экспатов это постоянный стресс и риск финансовых потерь.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Card 1 -->
+        <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center mb-6">
+            <i data-lucide="file-x" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2" data-i18n="card1_title">Непонятный канцелярский язык</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="card1_text">
+            Предложения по 5 строк, юридические термины и угрозы параграфами (Rechtsfolgenbelehrung) не дают понять, что от вас конкретно требуют.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-6">
+            <i data-lucide="clock" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2" data-i18n="card2_title">Коварные сроки и штрафы</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="card2_text">
+            Пропуск дедлайна влечет за собой остановку выплат Bürgergeld, блокировку ВНЖ или принудительный перевод на максимальный тариф страховки (до 1050 €/мес).
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center mb-6">
+            <i data-lucide="message-square-dashed" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2" data-i18n="card3_title">Языковой паралич при ответе</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="card3_text">
+            Даже с уровнем немецкого B1/B2 очень трудно правильно сформулировать официальную просьбу о продлении срока (Fristverlängerung) на строгом ведомственном немецком.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works (3 Steps) -->
+  <section id="funktionsweise" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-100 px-3 py-1 rounded-full" data-i18n="steps_badge">Простой алгоритм</span>
+        <h2 class="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900" data-i18n="steps_title">От паники в почтовом ящике до готового ответа</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        <div class="flex flex-col items-center text-center p-6">
+          <div class="w-16 h-16 rounded-2xl bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center text-2xl font-black mb-4 shadow-sm">1</div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2" data-i18n="s1_title">1. Загрузите текст или фото</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="s1_text">Вставьте текст или сделайте фото письма. Персональные данные (Steuer-ID, IBAN) автоматически защищаются алгоритмом.</p>
+        </div>
+
+        <div class="flex flex-col items-center text-center p-6">
+          <div class="w-16 h-16 rounded-2xl bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center text-2xl font-black mb-4 shadow-sm">2</div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2" data-i18n="s2_title">2. Анализ и юридический срок</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="s2_text">KlarBrief AI рассчитывает срок с учетом доставки почты (§ 41 VwVfG) и переводит суть на понятный вам язык.</p>
+        </div>
+
+        <div class="flex flex-col items-center text-center p-6">
+          <div class="w-16 h-16 rounded-2xl bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center text-2xl font-black mb-4 shadow-sm">3</div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2" data-i18n="s3_title">3. Скопируйте готовый ответ</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="s3_text">Получите юридически безупречный черновик ответа на официальном немецком с вашим номером дела (Aktenzeichen).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Matrix -->
+  <section id="vergleich" class="py-20 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14">
+        <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-100 px-3 py-1 rounded-full" data-i18n="comp_badge">Сравнение</span>
+        <h2 class="mt-3 text-3xl font-extrabold text-slate-900" data-i18n="comp_title">Почему обычных переводчиков недостаточно</h2>
+      </div>
+
+      <div class="overflow-x-auto bg-white rounded-2xl border border-slate-200 shadow-sm">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+            <tr>
+              <th class="p-4 sm:p-5" data-i18n="th_feature">Функция</th>
+              <th class="p-4 sm:p-5 text-center text-slate-400">Google / DeepL</th>
+              <th class="p-4 sm:p-5 text-center text-slate-500" data-i18n="th_apps">Обычные приложения</th>
+              <th class="p-4 sm:p-5 text-center text-sky-600 bg-sky-50/70 font-bold">KlarBrief AI</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-600">
+            <tr>
+              <td class="p-4 sm:p-5 font-medium text-slate-900" data-i18n="row1_name">Понятное объяснение канцелярита</td>
+              <td class="p-4 sm:p-5 text-center text-slate-400" data-i18n="row1_col1">Только дословный перевод</td>
+              <td class="p-4 sm:p-5 text-center text-emerald-600" data-i18n="row1_col2">✓ Понятно</td>
+              <td class="p-4 sm:p-5 text-center text-emerald-600 font-bold bg-sky-50/40" data-i18n="row1_col3">✓ Понятно и в контексте</td>
+            </tr>
+            <tr>
+              <td class="p-4 sm:p-5 font-medium text-slate-900" data-i18n="row2_name">Расчет юридических сроков (§ 41 VwVfG)</td>
+              <td class="p-4 sm:p-5 text-center text-red-400">✕ Нет</td>
+              <td class="p-4 sm:p-5 text-center text-amber-500" data-i18n="row2_col2">Частично</td>
+              <td class="p-4 sm:p-5 text-center text-emerald-600 font-bold bg-sky-50/40" data-i18n="row2_col3">✓ С учетом почтовой фикции</td>
+            </tr>
+            <tr>
+              <td class="p-4 sm:p-5 font-medium text-slate-900" data-i18n="row3_name">Готовый ответ на Behördendeutsch</td>
+              <td class="p-4 sm:p-5 text-center text-red-400">✕ Нет</td>
+              <td class="p-4 sm:p-5 text-center text-red-400" data-i18n="row3_col2">✕ Только объяснение</td>
+              <td class="p-4 sm:p-5 text-center text-emerald-600 font-bold bg-sky-50/40" data-i18n="row3_col3">✓ В 1 клик с Aktenzeichen</td>
+            </tr>
+            <tr>
+              <td class="p-4 sm:p-5 font-medium text-slate-900" data-i18n="row4_name">Чек-лист конкретных шагов (To-Do)</td>
+              <td class="p-4 sm:p-5 text-center text-red-400">✕ Нет</td>
+              <td class="p-4 sm:p-5 text-center text-emerald-600">✓ Да</td>
+              <td class="p-4 sm:p-5 text-center text-emerald-600 font-bold bg-sky-50/40">✓ Пошаговый план</td>
+            </tr>
+            <tr>
+              <td class="p-4 sm:p-5 font-medium text-slate-900" data-i18n="row5_name">Защита налоговых данных (DSGVO)</td>
+              <td class="p-4 sm:p-5 text-center text-red-400">✕ Нет</td>
+              <td class="p-4 sm:p-5 text-center text-amber-500" data-i18n="row5_col2">Не всегда</td>
+              <td class="p-4 sm:p-5 text-center text-emerald-600 font-bold bg-sky-50/40">✓ Авто-маскирование</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ & RDG Disclaimer -->
+  <section id="faq" class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14">
+        <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-100 px-3 py-1 rounded-full" data-i18n="faq_badge">Вопросы и ответы</span>
+        <h2 class="mt-3 text-3xl font-extrabold text-slate-900" data-i18n="faq_title">Прозрачность и безопасность</h2>
+      </div>
+
+      <div class="space-y-4">
+        <details class="group bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          <summary class="flex justify-between items-center cursor-pointer font-bold text-slate-900 list-none">
+            <span data-i18n="q1_q">Заменяет ли KlarBrief AI адвоката?</span>
+            <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5 text-slate-500"></i></span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 leading-relaxed" data-i18n="q1_a">
+            Нет. KlarBrief AI — это технологический и лингвистический ассистент для разбора текстов и контроля сроков. Сервис не оказывает индивидуальных юридических консультаций по смыслу закона § 2 RDG. В случае судебных споров или сложных разбирательств рекомендуем обращаться к профильным юристам или в социальные консультации (Caritas, Diakonie, MBE).
+          </p>
+        </details>
+
+        <details class="group bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          <summary class="flex justify-between items-center cursor-pointer font-bold text-slate-900 list-none">
+            <span data-i18n="q2_q">Что происходит с моими персональными данными?</span>
+            <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5 text-slate-500"></i></span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 leading-relaxed" data-i18n="q2_a">
+            Данные обрабатываются строго по регламенту европейского стандарта DSGVO. Чувствительные данные (Steuer-ID, IBAN, телефоны) автоматически маскируются перед анализом. Мы не сохраняем и не передаем ваши данные третьим лицам.
+          </p>
+        </details>
+
+        <details class="group bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          <summary class="flex justify-between items-center cursor-pointer font-bold text-slate-900 list-none">
+            <span data-i18n="q3_q">Как рассчитываются процессуальные сроки (Fristen)?</span>
+            <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5 text-slate-500"></i></span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 leading-relaxed" data-i18n="q3_a">
+            Алгоритм учитывает так называемую «фикцию вручения» (§ 41 Abs. 2 VwVfG / § 37 Abs. 2 SGB X): отправленное по почте письмо считается доставленным на третий день после отправки. С этой даты исчисляется реальный срок на подачу возражения или документов.
+          </p>
+        </details>
+      </div>
+
+      <!-- Legal Disclaimer Box -->
+      <div class="mt-12 p-5 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-500 leading-relaxed">
+        <strong class="text-slate-700" data-i18n="disclaimer_title">Правовое уведомление согласно § 2 RDG:</strong> <span data-i18n="disclaimer_text">Сервис KlarBrief AI предназначен исключительно для языкового перевода, структурирования информации и административной помощи. Сервис не является юридической службой или адвокатской консультацией.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-sky-600 flex items-center justify-center text-white">
+          <i data-lucide="mail-check" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <span class="text-white font-bold text-sm tracking-tight">KlarBrief AI</span>
+          <span class="block text-[11px] text-slate-500">Курсовой проект AIT — AI Product Prototyping</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="javascript:void(0)" onclick="openLegalModal('impressum')" class="hover:text-white transition-colors">Impressum</a>
+        <a href="javascript:void(0)" onclick="openLegalModal('datenschutz')" class="hover:text-white transition-colors">Datenschutz</a>
+        <a href="javascript:void(0)" onclick="openLegalModal('agb')" class="hover:text-white transition-colors">AGB</a>
+      </div>
+
+      <p class="text-slate-500">© 2026 KlarBrief AI. Разработчик: Илья Лонский.</p>
+    </div>
+  </footer>
+
+  <!-- Legal Modal Window -->
+  <div id="legalModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <h3 id="modalTitle" class="text-base font-bold text-slate-900"></h3>
+        <button onclick="closeLegalModal()" class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-all">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div id="modalBody" class="p-6 overflow-y-auto text-xs text-slate-600 leading-relaxed space-y-4"></div>
+      <div class="px-6 py-3 border-t border-slate-100 bg-slate-50 flex justify-end">
+        <button onclick="closeLegalModal()" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 transition-all">Schließen / Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multilingual & Interactive Simulator Logic (JS) -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    let currentLang = 'ru';
+
+    const translations = {
+      ru: {
+        tagline: 'Amtsdeutsch Навигатор',
+        nav_demo: 'Симулятор',
+        nav_features: 'Преимущества',
+        nav_how: 'Как работает',
+        nav_compare: 'Сравнение',
+        nav_faq: 'FAQ',
+        btn_header_cta: 'Разобрать письмо',
+        hero_badge: 'Забудьте про страх перед желтыми конвертами',
+        hero_title: 'Разбери любое письмо из амта за <span class="bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">10 секунд</span> и получи готовый ответ.',
+        hero_subtitle: 'Jobcenter, Finanzamt или Krankenkasse? KlarBrief AI объяснит суть на понятном языке, рассчитает точный юридический срок (Frist) и составит официальный ответ ведомству.',
+        hero_cta: 'Попробовать бесплатно в демо',
+        hero_secondary: 'Как это устроено',
+        badge_dsgvo: '100% DSGVO (маскирование налоговых данных)',
+        badge_frist: 'Расчет сроков по § 41 VwVfG',
+        badge_law: 'Немецкий юридический язык (Behördendeutsch)',
+        sim_badge: 'Интерактивный тренажер',
+        sim_title: 'Протестируйте ассистента KlarBrief прямо сейчас',
+        sim_desc: 'Выберите типовой образец письма от немецких ведомств или вставьте собственный текст.',
+        sim_samples: 'Быстрый пример:',
+        btn_reset: 'Очистить',
+        input_label: 'Текст входящего письма',
+        input_shield: 'Анонимизация активна',
+        btn_analyze: 'Разобрать письмо за 10 секунд',
+        out_header: 'Структурированный разбор письма',
+        status_ready: 'Ожидает проверки',
+        empty_title: 'Вставьте текст слева или кликните образец выше',
+        empty_desc: 'Нейросеть выделит ведомство, точный дедлайн, степень риска и сформирует готовый ответ на немецком.',
+        out_b1: '1. Кто пишет и в чем суть (на понятном языке)',
+        out_b2: '2. Критический дедлайн (Frist)',
+        out_b3: '3. Уровень риска',
+        out_b4: '4. Что конкретно нужно сделать (Чек-лист)',
+        out_b5: '5. Готовый официальный ответ (на немецком языке)',
+        btn_copy: 'Скопировать',
+        prob_badge: 'Знакомая ситуация?',
+        prob_title: 'Почему немецкая почта вызывает столько стресса',
+        prob_subtitle: 'В Германии ежегодно рассылается свыше 400 миллионов ведомственных писем. Для иностранцев и экспатов это постоянный стресс и риск финансовых потерь.',
+        card1_title: 'Непонятный канцелярский язык',
+        card1_text: 'Предложения по 5 строк, юридические термины и угрозы параграфами (Rechtsfolgenbelehrung) не дают понять, что от вас конкретно требуют.',
+        card2_title: 'Коварные сроки и штрафы',
+        card2_text: 'Пропуск дедлайна влечет за собой остановку выплат Bürgergeld, блокировку ВНЖ или принудительный перевод на максимальный тариф страховки (до 1050 €/мес).',
+        card3_title: 'Языковой паралич при ответе',
+        card3_text: 'Даже с уровнем немецкого B1/B2 очень трудно правильно сформулировать официальную просьбу о продлении срока (Fristverlängerung) на строгом ведомственном немецком.',
+        steps_badge: 'Простой алгоритм',
+        steps_title: 'От паники в почтовом ящике до готового ответа',
+        s1_title: '1. Загрузите текст или фото',
+        s1_text: 'Вставьте текст или сделайте фото письма. Персональные данные (Steuer-ID, IBAN) автоматически защищаются алгоритмом.',
+        s2_title: '2. Анализ и юридический срок',
+        s2_text: 'KlarBrief AI рассчитывает срок с учетом доставки почты (§ 41 VwVfG) и переводит суть на понятный вам язык.',
+        s3_title: '3. Скопируйте готовый ответ',
+        s3_text: 'Получите юридически безупречный черновик ответа на официальном немецком с вашим номером дела (Aktenzeichen).',
+        comp_badge: 'Сравнение',
+        comp_title: 'Почему обычных переводчиков недостаточно',
+        th_feature: 'Функция',
+        th_apps: 'Обычные приложения',
+        row1_name: 'Понятное объяснение канцелярита',
+        row1_col1: 'Только дословный перевод',
+        row1_col2: '✓ Понятно',
+        row1_col3: '✓ Понятно и в контексте',
+        row2_name: 'Расчет юридических сроков (§ 41 VwVfG)',
+        row2_col2: 'Частично',
+        row2_col3: '✓ С учетом почтовой фикции',
+        row3_name: 'Готовый ответ на Behördendeutsch',
+        row3_col2: '✕ Только объяснение',
+        row3_col3: '✓ В 1 клик с Aktenzeichen',
+        row4_name: 'Чек-лист конкретных шагов (To-Do)',
+        row5_name: 'Защита налоговых данных (DSGVO)',
+        row5_col2: 'Не всегда',
+        faq_badge: 'Вопросы и ответы',
+        faq_title: 'Прозрачность и безопасность',
+        q1_q: 'Заменяет ли KlarBrief AI адвоката?',
+        q1_a: 'Нет. KlarBrief AI — это технологический и лингвистический ассистент для разбора текстов и контроля сроков. Сервис не оказывает индивидуальных юридических консультаций по смыслу закона § 2 RDG.',
+        q2_q: 'Что происходит с моими персональными данными?',
+        q2_a: 'Данные обрабатываются строго по регламенту европейского стандарта DSGVO. Чувствительные данные (Steuer-ID, IBAN, телефоны) автоматически маскируются перед анализом.',
+        q3_q: 'Как рассчитываются процессуальные сроки (Fristen)?',
+        q3_a: 'Алгоритм учитывает так называемую «фикцию вручения» (§ 41 Abs. 2 VwVfG / § 37 Abs. 2 SGB X): отправленное по почте письмо считается доставленным на третий день после отправки.',
+        disclaimer_title: 'Правовое уведомление согласно § 2 RDG:',
+        disclaimer_text: 'Сервис KlarBrief AI предназначен исключительно для языкового перевода, структурирования информации и административной помощи. Сервис не является юридической службой или адвокатской консультацией.'
+      },
+      ua: {
+        tagline: 'Amtsdeutsch Навігатор',
+        nav_demo: 'Симулятор',
+        nav_features: 'Переваги',
+        nav_how: 'Як працює',
+        nav_compare: 'Порівняння',
+        nav_faq: 'FAQ',
+        btn_header_cta: 'Розібрати лист',
+        hero_badge: 'Забудьте про страх перед жовтими конвертами',
+        hero_title: 'Розберіть будь-який лист з амта за <span class="bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">10 секунд</span> і отримайте готову відповідь.',
+        hero_subtitle: 'Jobcenter, Finanzamt чи Krankenkasse? KlarBrief AI пояснить суть зрозумілою мовою, вирахує точний термін (Frist) та складе офіційну відповідь німецькою.',
+        hero_cta: 'Спробувати безкоштовно в демо',
+        hero_secondary: 'Як це працює',
+        badge_dsgvo: '100% DSGVO (маскування податкових даних)',
+        badge_frist: 'Розрахунок термінів за § 41 VwVfG',
+        badge_law: 'Офіційна німецька мова (Behördendeutsch)',
+        sim_badge: 'Інтерактивний тренажер',
+        sim_title: 'Протестуйте асистента KlarBrief прямо зараз',
+        sim_desc: 'Оберіть типовий зразок листа від німецьких установ або вставте власний текст.',
+        sim_samples: 'Швидкий приклад:',
+        btn_reset: 'Очистити',
+        input_label: 'Текст отриманого листа',
+        input_shield: 'Анонімізація активна',
+        btn_analyze: 'Розібрати лист за 10 секунд',
+        out_header: 'Структурований аналіз листа',
+        status_ready: 'Очікує на перевірку',
+        empty_title: 'Вставте текст ліворуч або натисніть зразок вгорі',
+        empty_desc: 'Штучний інтелект визначить установу, дедлайн, ступінь ризику та складе офіційну відповідь німецькою.',
+        out_b1: '1. Хто пише та в чому суть (простою мовою)',
+        out_b2: '2. Критичний дедлайн (Frist)',
+        out_b3: '3. Рівень ризику',
+        out_b4: '4. Що саме потрібно зробити (Чек-лист)',
+        out_b5: '5. Готова офіційна відповідь (німецькою мовою)',
+        btn_copy: 'Скопіювати',
+        prob_badge: 'Знайома ситуація?',
+        prob_title: 'Чому німецька пошта викликає стільки стресу',
+        prob_subtitle: 'У Німеччині щорічно надсилають понад 400 мільйонів офіційних листів. Для українців та експатів це постійний ризик штрафів та зупинки виплат.',
+        card1_title: 'Незрозуміла бюрократична мова',
+        card1_text: 'Речення на 5 рядків, складні юридичні терміни та залякування параграфами (Rechtsfolgenbelehrung) не дають зрозуміти головне.',
+        card2_title: 'Підступні терміни та санкції',
+        card2_text: 'Пропуск дедлайну веде до припинення виплат Bürgergeld, проблем з ВНЖ або нарахування максимального внеску до страховки (до 1050 €/міс).',
+        card3_title: 'Мовний бар’єр при відповіді',
+        card3_text: 'Навіть з рівнем B1/B2 вкрай складно самостійно написати коректне прохання про подовження терміну (Fristverlängerung) офіційною німецькою.',
+        steps_badge: 'Простий алгоритм',
+        steps_title: 'Від шоку в поштовій скриньці до готової відповіді',
+        s1_title: '1. Завантажте текст чи фото',
+        s1_text: 'Вставте текст або сфотографуйте лист. Персональні дані автоматично маскуються.',
+        s2_title: '2. Аналіз та юридичний термін',
+        s2_text: 'KlarBrief AI вираховує термін з урахуванням поштової доставки (§ 41 VwVfG) і пояснює суть зрозумілою мовою.',
+        s3_title: '3. Скопіюйте готову відповідь',
+        s3_text: 'Отримайте юридично вивірений текст офіційною німецькою мовою з вашим номером справи (Aktenzeichen).',
+        comp_badge: 'Порівняння',
+        comp_title: 'Чому звичайних перекладачів недостатньо',
+        th_feature: 'Функція',
+        th_apps: 'Звичайні додатки',
+        row1_name: 'Зрозуміле пояснення канцеляриту',
+        row1_col1: 'Лише дослівний переклад',
+        row1_col2: '✓ Зрозуміло',
+        row1_col3: '✓ Зрозуміло і в контексті',
+        row2_name: 'Розрахунок юридичних термінів (§ 41 VwVfG)',
+        row2_col2: 'Частково',
+        row2_col3: '✓ З урахуванням поштової доставки',
+        row3_name: 'Готова відповідь німецькою (Behördendeutsch)',
+        row3_col2: '✕ Лише пояснення',
+        row3_col3: '✓ В 1 клік з Aktenzeichen',
+        row4_name: 'Чек-лист конкретних дій (To-Do)',
+        row5_name: 'Захист персональних даних (DSGVO)',
+        row5_col2: 'Не завжди',
+        faq_badge: 'Питання та відповіді',
+        faq_title: 'Прозорість та безпека',
+        q1_q: 'Чи замінює KlarBrief AI адвоката?',
+        q1_a: 'Ні. KlarBrief AI — це технологічний помічник для аналізу текстів та контролю термінів згідно з § 2 RDG.',
+        q2_q: 'Що відбувається з моїми даними?',
+        q2_a: 'Обробка відповідає стандарту DSGVO. Чутливі дані автоматично маскуються.',
+        q3_q: 'Як вираховуються процесуальні строки (Fristen)?',
+        q3_a: 'Враховується презумпція отримання пошти протягом 3 днів за § 41 Abs. 2 VwVfG / § 37 Abs. 2 SGB X.',
+        disclaimer_title: 'Юридичне повідомлення згідно з § 2 RDG:',
+        disclaimer_text: 'Сервіс призначений виключно для мовного перекладу та структурування інформації. Не є юридичною консультацією.'
+      },
+      de: {
+        tagline: 'Amtsdeutsch Navigator',
+        nav_demo: 'Live-Demo',
+        nav_features: 'Vorteile',
+        nav_how: 'Funktion',
+        nav_compare: 'Vergleich',
+        nav_faq: 'FAQ',
+        btn_header_cta: 'Brief jetzt testen',
+        hero_badge: 'Nie wieder Angst vor gelben Briefumschlägen',
+        hero_title: 'Verstehe jeden Behördenbrief in <span class="bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">10 Sekunden</span> und antworte fehlerfrei.',
+        hero_subtitle: 'Jobcenter, Finanzamt oder Krankenkasse? KlarBrief AI entschlüsselt kompliziertes Amtsdeutsch, berechnet exakte Fristen und erstellt sofort eine rechtssichere Antwortvorlage.',
+        hero_cta: 'Interaktive Demo starten',
+        hero_secondary: 'Wie es funktioniert',
+        badge_dsgvo: '100% DSGVO & Anonymisierung',
+        badge_frist: 'Inkl. § 41 VwVfG Fristenlogik',
+        badge_law: 'Rechtssicheres Behördendeutsch',
+        sim_badge: 'Live Simulator',
+        sim_title: 'Teste den KlarBrief AI Assistenten',
+        sim_desc: 'Wähle ein typisches Behördenschreiben oder füge eigenen Text ein, um die Analyse zu sehen.',
+        sim_samples: 'Beispiel wählen:',
+        btn_reset: 'Zurücksetzen',
+        input_label: 'Text des Behördenbriefs',
+        input_shield: 'Automatische Schwärzung aktiv',
+        btn_analyze: 'Jetzt analysieren',
+        out_header: 'KlarBrief Strukturierte Analyse',
+        status_ready: 'Bereit',
+        empty_title: 'Wähle links ein Beispiel oder klicke auf «Jetzt analysieren»',
+        empty_desc: 'Die KI extrahiert Behörde, Frist, Ampelstufe und Antwort in 1 Sekunde.',
+        out_b1: '1. Behörde & Kernanliegen',
+        out_b2: '2. Kritische Frist (Frist)',
+        out_b3: '3. Risikostufe',
+        out_b4: '4. Konkrete Handlungsschritte (To-Do)',
+        out_b5: '5. Fertige Antwortvorlage (Behördendeutsch)',
+        btn_copy: 'Kopieren',
+        prob_badge: 'Die Herausforderung',
+        prob_title: 'Warum deutsche Behördenpost so viel Stress auslöst',
+        prob_subtitle: 'In Deutschland landen jährlich über 400 Millionen offizielle Briefe in Briefkästen. Für fast jeden bedeutet das Hektik, Amtsdeutsch und Fristendruck.',
+        card1_title: 'Unverständliches Amtsdeutsch',
+        card1_text: 'Schachtelsätze über 5 Zeilen, unverständliche Rechtsfolgenbelehrungen und Paragrafenwirrwarr führen dazu, dass man nicht weiß, was eigentlich verlangt wird.',
+        card2_title: 'Strenge Fristen & Sanktionen',
+        card2_text: 'Ein verpasster Stichtag führt schnell zu Leistungskürzungen beim Bürgergeld, Säumniszuschlägen beim Finanzamt oder Problemen mit dem Aufenthaltstitel.',
+        card3_title: 'Sprachlosigkeit beim Antworten',
+        card3_text: 'Selbst mit guten Deutschkenntnissen (B1/B2) ist es schwer, eine förmliche Fristverlängerung oder eine Stellungnahme im passenden Tonfall zu verfassen.',
+        steps_badge: '3 Einfache Schritte',
+        steps_title: 'Vom Schock im Briefkasten zur fertigen Antwort',
+        s1_title: '1. Brief hochladen oder einfügen',
+        s1_text: 'Kopiere den Text des Schreibens oder mache ein Foto mit dem Smartphone. Daten wie Steuer-ID werden automatisch geschützt.',
+        s2_title: '2. KI-Analyse & Fristprüfung',
+        s2_text: 'KlarBrief prüft das Absendedatum, kalkuliert Postlaufzeiten nach VwVfG und sagt dir in Alltagssprache, was zu tun ist.',
+        s3_title: '3. Antwort kopieren',
+        s3_text: 'Erhalte ein vorgefertigtes, juristisch sauberes Antwortschreiben mit deinem Aktenzeichen. Ausdrucken oder per Mail/Fax senden.',
+        comp_badge: 'Vergleich',
+        comp_title: 'Warum reine Übersetzer nicht reichen',
+        th_feature: 'Funktion',
+        th_apps: 'Klassische Apps',
+        row1_name: 'Übersetzung von Fachbegriffen',
+        row1_col1: 'Wort-für-Wort',
+        row1_col2: '✓ Verständlich',
+        row1_col3: '✓ Verständlich & Kontext',
+        row2_name: 'Automatische Fristberechnung (§ 41)',
+        row2_col2: 'Teilweise',
+        row2_col3: '✓ Inkl. Postlaufzeit',
+        row3_name: 'Fertige Antwortvorlage (Behördendeutsch)',
+        row3_col2: '✕ Nur Erklärung',
+        row3_col3: '✓ 1-Klick Vorlage',
+        row4_name: 'Handlungsschritte (Checkliste)',
+        row5_name: 'DSGVO-Anonymisierung',
+        row5_col2: 'Unklar',
+        faq_badge: 'Häufige Fragen',
+        faq_title: 'Transparenz & Rechtssicherheit',
+        q1_q: 'Ersetzt KlarBrief AI einen Rechtsanwalt?',
+        q1_a: 'Nein. KlarBrief AI ist ein technologischer und sprachlicher Assistent nach § 2 RDG.',
+        q2_q: 'Was passiert mit meinen persönlichen Daten?',
+        q2_a: 'Deine Daten werden streng nach DSGVO verarbeitet. Sensible Kennungen werden maskiert.',
+        q3_q: 'Wie funktioniert die Fristberechnung?',
+        q3_a: 'Die KI berücksichtigt die Bekanntgabefiktion nach § 41 Abs. 2 VwVfG / § 37 Abs. 2 SGB X.',
+        disclaimer_title: 'Rechtlicher Hinweis nach § 2 RDG:',
+        disclaimer_text: 'KlarBrief AI dient ausschließlich dem sprachlichen Verständnis und der administrativen Strukturierung von Dokumenten. Es handelt sich um keine Rechtsberatung.'
+      },
+      en: {
+        tagline: 'Amtsdeutsch Navigator',
+        nav_demo: 'Live Demo',
+        nav_features: 'Features',
+        nav_how: 'How it works',
+        nav_compare: 'Comparison',
+        nav_faq: 'FAQ',
+        btn_header_cta: 'Analyze Letter',
+        hero_badge: 'No more fear of German yellow envelopes',
+        hero_title: 'Understand any German official letter in <span class="bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">10 seconds</span> and respond flawlessly.',
+        hero_subtitle: 'Jobcenter, Tax Office or Health Insurance? KlarBrief AI decrypts bureaucratic German, calculates strict deadlines and generates a ready-to-send official response.',
+        hero_cta: 'Try Free in Live Demo',
+        hero_secondary: 'How it works',
+        badge_dsgvo: '100% GDPR (Tax ID Masking)',
+        badge_frist: 'Deadline Logic (§ 41 VwVfG)',
+        badge_law: 'Official German (Behördendeutsch)',
+        sim_badge: 'Live Simulator',
+        sim_title: 'Test KlarBrief AI Assistant Right Now',
+        sim_desc: 'Select a typical German agency letter sample or paste your own text.',
+        sim_samples: 'Quick sample:',
+        btn_reset: 'Reset',
+        input_label: 'Letter text',
+        input_shield: 'Auto-anonymization active',
+        btn_analyze: 'Analyze Letter in 10s',
+        out_header: 'Structured Analysis',
+        status_ready: 'Ready',
+        empty_title: 'Paste letter text on the left or click a sample above',
+        empty_desc: 'AI extracts agency, deadline, risk level, checklist and draft reply in German.',
+        out_b1: '1. Agency & Core Request',
+        out_b2: '2. Critical Deadline (Frist)',
+        out_b3: '3. Risk Level',
+        out_b4: '4. Actionable Steps (To-Do)',
+        out_b5: '5. Official Response Draft (in German)',
+        btn_copy: 'Copy',
+        prob_badge: 'Common Situation',
+        prob_title: 'Why German official mail causes so much stress',
+        prob_subtitle: 'Over 400 million official letters are sent in Germany every year, triggering anxiety, complex legalese and risk of financial sanctions.',
+        card1_title: 'Incomprehensible Legalese',
+        card1_text: 'Five-line sentences, legal jargon and penalty clauses prevent you from understanding what is required.',
+        card2_title: 'Strict Deadlines & Penalties',
+        card2_text: 'Missing a deadline can halt social benefits, trigger tax penalties or max out health insurance fees (up to €1050/mo).',
+        card3_title: 'Language Paralysis',
+        card3_text: 'Even with B1/B2 German, drafting a formal extension request (Fristverlängerung) in proper Behördendeutsch is daunting.',
+        steps_badge: 'Simple 3-Step Process',
+        steps_title: 'From mailbox anxiety to a completed reply',
+        s1_title: '1. Paste text or photo',
+        s1_text: 'Paste text or snap a picture. Sensitive IDs are automatically masked.',
+        s2_title: '2. AI Analysis & Deadlines',
+        s2_text: 'KlarBrief calculates postal grace periods (§ 41 VwVfG) and explains everything in clear language.',
+        s3_title: '3. Copy ready response',
+        s3_text: 'Get a legally polished draft letter in German with your case number (Aktenzeichen).',
+        comp_badge: 'Comparison',
+        comp_title: 'Why standard translators are not enough',
+        th_feature: 'Feature',
+        th_apps: 'Standard Apps',
+        row1_name: 'Clear explanation of legalese',
+        row1_col1: 'Literal translation only',
+        row1_col2: '✓ Understandable',
+        row1_col3: '✓ Understandable & In Context',
+        row2_name: 'Statutory deadline calculation',
+        row2_col2: 'Partial',
+        row2_col3: '✓ Includes postal fiction',
+        row3_name: 'Ready-made reply in Behördendeutsch',
+        row3_col2: '✕ Explanation only',
+        row3_col3: '✓ 1-Click with Aktenzeichen',
+        row4_name: 'Actionable To-Do Checklist',
+        row5_name: 'GDPR / Tax Data Protection',
+        row5_col2: 'Unclear',
+        faq_badge: 'FAQ',
+        faq_title: 'Transparency & Compliance',
+        q1_q: 'Does KlarBrief replace a lawyer?',
+        q1_a: 'No. KlarBrief AI is a technological and linguistic tool under § 2 RDG.',
+        q2_q: 'What happens to my personal data?',
+        q2_a: 'Data is handled strictly under GDPR. Sensitive IDs are masked.',
+        q3_q: 'How are deadlines calculated?',
+        q3_a: 'AI applies the 3-day postal delivery presumption under § 41 (2) VwVfG.',
+        disclaimer_title: 'Legal notice under § 2 RDG:',
+        disclaimer_text: 'KlarBrief AI is solely for linguistic understanding and administrative assistance. It is not legal advice.'
+      }
+    };
+
+    function setLang(lang) {
+      currentLang = lang;
+      ['ru', 'ua', 'de', 'en'].forEach(l => {
+        const btn = document.getElementById('lang-' + l);
+        if (l === lang) {
+          btn.className = 'px-2 py-1 rounded-md bg-white text-sky-700 shadow-sm transition-all';
+        } else {
+          btn.className = 'px-2 py-1 rounded-md hover:text-slate-900 transition-all';
+        }
+      });
+
+      const dict = translations[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.innerHTML = dict[key];
+        }
+      });
+
+      // Update placeholders
+      const input = document.getElementById('briefInput');
+      if (lang === 'ru') input.placeholder = 'Вставьте сюда текст письма на немецком или выберите один из образцов выше...';
+      else if (lang === 'ua') input.placeholder = 'Вставте сюди текст листа німецькою або оберіть зразок вгорі...';
+      else if (lang === 'de') input.placeholder = 'Brieftext hier hineinkopieren oder oben ein Musterbeispiel anklicken...';
+      else if (lang === 'en') input.placeholder = 'Paste German letter text here or click a sample above...';
+    }
+
+    // Sample database with explanations tailored to current UI language
+    const sampleData = {
+      jobcenter: {
+        text: `Jobcenter Tübingen\nAktenzeichen: BG-82914-2026\nDatum: 15.10.2026\n\nAufforderung zur Mitwirkung nach § 60 SGB I\n\nSehr geehrte(r) Antragsteller(in),\n\nfür die Weiterbewilligung von Leistungen zur Sicherung des Lebensunterhalts benötigen wir folgende Unterlagen:\n1. Nachweis über die Heizkostenabrechnung 2025/2026.\n2. Lückenlose Kontoauszüge der letzten 3 Monate aller im Haushalt lebenden Personen.\n\nBitte reichen Sie diese Unterlagen bis zum 29.10.2026 bei uns ein.\n\nRechtsfolgenbelehrung:\nKommen Sie dieser Aufforderung bis zum genannten Termin nicht nach, können die Leistungen ganz oder teilweise entzogen werden (§ 66 SGB I).`,
+        agency: {
+          ru: 'Jobcenter Landkreis Tübingen (Джобцентр)',
+          ua: 'Jobcenter Landkreis Tübingen (Джобцентр)',
+          de: 'Jobcenter Landkreis Tübingen',
+          en: 'Jobcenter Landkreis Tübingen'
+        },
+        summary: {
+          ru: 'Требование предоставить документы (Mitwirkungspflicht): для продления выплат Bürgergeld нужно донести перерасчет за отопление и выписки со счетов за последние 3 месяца.',
+          ua: 'Вимога надати документи (Mitwirkungspflicht): для продовження виплат Bürgergeld потрібно надати перерахунок за опалення та банківські виписки за останні 3 місяці.',
+          de: 'Aufforderung zur Mitwirkung: Zur Weiterbewilligung des Bürgergeldes fehlen die Heizkostenabrechnung und Kontoauszüge der letzten 3 Monate.',
+          en: 'Request for cooperation: heating bill and 3 months bank statements required to continue Bürgergeld benefits.'
+        },
+        deadline: {
+          ru: '29 октября 2026',
+          ua: '29 жовтня 2026',
+          de: '29. Oktober 2026',
+          en: 'October 29, 2026'
+        },
+        deadlineInfo: {
+          ru: 'Процессуальный срок по § 60 SGB I. При пропуске — полная или частичная остановка выплат (§ 66 SGB I).',
+          ua: 'Процесуальний строк за § 60 SGB I. У разі пропуску — зупинка виплат (§ 66 SGB I).',
+          de: 'Frist zur Mitwirkung (§ 60 SGB I). Bei Fristversäumnis droht Leistungsstopp (§ 66 SGB I).',
+          en: 'Statutory deadline (§ 60 SGB I). Missed deadline may result in suspension of benefits (§ 66 SGB I).'
+        },
+        risk: {
+          ru: 'Высокий (Красный)',
+          ua: 'Високий (Червоний)',
+          de: 'Hoch (Rot)',
+          en: 'High (Red)'
+        },
+        riskInfo: {
+          ru: 'Прямая угроза остановки начисления пособия на следующий период.',
+          ua: 'Пряма загроза зупинки нарахування допомоги на наступний період.',
+          de: 'Gefahr der kompletten Zahlungseinstellung für den nächsten Bewilligungszeitraum.',
+          en: 'Direct risk of benefit payment suspension.'
+        },
+        todos: {
+          ru: [
+            'Выгрузить из онлайн-банка выписки за последние 3 месяца в PDF.',
+            'Взять у арендодателя копию счета за отопление (Heizkostenabrechnung).',
+            'Отправить документы до 27.10 через портал jobcenter.digital или заказным письмом.',
+            'Если документы не готовы: отправить готовое ходатайство о продлении срока (см. шаблон ниже).'
+          ],
+          ua: [
+            'Завантажити банківські виписки за останні 3 місяці в PDF.',
+            'Підготувати рахунок за опалення (Heizkostenabrechnung) від орендодавця.',
+            'Подати документи до 27.10 через jobcenter.digital або поштою.',
+            'Якщо документів немає: терміново надіслати заяву про подовження терміну (див. шаблон).'
+          ],
+          de: [
+            'Kontoauszüge der letzten 3 Monate als PDF exportieren oder kopieren.',
+            'Aktuelle Heizkostenabrechnung des Vermieters bereitlegen.',
+            'Unterlagen bis spätestens 27.10. digital oder per Post einreichen.',
+            'Falls Unterlagen fehlen: Sofort Fristverlängerung beantragen!'
+          ],
+          en: [
+            'Download 3 months bank statements as PDF.',
+            'Prepare latest heating cost settlement from landlord.',
+            'Submit documents before Oct 27 via jobcenter.digital or certified mail.',
+            'If missing: request deadline extension using draft below.'
+          ]
+        },
+        reply: `Jobcenter Tübingen\nAktenzeichen: BG-82914-2026\n\nBetreff: Aufforderung zur Mitwirkung vom 15.10.2026\n\nSehr geehrte Damen und Herren,\n\nbezugnehmend auf Ihr Schreiben vom 15.10.2026 übersende ich Ihnen anbei die angeforderten Unterlagen zur lückenlosen Weiterbewilligung meiner Leistungen:\n\n1. Lückenlose Kontoauszüge der letzten drei Monate\n2. Aktuelle Heizkostenabrechnung\n\nIch bitte um eine kurze Eingangsbestätigung sowie um die zeitnahe Weiterbewilligung des Leistungsanspruchs.\n\nMit freundlichen Grüßen,\n[Vorname] [Nachname]\n[Adresse]`
+      },
+      aok: {
+        text: `AOK Baden-Württemberg\nVersicherungsnummer: W 839 201 442\nDatum: 18.10.2026\n\nFestsetzung Ihrer Beiträge zur Kranken- und Pflegeversicherung\n\nSehr geehrte(r) Versicherte(r),\n\ntrotz unserer vorherigen Mitteilung liegen uns für das laufende Kalenderjahr noch keine aktuellen Einkommensnachweise (z.B. letzter Steuerbescheid oder Nachweis über Leistungsbezug) von Ihnen vor.\n\nNach § 240 Abs. 4a SGB V sind wir in diesem Fall gesetzlich verpflichtet, für Ihre freiwillige Versicherung den gesetzlichen Höchstbeitrag von derzeit monatlich 1.050,42 € anzusetzen.\n\nWir geben Ihnen hiermit letztmalig Gelegenheit, Ihre Einkommensnachweise bis zum 05.11.2026 bei uns einzureichen.\n\nNach Ablauf dieser Frist wird die Einstufung zum Höchstbeitrag bindend wirksam.`,
+        agency: {
+          ru: 'AOK Baden-Württemberg (Медицинская страховка)',
+          ua: 'AOK Baden-Württemberg (Медична страховка)',
+          de: 'AOK Baden-Württemberg (Krankenkasse)',
+          en: 'AOK Baden-Württemberg (Health Insurance)'
+        },
+        summary: {
+          ru: 'Угроза перевода на максимальный тариф страховки (1 050,42 € в месяц) из-за отсутствия справок о доходах за текущий год.',
+          ua: 'Загроза нарахування максимального страхового внеску (1 050,42 €/міс) через відсутність довідок про доходи.',
+          de: 'Drohende Einstufung in den Höchstbeitrag (ca. 1.050 €/Monat) wegen fehlender Einkommensnachweise.',
+          en: 'Imminent assessment at maximum contribution rate (€1050/mo) due to missing income proof.'
+        },
+        deadline: {
+          ru: '05 ноября 2026',
+          ua: '05 листопада 2026',
+          de: '05. November 2026',
+          en: 'November 05, 2026'
+        },
+        deadlineInfo: {
+          ru: 'Пресекательный срок по § 240 Abs. 4a SGB V. После даты перерасчет задним числом крайне затруднен.',
+          ua: 'Граничний термін за § 240 Abs. 4a SGB V. Після цієї дати оскаржити суму буде вкрай важко.',
+          de: 'Ausschlussfrist nach § 240 Abs. 4a SGB V.',
+          en: 'Statutory deadline under § 240 (4a) SGB V.'
+        },
+        risk: {
+          ru: 'Критический (Красный)',
+          ua: 'Критичний (Червоний)',
+          de: 'Kritisch (Rot)',
+          en: 'Critical (Red)'
+        },
+        riskInfo: {
+          ru: 'Финансовый долг свыше 1 000 € за каждый месяц при бездействии.',
+          ua: 'Борг понад 1 000 € за кожен місяць у разі бездіяльності.',
+          de: 'Hohes finanzielles Risiko: Rückwirkende Beitragsforderung über 1.000 € monatlich.',
+          en: 'Heavy financial burden of €1000+ per month.'
+        },
+        todos: {
+          ru: [
+            'Найти решение о выплатах Jobcenter (Bewilligungsbescheid) или налоговую декларацию.',
+            'Заполнить стандартную анкету о доходах (Selbstauskunft).',
+            'Отправить через мобильное приложение "Meine AOK" или заказным письмом до 03.11.'
+          ],
+          ua: [
+            'Знайти рішення про виплати від Jobcenter або довідку про зарплату.',
+            'Заповнити анкету про доходи (Selbstauskunft) від каси.',
+            'Надіслати через додаток "Meine AOK" або поштою до 03.11.'
+          ],
+          de: [
+            'Aktuellen Steuerbescheid, Jobcenter-Bewilligung oder Gehaltsnachweise heraussuchen.',
+            'Ausgefüllten Einkommensfragebogen der AOK beilegen.',
+            'Unterlagen bis spätestens 03.11. digital im AOK-Portal oder per Einschreiben übermitteln.'
+          ],
+          en: [
+            'Locate current Jobcenter notice, tax assessment or payslips.',
+            'Fill out the AOK income declaration form.',
+            'Submit via Meine AOK app or certified mail before Nov 3.'
+          ]
+        },
+        reply: `AOK Baden-Württemberg\nVersicherungsnummer: W 839 201 442\n\nBetreff: Nachreichung von Einkommensnachweisen / Einstufung nach § 240 SGB V\n\nSehr geehrte Damen und Herren,\n\nmit Bezug auf Ihr Schreiben vom 18.10.2026 übersende ich Ihnen anbei meine aktuellen Nachweise über meine tatsächlichen Einkommensverhältnisse:\n\n- Aktueller Bewilligungsbescheid / Einkommensnachweis\n- Ausgefüllter Einkommensfragebogen\n\nIch bitte um Überprüfung und um korrekte Festsetzung meiner monatlichen Versicherungsbeiträge entsprechend meines tatsächlichen Einkommens anstelle des Höchstbeitrags.\n\nMit freundlichen Grüßen,\n[Vorname] [Nachname]\n[Adresse]`
+      },
+      finanzamt: {
+        text: `Finanzamt Tübingen\nSteuernummer: 86124/99120\nDatum: 12.10.2026\n\nErinnerung an die Abgabe der Einkommensteuererklärung 2025\n\nSehr geehrte(r) Steuerpflichtige(r),\n\ndie Frist zur Abgabe der Einkommensteuererklärung für das Jahr 2025 ist bereits abgelaufen. Bisher ist Ihre Erklärung hier nicht eingegangen.\n\nSie werden hiermit aufgefordert, die Steuererklärung bis zum 06.11.2026 elektronisch (via ELSTER) zu übermitteln.\n\nSollten Sie die Erklärung nicht fristgerecht einreichen, kann ein Verspätungszuschlag nach § 152 AO festgesetzt oder die Besteuerungsgrundlage geschätzt werden (§ 162 AO).`,
+        agency: {
+          ru: 'Finanzamt Tübingen (Налоговая инспекция)',
+          ua: 'Finanzamt Tübingen (Податкова інспекція)',
+          de: 'Finanzamt Tübingen',
+          en: 'Finanzamt Tübingen (Tax Office)'
+        },
+        summary: {
+          ru: 'Напоминание (Erinnerung): налоговая декларация за 2025 год не подана. Ведомство требует сдать отчетность через ELSTER.',
+          ua: 'Нагадування (Erinnerung): декларація за 2025 рік не подана. Вимагається електронна подача через ELSTER.',
+          de: 'Erinnerung: Die Einkommensteuererklärung 2025 wurde noch nicht eingereicht. Das Finanzamt fordert die Abgabe via ELSTER.',
+          en: 'Reminder: 2025 income tax return not yet submitted. Mandatory electronic submission via ELSTER.'
+        },
+        deadline: {
+          ru: '06 ноября 2026',
+          ua: '06 листопада 2026',
+          de: '06. November 2026',
+          en: 'November 06, 2026'
+        },
+        deadlineInfo: {
+          ru: 'Финальный срок без начисления штрафов за просрочку (§ 152 AO).',
+          ua: 'Останній термін без нарахування штрафів (§ 152 AO).',
+          de: 'Letztmalige Frist zur Abgabe ohne Festsetzung von Verspätungszuschlägen.',
+          en: 'Final deadline to submit without late filing penalties.'
+        },
+        risk: {
+          ru: 'Средний (Желтый)',
+          ua: 'Середній (Жовтий)',
+          de: 'Mittel (Gelb)',
+          en: 'Medium (Yellow)'
+        },
+        riskInfo: {
+          ru: 'Риск автоматического штрафа (Verspätungszuschlag) от 25 € за каждый месяц просрочки и принудительной оценки доходов налоговой.',
+          ua: 'Ризик нарахування штрафу від 25 €/місяць та примусової оцінки доходів.',
+          de: 'Gefahr von automatischen Strafzuschlägen (§ 152 AO) und Steuerschätzung.',
+          en: 'Risk of late filing penalty and estimated tax assessment.'
+        },
+        todos: {
+          ru: [
+            'Проверить доступ к ELSTER или открыть налоговое приложение (Wiso/Taxfix).',
+            'Собрать справку о доходах (Lohnsteuerbescheinigung) за 2025 год.',
+            'Подать декларацию до 06.11 или запросить продление срока (готовый текст ниже).'
+          ],
+          ua: [
+            'Перевірити вхід до ELSTER або відкрити податковий додаток.',
+            'Зібрати довідки про доходи за 2025 рік.',
+            'Подати декларацію до 06.11 або запросити подовження терміну.'
+          ],
+          de: [
+            'ELSTER-Zugang prüfen oder Steuer-App (Wiso/Taxfix) öffnen.',
+            'Lohnsteuerbescheinigung und Nachweise für 2025 zusammentragen.',
+            'Steuererklärung bis zum 06.11. übermitteln oder Fristverlängerung beantragen.'
+          ],
+          en: [
+            'Check ELSTER login or launch tax app.',
+            'Gather 2025 wage tax certificates and deductions.',
+            'Submit tax return or request an extension.'
+          ]
+        },
+        reply: `Finanzamt Tübingen\nSteuernummer: 86124/99120\n\nBetreff: Antrag auf Fristverlängerung zur Abgabe der Einkommensteuererklärung 2025\n\nSehr geehrte Damen und Herren,\n\nin Bezug auf Ihr Erinnerungsschreiben vom 12.10.2026 beantrage ich hiermit höflich eine Fristverlängerung für die Abgabe der Einkommensteuererklärung 2025 bis zum 30.11.2026.\n\nBegründung: Zur vollständigen Erstellung fehlen mir derzeit noch zwingend erforderliche Belege, die von dritter Seite angefordert wurden.\n\nIch danke Ihnen für Ihr Verständnis und bitte um eine kurze Bestätigung der Fristverlängerung.\n\nMit freundlichen Grüßen,\n[Vorname] [Nachname]\n[Adresse]`
+      }
+    };
+
+    function loadSample(key) {
+      const data = sampleData[key];
+      document.getElementById('briefInput').value = data.text;
+      renderResult(data);
+    }
+
+    function clearText() {
+      document.getElementById('briefInput').value = '';
+      document.getElementById('emptyOutput').classList.remove('hidden');
+      document.getElementById('resultContent').classList.add('hidden');
+      document.getElementById('statusBadge').innerText = translations[currentLang].status_ready;
+      document.getElementById('statusBadge').className = 'text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium';
+    }
+
+    function runAnalysis() {
+      const text = document.getElementById('briefInput').value.trim();
+      if (!text) {
+        alert(currentLang === 'ru' ? 'Пожалуйста, вставьте текст письма или выберите образец.' : 'Please enter letter text first.');
+        return;
+      }
+
+      const btn = document.getElementById('analyzeBtn');
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> ${currentLang === 'ru' ? 'Анализируем...' : 'Analyzing...'}`;
+      lucide.createIcons();
+
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> ${translations[currentLang].btn_analyze}`;
+        lucide.createIcons();
+
+        const lower = text.toLowerCase();
+
+        // 1. Guardrail / Safety & Nonsense Filter
+        const badWords = ['хуй', 'пизд', 'ебат', 'нах', 'бля', 'сука', 'дурак', 'дебил', 'говно', 'fuck', 'shit', 'bitch', 'scheiß', 'arsch', 'wichser', 'рецепт', 'борщ', 'пирог', 'погода', 'анекдот', 'стих', 'ignore previous', 'system prompt', 'не является официальным', 'заблокирована'];
+        const isOffensiveOrJunk = badWords.some(w => lower.includes(w));
+        const isTooShort = text.length < 25;
+
+        // Count Cyrillic vs Latin characters to detect if user pasted purely Russian text discussing the bot
+        const cyrillicMatches = text.match(/[а-яА-ЯёЁ]/g) || [];
+        const isPredominantlyRussian = cyrillicMatches.length > 20 && !lower.includes('sehr geehrte') && !lower.includes('aktenzeichen') && !lower.includes('versicherungsnummer');
+
+        const lacksOfficialGermanMarkers = !lower.match(/(sehr geehrte|bescheid|aufforderung|mitwirkungspflicht|rechtsbehelfsbelehrung|rechtsfolgenbelehrung|aktenzeichen|steuernummer|versicherungsnummer|versicherte|sgb|bgb|ao\b|§|weiterbewilligung|nachweis|leistungen)/i);
+
+        if (isOffensiveOrJunk || isPredominantlyRussian || (isTooShort && lacksOfficialGermanMarkers)) {
+          renderGuardrailError(isPredominantlyRussian);
+          return;
+        }
+
+        // 2. Official Samples & Document Handling
+        if (lower.includes('aok') || lower.includes('krankenkasse') || lower.includes('höchstbeitrag')) {
+          renderResult(sampleData.aok);
+        } else if (lower.includes('finanzamt') || lower.includes('steuer')) {
+          renderResult(sampleData.finanzamt);
+        } else if (lower.includes('jobcenter') || lower.includes('bürgergeld')) {
+          renderResult(sampleData.jobcenter);
+        } else {
+          // Dynamic parsing
+          let agencyMatch = text.match(/(Jobcenter[^\n\r]*|Finanzamt[^\n\r]*|AOK[^\n\r]*|Ausländerbehörde[^\n\r]*|Landratsamt[^\n\r]*|Stadtverwaltung[^\n\r]*|Deutsche Rentenversicherung[^\n\r]*)/i);
+          let agencyName = agencyMatch ? agencyMatch[1].trim() : "Deutsche Behörde / Öffentliche Stelle";
+          
+          let dateMatch = text.match(/(?:bis zum|Frist:|spätestens zum|Termin:?)\s*(\d{1,2}\.\d{1,2}\.\d{2,4}|\d{1,2}\.\s+[A-Za-zäöü]+\s+\d{2,4})/i);
+          let deadline = dateMatch ? dateMatch[1] : "Binnen 2 Wochen ab Zugang";
+
+          let azMatch = text.match(/(?:Aktenzeichen|Az\.|Steuernummer|Versicherungsnummer)[:\s]+([A-Za-z0-9\-\/\.\s]+)/i);
+          let az = azMatch ? azMatch[1].trim() : "[Aktenzeichen]";
+
+          const customResult = {
+            agency: { ru: agencyName + ' (Официальное ведомство)', ua: agencyName, de: agencyName, en: agencyName },
+            summary: {
+              ru: 'Официальное предписание ведомства с установленным сроком реагирования и требованием предоставить сведения.',
+              ua: 'Офіційний припис установи із встановленим терміном реагування.',
+              de: 'Behördliches Schreiben mit Fristsetzung und Mitwirkungspflicht.',
+              en: 'Official agency notice with statutory deadline.'
+            },
+            deadline: { ru: deadline, ua: deadline, de: deadline, en: deadline },
+            deadlineInfo: {
+              ru: 'Процессуальный срок с учетом фикции вручения по почте (§ 41 VwVfG).',
+              ua: 'Процесуальний строк з урахуванням поштової доставки (§ 41 VwVfG).',
+              de: 'Gesetzliche Frist unter Berücksichtigung der Bekanntgabefiktion (§ 41 VwVfG).',
+              en: 'Statutory deadline including postal grace period (§ 41 VwVfG).'
+            },
+            risk: { ru: 'Средний / Высокий (Желтый/Красный)', ua: 'Середній / Високий', de: 'Mittel bis Hoch', en: 'Medium to High' },
+            riskInfo: {
+              ru: 'Пропуск срока может повлечь административные санкции или потерю права на обжалование.',
+              ua: 'Пропуск терміну може призвести до санкцій.',
+              de: 'Fristversäumnis kann finanzielle oder rechtliche Nachteile nach sich ziehen.',
+              en: 'Missing deadline may result in sanctions or loss of appeal rights.'
+            },
+            todos: {
+              ru: [
+                'Подготовить запрашиваемые ведомством документы.',
+                'Зафиксировать дедлайн в календаре: ' + deadline,
+                'Отправить официальный ответ с номером дела ' + az
+              ],
+              ua: [
+                'Підготувати запитувані документи.',
+                'Зафіксувати дедлайн у календарі: ' + deadline,
+                'Надіслати офіційну відповідь з номером справи ' + az
+              ],
+              de: [
+                'Geforderte Unterlagen gemäß Schreiben zusammenstellen.',
+                'Frist im Kalender notieren (' + deadline + ').',
+                'Antwortschreiben mit Aktenzeichen fristgerecht absenden.'
+              ],
+              en: [
+                'Prepare requested documentation.',
+                'Add deadline to calendar: ' + deadline,
+                'Send official reply with case number ' + az
+              ]
+            },
+            reply: agencyName + "\nAktenzeichen: " + az + "\n\nSehr geehrte Damen und Herren,\n\nbezugnehmend auf Ihr Schreiben teile ich Ihnen hiermit mit, dass ich die angeforderten Unterlagen zurzeit zusammenstelle und Ihnen schnellstmöglich zukommen lasse.\n\nSollte die Frist (" + deadline + ") hierfür nicht ausreichen, beantrage ich hiermit vorsorglich eine Fristverlängerung um zwei Wochen.\n\nMit freundlichen Grüßen,\n[Vorname] [Nachname]"
+          };
+          renderResult(customResult);
+        }
+      }, 600);
+    }
+
+    function renderGuardrailError(isRussianText = false) {
+      document.getElementById('emptyOutput').classList.add('hidden');
+      document.getElementById('resultContent').classList.remove('hidden');
+
+      const customSummary = isRussianText
+        ? 'Вы вставили поясняющий текст или вопрос на русском языке. KlarBrief AI анализирует оригинальные письма от немецких ведомств на немецком языке. Скопируйте фрагмент из полученного немецкого письма или воспользуйтесь кнопками быстрого примера вверху.'
+        : 'Введенный текст не является официальным немецким письмом, либо содержит нерелевантные/недопустимые выражения. KlarBrief AI строго сфокусирован на ведомственной корреспонденции Германии (Jobcenter, Finanzamt, Krankenkasse, Ausländerbehörde).';
+
+      const msgs = {
+        ru: {
+          title: isRussianText ? 'ℹ️ Требуется немецкий оригинал письма' : '⚠️ Фильтр безопасности: Запрос отклонен',
+          badge: isRussianText ? 'Нужен текст на немецком' : 'Отклонено фильтром',
+          summary: customSummary,
+          deadline: 'Дедлайн не определен',
+          deadlineInfo: 'В тексте нет процессуальных дат.',
+          risk: 'Ожидание письма',
+          riskInfo: 'Генерация официальных писем приостановлена.',
+          todo: 'Пожалуйста, вставьте реальный текст письма на немецком языке или нажмите образец выше.'
+        },
+        ua: {
+          title: '⚠️ Фільтр безпеки: Запит відхилено',
+          badge: 'Відхилено фільтром',
+          summary: 'Введений текст не є офіційним німецьким листом або містить нерелевантні вирази. KlarBrief AI обробляє виключно службову кореспонденцію установ Німеччини.',
+          deadline: 'Дедлайн не визначено',
+          deadlineInfo: 'Текст не містить адміністративних строків.',
+          risk: 'Нерелевантний запит',
+          riskInfo: 'Генерацію офіційних листів заблоковано.',
+          todo: 'Будь ласка, вставте реальний фрагмент листа або виберіть зразок вгорі.'
+        },
+        de: {
+          title: '⚠️ Sicherheitsfilter: Anfrage abgelehnt',
+          badge: 'Abgelehnt',
+          summary: 'Der eingegebene Text wurde nicht als deutsches Behördenschreiben erkannt oder enthält unzulässige Inhalte. KlarBrief AI bearbeitet ausschließlich offizielle Verwaltungspost.',
+          deadline: 'Keine Frist erkannt',
+          deadlineInfo: 'Keine verwaltungsrechtliche Frist vorhanden.',
+          risk: 'Ungültige Anfrage',
+          riskInfo: 'Briefgenerierung blockiert.',
+          todo: 'Bitte fügen Sie ein echtes Behördenschreiben ein oder wählen Sie ein Muster oben.'
+        },
+        en: {
+          title: '⚠️ Safety Filter: Request Rejected',
+          badge: 'Rejected',
+          summary: 'The input is not recognized as a German official agency letter or contains inappropriate language. KlarBrief AI is strictly dedicated to German administrative correspondence.',
+          deadline: 'No deadline detected',
+          deadlineInfo: 'No statutory deadlines found.',
+          risk: 'Out of scope',
+          riskInfo: 'Letter generation blocked.',
+          todo: 'Please provide genuine German official correspondence or choose a sample above.'
+        }
+      };
+
+      const m = msgs[currentLang] || msgs.ru;
+      document.getElementById('resAgency').innerText = m.title;
+      document.getElementById('resSummary').innerText = m.summary;
+      document.getElementById('resDeadline').innerText = m.deadline;
+      document.getElementById('resDeadlineInfo').innerText = m.deadlineInfo;
+      document.getElementById('resRisk').innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span> ${m.risk}`;
+      document.getElementById('resRiskInfo').innerText = m.riskInfo;
+
+      const ul = document.getElementById('resTodoList');
+      ul.innerHTML = `<li class="flex items-start gap-2 text-amber-700 font-medium"><i data-lucide="alert-circle" class="w-4 h-4 text-amber-600 mt-0.5 shrink-0"></i> <span>${m.todo}</span></li>`;
+
+      document.getElementById('resReply').innerText = `[BEHÖRDEN-ANTWORT BLOCKIERT / LETTER GENERATION BLOCKED]\n\nDer Assistent verfasst offizielle Schreiben ausschließlich für verifizierte behördliche Angelegenheiten.\nBitte geben Sie ein gültiges Schreiben ein.`;
+
+      document.getElementById('statusBadge').innerText = m.badge;
+      document.getElementById('statusBadge').className = 'text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-700 font-semibold';
+      lucide.createIcons();
+    }
+
+    function renderResult(data) {
+      document.getElementById('emptyOutput').classList.add('hidden');
+      document.getElementById('resultContent').classList.remove('hidden');
+
+      const lang = currentLang;
+      document.getElementById('resAgency').innerText = typeof data.agency === 'object' ? data.agency[lang] || data.agency.ru : data.agency;
+      document.getElementById('resSummary').innerText = typeof data.summary === 'object' ? data.summary[lang] || data.summary.ru : data.summary;
+      document.getElementById('resDeadline').innerText = typeof data.deadline === 'object' ? data.deadline[lang] || data.deadline.ru : data.deadline;
+      document.getElementById('resDeadlineInfo').innerText = typeof data.deadlineInfo === 'object' ? data.deadlineInfo[lang] || data.deadlineInfo.ru : data.deadlineInfo;
+      
+      const riskText = typeof data.risk === 'object' ? data.risk[lang] || data.risk.ru : data.risk;
+      const isRed = riskText.toLowerCase().includes('красн') || riskText.toLowerCase().includes('червон') || riskText.toLowerCase().includes('rot') || riskText.toLowerCase().includes('red');
+      document.getElementById('resRisk').innerHTML = `<span class="w-2.5 h-2.5 rounded-full ${isRed ? 'bg-red-500' : 'bg-amber-500'}"></span> ${riskText}`;
+      document.getElementById('resRiskInfo').innerText = typeof data.riskInfo === 'object' ? data.riskInfo[lang] || data.riskInfo.ru : data.riskInfo;
+
+      const ul = document.getElementById('resTodoList');
+      ul.innerHTML = '';
+      const list = typeof data.todos === 'object' && !Array.isArray(data.todos) ? data.todos[lang] || data.todos.ru : data.todos;
+      list.forEach(todo => {
+        const li = document.createElement('li');
+        li.className = 'flex items-start gap-2';
+        li.innerHTML = `<i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600 mt-0.5 shrink-0"></i> <span>${todo}</span>`;
+        ul.appendChild(li);
+      });
+
+      document.getElementById('resReply').innerText = data.reply;
+
+      document.getElementById('statusBadge').innerText = lang === 'ru' ? 'Анализ завершен' : (lang === 'ua' ? 'Аналіз завершено' : 'Completed');
+      document.getElementById('statusBadge').className = 'text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 font-semibold';
+      lucide.createIcons();
+    }
+
+    function copyReply() {
+      const replyText = document.getElementById('resReply').innerText;
+      navigator.clipboard.writeText(replyText).then(() => {
+        const msg = currentLang === 'ru' ? 'Официальный ответ на немецком скопирован в буфер!' : (currentLang === 'ua' ? 'Офіційну відповідь скопійовано!' : 'Copied to clipboard!');
+        alert(msg);
+      });
+    }
+
+    // Legal Modal Logic
+    const legalTexts = {
+      impressum: {
+        title: 'Impressum (§ 5 DDG)',
+        body: `
+          <h4 class="font-bold text-slate-800 text-sm">Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG)</h4>
+          <p><strong>Projekt:</strong> KlarBrief AI (Studentisches MVP-Projekt im Rahmen der Weiterbildung "AI Product Prototyping" an der AIT)</p>
+          <p><strong>Verantwortlich für den Inhalt:</strong><br>Illia Lonskyi<br>Tübingen, Baden-Württemberg, Deutschland<br>E-Mail: illialonskyi84@gmail.com</p>
+          
+          <h4 class="font-bold text-slate-800 text-sm mt-3">Haftung für Inhalte</h4>
+          <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Die Inhalte unseres Web-Tools wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der durch KI generierten Auswertungen und Musterschreiben können wir jedoch keine Gewähr übernehmen.</p>
+          
+          <h4 class="font-bold text-slate-800 text-sm mt-3">Haftung für Links</h4>
+          <p>Unser Angebot enthält ggf. Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte übernehmen wir keine Haftung. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter verantwortlich.</p>
+        `
+      },
+      datenschutz: {
+        title: 'Datenschutzerklärung (DSGVO)',
+        body: `
+          <h4 class="font-bold text-slate-800 text-sm">1. Datenschutz auf einen Blick</h4>
+          <p>Der Schutz Ihrer persönlichen Daten ist uns ein zentrales Anliegen. KlarBrief AI verarbeitet administrative Texte ausschließlich zur sprachlichen und zeitlichen Strukturierung.</p>
+          
+          <h4 class="font-bold text-slate-800 text-sm mt-3">2. Verantwortliche Stelle</h4>
+          <p>Illia Lonskyi<br>Tübingen, Deutschland<br>E-Mail: illialonskyi84@gmail.com</p>
+          
+          <h4 class="font-bold text-slate-800 text-sm mt-3">3. Datenerfassung & automatische Anonymisierung</h4>
+          <p>Beim Einfügen von Brieftexten in das Web-Tool werden sensible Kennnummern (Steuer-Identifikationsnummer, IBAN, persönliche Telefonnummern und Nachnamen) automatisiert im Speicher maskiert. Es erfolgt keine dauerhafte Protokollierung oder Speicherung sensibler Dokumente auf externen Werbeservern.</p>
+          
+          <h4 class="font-bold text-slate-800 text-sm mt-3">4. Ihre Rechte nach der DSGVO</h4>
+          <p>Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre verarbeiteten Daten (Art. 15 DSGVO), Berichtigung (Art. 16 DSGVO), Löschung (Art. 17 DSGVO) sowie Einschränkung der Verarbeitung (Art. 18 DSGVO).</p>
+        `
+      },
+      agb: {
+        title: 'Nutzungsbedingungen & AGB (§ 2 RDG)',
+        body: `
+          <h4 class="font-bold text-slate-800 text-sm">1. Geltungsbereich und Zweck</h4>
+          <p>KlarBrief AI ist ein technologischer Demonstrator und Sprachassistent für amtliche Dokumente (Jobcenter, Finanzamt, Krankenkassen). Die Nutzung dient ausschließlich der persönlichen Information und Orientierung.</p>
+          
+          <h4 class="font-bold text-slate-800 text-sm mt-3">2. Gesetzlicher Ausschluss von Rechtsdienstleistungen (§ 2 RDG)</h4>
+          <p class="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 font-medium"><strong>Wichtiger Hinweis:</strong> KlarBrief AI erbringt <u>keine Rechtsberatung</u> im Sinne des Rechtsdienstleistungsgesetzes (RDG). Das Tool ersetzt weder die rechtliche Prüfung durch einen zugelassenen Rechtsanwalt noch die Beratung durch amtliche Beratungsstellen (Caritas, Diakonie, MBE).</p>
+          
+          <h4 class="font-bold text-slate-800 text-sm mt-3">3. Fristberechnung und Mustertexte</h4>
+          <p>Die Fristberechnungen (u.a. nach § 41 VwVfG / § 37 SGB X) sowie die generierten Musterschreiben stellen unverbindliche Formulierungshilfen dar. Der Nutzer ist selbst dafür verantwortlich, tatsächliche behördliche Fristen zu überwachen und rechtzeitig fristwahrend zu handeln.</p>
+        `
+      }
+    };
+
+    function openLegalModal(type) {
+      const data = legalTexts[type];
+      if (!data) return;
+      document.getElementById('modalTitle').innerText = data.title;
+      document.getElementById('modalBody').innerHTML = data.body;
+      document.getElementById('legalModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeLegalModal() {
+      document.getElementById('legalModal').classList.add('hidden');
+    }
+
+    // Close on click outside
+    document.getElementById('legalModal').addEventListener('click', (e) => {
+      if (e.target.id === 'legalModal') closeLegalModal();
+    });
+
+    // Default to Russian on load
+    setLang('ru');
+  </script>
+</body>
+</html>
