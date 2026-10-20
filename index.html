@@ -1115,32 +1115,30 @@
         const lower = text.toLowerCase();
 
         // 1. Guardrail / Safety, Non-German & Nonsense Filter
-        const badWords = ['хуй', 'пизд', 'ебат', 'нах', 'бля', 'сука', 'дурак', 'дебил', 'говно', 'fuck', 'shit', 'bitch', 'scheiß', 'arsch', 'wichser', 'рецепт', 'борщ', 'пирог', 'погода', 'анекдот', 'стих', 'ignore previous', 'system prompt', 'не является официальным', 'заблокирована'];
+        const badWords = ['хуй', 'пизд', 'ебат', 'нах', 'бля', 'сука', 'дурак', 'дебил', 'говно', 'fuck', 'shit', 'bitch', 'scheiß', 'arsch', 'wichser', 'рецепт', 'борщ', 'пирог', 'погода', 'анекдот', 'стих', 'ignore', 'previous instructions', 'system prompt', 'не является официальным', 'заблокирована', 'dan mode', 'you are now dan', 'jailbreak', 'hack', 'bypass'];
         const isOffensiveOrJunk = badWords.some(w => lower.includes(w));
-        const isTooShort = text.length < 25;
 
         // Language & Character Detection
         const cyrillicMatches = text.match(/[а-яА-ЯёЁіІїЇєЄґҐ]/g) || [];
         const uaSpecificMatches = text.match(/[іІїЇєЄґҐ]/g) || [];
-        const isUkrainianInput = uaSpecificMatches.length >= 2 || (cyrillicMatches.length > 15 && /\b(листа|допоможіть|лист|будь ласка|підкажіть|німецьк|що робити|довідк)\b/i.test(lower));
-        const isRussianInput = !isUkrainianInput && cyrillicMatches.length > 15 && !lower.includes('sehr geehrte') && !lower.includes('aktenzeichen') && !lower.includes('versicherungsnummer');
+        const isUkrainianInput = uaSpecificMatches.length >= 2 || (cyrillicMatches.length > 10 && /\b(листа|допоможіть|лист|будь ласка|підкажіть|німецьк|що робити|довідк|установ)\b/i.test(lower));
+        const isRussianInput = !isUkrainianInput && cyrillicMatches.length > 10 && !lower.includes('sehr geehrte') && !lower.includes('aktenzeichen') && !lower.includes('versicherungsnummer');
 
-        const englishWords = lower.match(/\b(the|this|that|letter|help|please|what|does|mean|have|from|with|need|agency|deadline|received)\b/g) || [];
-        const isEnglishInput = cyrillicMatches.length === 0 && englishWords.length >= 2 && !lower.match(/\b(der|die|das|und|oder|nicht|sehr|geehrte|bezug)\b/);
-
-        const lacksOfficialGermanMarkers = !lower.match(/(sehr geehrte|bescheid|aufforderung|mitwirkungspflicht|rechtsbehelfsbelehrung|rechtsfolgenbelehrung|aktenzeichen|steuernummer|versicherungsnummer|versicherte|sgb|bgb|ao\b|§|weiterbewilligung|nachweis|leistungen)/i);
+        const hasGermanOfficialMarkers = lower.match(/(sehr geehrte|bescheid|aufforderung|mitwirkungspflicht|rechtsbehelfsbelehrung|rechtsfolgenbelehrung|aktenzeichen|steuernummer|versicherungsnummer|versicherte|sgb|bgb|ao\b|§|weiterbewilligung|nachweis|leistungen|jobcenter|finanzamt|krankenkasse|sozialamt|ausländerbehörde|stadtverwaltung)/i);
 
         let rejectReason = null;
         if (isOffensiveOrJunk) {
           rejectReason = 'toxic';
-        } else if (isUkrainianInput) {
-          rejectReason = 'ukrainian';
-        } else if (isRussianInput) {
-          rejectReason = 'russian';
-        } else if (isEnglishInput) {
-          rejectReason = 'english';
-        } else if (isTooShort && lacksOfficialGermanMarkers) {
-          rejectReason = 'junk';
+        } else if (!hasGermanOfficialMarkers) {
+          if (isUkrainianInput) {
+            rejectReason = 'ukrainian';
+          } else if (isRussianInput) {
+            rejectReason = 'russian';
+          } else if (/[a-zA-Z]{3,}/.test(text)) {
+            rejectReason = 'english';
+          } else {
+            rejectReason = 'junk';
+          }
         }
 
         if (rejectReason) {
@@ -1380,29 +1378,41 @@
     function copyReply() {
       const replyText = document.getElementById('resReply').innerText;
       if (!replyText) return;
-      navigator.clipboard.writeText(replyText).then(() => {
-        const btnText = document.getElementById('copyBtnText');
-        if (btnText) {
-          const original = btnText.innerText;
-          const successMsg = currentLang === 'ua' ? '✓ Скопійовано!' : (currentLang === 'de' ? '✓ Kopiert!' : (currentLang === 'en' ? '✓ Copied!' : '✓ Скопировано!'));
-          btnText.innerText = successMsg;
-          btnText.parentElement.classList.add('bg-emerald-600', 'border-emerald-600');
-          btnText.parentElement.classList.remove('bg-sky-600', 'border-sky-600');
-          setTimeout(() => {
-            btnText.innerText = original;
-            btnText.parentElement.classList.remove('bg-emerald-600', 'border-emerald-600');
-            btnText.parentElement.classList.add('bg-sky-600', 'border-sky-600');
-          }, 2200);
-        }
-      }).catch(() => {
-        // Fallback for non-secure contexts
-        const textarea = document.createElement('textarea');
-        textarea.value = replyText;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-      });
+      const btnText = document.getElementById('copyBtnText');
+      const triggerSuccess = () => {
+        if (!btnText) return;
+        const original = btnText.innerText;
+        const successMsg = currentLang === 'ua' ? '✓ Скопійовано!' : (currentLang === 'de' ? '✓ Kopiert!' : (currentLang === 'en' ? '✓ Copied!' : '✓ Скопировано!'));
+        btnText.innerText = successMsg;
+        btnText.parentElement.classList.add('bg-emerald-600', 'border-emerald-600');
+        btnText.parentElement.classList.remove('bg-sky-600', 'border-sky-600');
+        setTimeout(() => {
+          btnText.innerText = original;
+          btnText.parentElement.classList.remove('bg-emerald-600', 'border-emerald-600');
+          btnText.parentElement.classList.add('bg-sky-600', 'border-sky-600');
+        }, 2200);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(replyText).then(triggerSuccess).catch(() => {
+          fallbackCopy(replyText);
+          triggerSuccess();
+        });
+      } else {
+        fallbackCopy(replyText);
+        triggerSuccess();
+      }
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand('copy'); } catch(e) {}
+      document.body.removeChild(textarea);
     }
 
     // Legal Modal Logic
@@ -1509,7 +1519,7 @@
         reader.readAsText(file);
       } else {
         // PDF or Image scan
-        if (fileName.includes('sozialamt') || fileName.includes('sgb') || fileName.includes('20261020') || fileName.includes('tuebingen')) {
+        if (fileName.includes('sozialamt') || fileName.includes('sgb') || fileName.includes('20261020') || fileName.includes('musterstadt')) {
           loadSample('sozialamt');
         } else if (fileName.includes('aok') || fileName.includes('kasse')) {
           loadSample('aok');
