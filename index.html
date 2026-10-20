@@ -115,30 +115,30 @@
   </section>
 
   <!-- Interactive Demo Section (Simulator / Бот) -->
-  <section id="demo" class="py-16 bg-white border-y border-slate-200 scroll-mt-12">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="demo" class="py-20 bg-gradient-to-b from-slate-100/70 via-white to-slate-50 border-y border-slate-200 scroll-mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-10">
-        <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-100" data-i18n="sim_badge">Интерактивный тренажер</span>
-        <h2 class="mt-3 text-3xl font-bold tracking-tight text-slate-900" data-i18n="sim_title">Протестируйте ассистента KlarBrief прямо сейчас</h2>
-        <p class="mt-2 text-slate-600" data-i18n="sim_desc">Выберите типовой образец письма от немецких ведомств или вставьте собственный текст.</p>
+        <span class="text-xs font-bold uppercase tracking-wider text-sky-700 bg-sky-100 px-3.5 py-1.5 rounded-full border border-sky-200" data-i18n="sim_badge">Интерактивный тренажер</span>
+        <h2 class="mt-4 text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900" data-i18n="sim_title">Протестируйте ассистента KlarBrief прямо сейчас</h2>
+        <p class="mt-3 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto" data-i18n="sim_desc">Выберите типовой образец письма от немецких ведомств или вставьте собственный текст.</p>
       </div>
 
       <!-- Quick Select Buttons -->
-      <div class="flex flex-wrap items-center justify-center gap-3 mb-6">
-        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="sim_samples">Быстрый пример:</span>
-        <button onclick="loadSample('jobcenter')" class="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
-          <i data-lucide="file-warning" class="w-3.5 h-3.5 text-amber-500"></i> Jobcenter: Справки и счета
+      <div class="flex flex-wrap items-center justify-center gap-3 mb-8">
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mr-1" data-i18n="sim_samples">Быстрый пример:</span>
+        <button onclick="loadSample('jobcenter')" class="text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-sky-50 hover:border-sky-400 text-slate-700 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
+          <i data-lucide="file-warning" class="w-4 h-4 text-amber-500"></i> Jobcenter: Справки и счета
         </button>
-        <button onclick="loadSample('sozialamt')" class="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-purple-300 bg-purple-50 hover:bg-purple-100 text-purple-800 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
-          <i data-lucide="landmark" class="w-3.5 h-3.5 text-purple-600"></i> Sozialamt: Продление SGB XII
+        <button onclick="loadSample('sozialamt')" class="text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl border border-purple-300 bg-purple-50/80 hover:bg-purple-100 hover:border-purple-400 text-purple-900 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
+          <i data-lucide="landmark" class="w-4 h-4 text-purple-600"></i> Sozialamt: Продление SGB XII
         </button>
-        <button onclick="loadSample('aok')" class="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
-          <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-red-500"></i> AOK: Угроза 1050 €/мес
+        <button onclick="loadSample('aok')" class="text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-red-50 hover:border-red-300 text-slate-700 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
+          <i data-lucide="shield-alert" class="w-4 h-4 text-red-500"></i> AOK: Угроза 1050 €/мес
         </button>
-        <button onclick="loadSample('finanzamt')" class="text-xs font-medium px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
-          <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-sky-600"></i> Finanzamt: Налоговая декларация
+        <button onclick="loadSample('finanzamt')" class="text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-sky-50 hover:border-sky-400 text-slate-700 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
+          <i data-lucide="alert-triangle" class="w-4 h-4 text-sky-600"></i> Finanzamt: Налоговая декларация
         </button>
-        <button onclick="clearText()" class="text-xs font-medium px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition-all" data-i18n="btn_reset">
+        <button onclick="clearText()" class="text-xs sm:text-sm font-semibold px-3.5 py-2.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 transition-all" data-i18n="btn_reset">
           Очистить
         </button>
       </div>
@@ -147,85 +147,93 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- Input Area (Left) -->
-        <div class="lg:col-span-5 bg-slate-50 p-6 rounded-2xl border border-slate-200 flex flex-col gap-4 shadow-sm">
-          <div class="flex items-center justify-between">
-            <label class="text-sm font-bold text-slate-800 flex items-center gap-2" data-i18n="input_label">
-              <i data-lucide="file-text" class="w-4 h-4 text-sky-600"></i> Входящее письмо или скан
+        <div class="lg:col-span-5 bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 flex flex-col gap-5 shadow-lg shadow-slate-200/50">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <label class="text-base font-bold text-slate-900 flex items-center gap-2" data-i18n="input_label">
+              <i data-lucide="file-text" class="w-5 h-5 text-sky-600"></i> Входящее письмо или скан
             </label>
-            <span class="text-[11px] text-slate-400" data-i18n="input_shield">Анонимизация активна</span>
+            <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 flex items-center gap-1" data-i18n="input_shield">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Анонимизация активна
+            </span>
           </div>
 
           <!-- Drag and Drop Box -->
-          <div id="dropZone" class="border-2 border-dashed border-sky-300 hover:border-sky-500 rounded-xl p-4 bg-sky-50/50 hover:bg-sky-50 transition-all text-center flex flex-col items-center justify-center cursor-pointer group" onclick="document.getElementById('filePicker').click()">
+          <div id="dropZone" class="border-2 border-dashed border-sky-300 hover:border-sky-500 rounded-2xl p-6 bg-sky-50/60 hover:bg-sky-50 transition-all text-center flex flex-col items-center justify-center cursor-pointer group shadow-inner" onclick="document.getElementById('filePicker').click()">
             <input type="file" id="filePicker" accept=".pdf,.png,.jpg,.jpeg,.txt" class="hidden" onchange="handleFileSelect(event)">
-            <i data-lucide="upload-cloud" class="w-7 h-7 text-sky-600 mb-1 group-hover:scale-110 transition-transform"></i>
-            <span class="text-xs font-bold text-slate-700">Перетащите сюда скан письма (PDF / JPG)</span>
-            <span class="text-[11px] text-slate-500 mt-0.5">или нажмите для выбора файла</span>
+            <div class="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center mb-2.5 group-hover:scale-110 group-hover:shadow transition-all">
+              <i data-lucide="upload-cloud" class="w-6 h-6 text-sky-600"></i>
+            </div>
+            <span class="text-sm font-bold text-slate-800">Перетащите сюда скан письма (PDF / JPG)</span>
+            <span class="text-xs text-slate-500 mt-1">или нажмите в любое место для выбора файла</span>
           </div>
 
-          <textarea id="briefInput" rows="7" placeholder="Или вставьте сюда текст письма на немецком..." class="w-full text-xs font-mono p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none leading-relaxed text-slate-800 resize-none"></textarea>
+          <textarea id="briefInput" rows="8" placeholder="Или вставьте сюда текст письма на немецком..." class="w-full text-sm font-mono p-4 bg-slate-50/70 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none leading-relaxed text-slate-800 resize-none shadow-sm min-h-[190px]"></textarea>
 
           <div class="flex items-center justify-between gap-3">
-            <button id="analyzeBtn" onclick="runAnalysis()" class="w-full py-3.5 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm shadow-md shadow-sky-600/20 transition-all flex items-center justify-center gap-2 active:scale-95">
-              <i data-lucide="sparkles" class="w-4 h-4"></i> <span data-i18n="btn_analyze">Разобрать письмо за 10 секунд</span>
+            <button id="analyzeBtn" onclick="runAnalysis()" class="w-full py-4 px-6 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-base shadow-lg shadow-sky-600/25 hover:shadow-sky-600/35 transition-all flex items-center justify-center gap-2.5 active:scale-[0.98]">
+              <i data-lucide="sparkles" class="w-5 h-5"></i> <span data-i18n="btn_analyze">Разобрать письмо за 10 секунд</span>
             </button>
           </div>
         </div>
 
         <!-- Output Area (Right / 5-Block Standard Protocol) -->
-        <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-md flex flex-col gap-5 min-h-[460px]">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-            <span class="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <i data-lucide="clipboard-check" class="w-4 h-4 text-emerald-600"></i> <span data-i18n="out_header">Структурированный разбор письма</span>
+        <div class="lg:col-span-7 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xl flex flex-col gap-6 min-h-[560px]">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <span class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
+              <i data-lucide="clipboard-check" class="w-5 h-5 text-emerald-600"></i> <span data-i18n="out_header">Структурированный разбор письма</span>
             </span>
-            <span id="statusBadge" class="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium" data-i18n="status_ready">Ожидает проверки</span>
+            <span id="statusBadge" class="text-xs px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 font-semibold" data-i18n="status_ready">Ожидает проверки</span>
           </div>
 
           <!-- Empty State -->
-          <div id="emptyOutput" class="flex flex-col items-center justify-center flex-grow py-16 text-center text-slate-400">
-            <i data-lucide="scan-line" class="w-12 h-12 text-slate-300 stroke-[1.5] mb-3"></i>
-            <p class="text-sm font-medium text-slate-600" data-i18n="empty_title">Вставьте текст слева или кликните образец выше</p>
-            <p class="text-xs text-slate-400 mt-1 max-w-sm" data-i18n="empty_desc">Нейросеть выделит ведомство, точный дедлайн, степень риска и сформирует готовый ответ на немецком.</p>
+          <div id="emptyOutput" class="flex flex-col items-center justify-center flex-grow py-20 text-center text-slate-400">
+            <div class="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center mb-4 text-slate-300">
+              <i data-lucide="scan-line" class="w-8 h-8 stroke-[1.5]"></i>
+            </div>
+            <p class="text-base font-semibold text-slate-700" data-i18n="empty_title">Вставьте текст слева или кликните образец выше</p>
+            <p class="text-sm text-slate-400 mt-1.5 max-w-md" data-i18n="empty_desc">Нейросеть выделит ведомство, точный дедлайн, степень риска и сформирует готовый ответ на немецком.</p>
           </div>
 
           <!-- Result Blocks (Hidden initially) -->
-          <div id="resultContent" class="hidden flex flex-col gap-4 text-sm">
+          <div id="resultContent" class="hidden flex flex-col gap-5 text-sm">
             <!-- 1. Ведомство и суть -->
-            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
-              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1" data-i18n="out_b1">1. Кто пишет и в чем суть (на понятном языке)</span>
-              <p id="resAgency" class="font-bold text-slate-900"></p>
-              <p id="resSummary" class="text-xs text-slate-600 mt-0.5 leading-relaxed"></p>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/90 shadow-sm">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1.5" data-i18n="out_b1">1. Кто пишет и в чем суть (на понятном языке)</span>
+              <p id="resAgency" class="text-lg font-black text-slate-900 leading-snug"></p>
+              <p id="resSummary" class="text-sm text-slate-700 mt-1.5 leading-relaxed"></p>
             </div>
 
             <!-- 2. & 3. Срок и риск -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div class="p-3.5 rounded-xl bg-red-50 border border-red-200">
-                <span class="text-[11px] font-bold uppercase tracking-wider text-red-700 block mb-1" data-i18n="out_b2">2. Критический дедлайн (Frist)</span>
-                <p id="resDeadline" class="font-bold text-red-900 text-sm"></p>
-                <p id="resDeadlineInfo" class="text-[11px] text-red-700 mt-0.5"></p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-5 rounded-2xl bg-red-50/90 border border-red-200 shadow-sm">
+                <span class="text-xs font-bold uppercase tracking-wider text-red-700 block mb-1.5" data-i18n="out_b2">2. Критический дедлайн (Frist)</span>
+                <p id="resDeadline" class="text-xl sm:text-2xl font-black text-red-950 tracking-tight"></p>
+                <p id="resDeadlineInfo" class="text-xs font-medium text-red-800 mt-1 leading-normal"></p>
               </div>
-              <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200">
-                <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700 block mb-1" data-i18n="out_b3">3. Уровень риска</span>
-                <p id="resRisk" class="font-bold text-amber-900 text-sm flex items-center gap-1.5"></p>
-                <p id="resRiskInfo" class="text-[11px] text-amber-700 mt-0.5"></p>
+              <div class="p-5 rounded-2xl bg-amber-50/90 border border-amber-200 shadow-sm">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-700 block mb-1.5" data-i18n="out_b3">3. Уровень риска</span>
+                <p id="resRisk" class="text-xl sm:text-2xl font-black text-amber-950 tracking-tight flex items-center gap-2"></p>
+                <p id="resRiskInfo" class="text-xs font-medium text-amber-800 mt-1 leading-normal"></p>
               </div>
             </div>
 
             <!-- 4. Чек-лист действий -->
-            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
-              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1" data-i18n="out_b4">4. Что конкретно нужно сделать (Чек-лист)</span>
-              <ul id="resTodoList" class="text-xs text-slate-700 space-y-1.5 list-none pl-0"></ul>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/90 shadow-sm">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-2.5" data-i18n="out_b4">4. Что конкретно нужно сделать (Чек-лист)</span>
+              <ul id="resTodoList" class="text-sm text-slate-800 space-y-2 list-none pl-0"></ul>
             </div>
 
             <!-- 5. Ответ ведомству на немецком -->
-            <div class="p-3.5 rounded-xl bg-sky-50 border border-sky-200">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="text-[11px] font-bold uppercase tracking-wider text-sky-800" data-i18n="out_b5">5. Готовый официальный ответ (на немецком языке)</span>
-                <button onclick="copyReply()" class="text-[11px] font-semibold text-sky-700 hover:text-sky-900 bg-white px-2.5 py-1 rounded-md border border-sky-200 flex items-center gap-1 transition-all shadow-sm">
-                  <i data-lucide="copy" class="w-3 h-3"></i> <span data-i18n="btn_copy">Скопировать</span>
+            <div class="p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-sky-50/80 to-indigo-50/40 border border-sky-200 shadow-md">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-sky-950 flex items-center gap-1.5" data-i18n="out_b5">
+                  <i data-lucide="mail-check" class="w-4 h-4 text-sky-700"></i> 5. Готовый официальный ответ (на немецком языке)
+                </span>
+                <button onclick="copyReply()" class="text-xs font-bold text-white bg-sky-600 hover:bg-sky-700 active:scale-95 px-3.5 py-1.5 rounded-lg border border-sky-600 flex items-center gap-1.5 transition-all shadow-sm cursor-pointer">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> <span id="copyBtnText" data-i18n="btn_copy">Скопировать</span>
                 </button>
               </div>
-              <pre id="resReply" class="text-[11px] font-mono text-slate-800 bg-white p-3 rounded-lg border border-sky-100 whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto"></pre>
+              <pre id="resReply" class="text-xs sm:text-sm font-mono text-slate-900 bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-inner whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto selection:bg-sky-200 mt-2.5"></pre>
             </div>
           </div>
 
@@ -1371,9 +1379,29 @@
 
     function copyReply() {
       const replyText = document.getElementById('resReply').innerText;
+      if (!replyText) return;
       navigator.clipboard.writeText(replyText).then(() => {
-        const msg = currentLang === 'ru' ? 'Официальный ответ на немецком скопирован в буфер!' : (currentLang === 'ua' ? 'Офіційну відповідь скопійовано!' : 'Copied to clipboard!');
-        alert(msg);
+        const btnText = document.getElementById('copyBtnText');
+        if (btnText) {
+          const original = btnText.innerText;
+          const successMsg = currentLang === 'ua' ? '✓ Скопійовано!' : (currentLang === 'de' ? '✓ Kopiert!' : (currentLang === 'en' ? '✓ Copied!' : '✓ Скопировано!'));
+          btnText.innerText = successMsg;
+          btnText.parentElement.classList.add('bg-emerald-600', 'border-emerald-600');
+          btnText.parentElement.classList.remove('bg-sky-600', 'border-sky-600');
+          setTimeout(() => {
+            btnText.innerText = original;
+            btnText.parentElement.classList.remove('bg-emerald-600', 'border-emerald-600');
+            btnText.parentElement.classList.add('bg-sky-600', 'border-sky-600');
+          }, 2200);
+        }
+      }).catch(() => {
+        // Fallback for non-secure contexts
+        const textarea = document.createElement('textarea');
+        textarea.value = replyText;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
       });
     }
 
