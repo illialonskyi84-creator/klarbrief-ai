@@ -90,7 +90,7 @@
         Разберите официальное письмо из немецких ведомств за <span class="bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">10 секунд</span> и получите готовый ответ.
       </h1>
 
-      <p class="mt-5 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed" data-i18n="hero_subtitle">
+      <p class="mt-5 text-lg sm:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed font-normal" data-i18n="hero_subtitle">
         Jobcenter, Finanzamt или Krankenkasse? KlarBrief AI объяснит суть на понятном языке, рассчитает точный юридический срок (Frist) и составит официальный ответ ведомству.
       </p>
 
@@ -106,11 +106,11 @@
         </a>
       </div>
 
-      <!-- Trust Badges -->
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm font-semibold text-slate-600">
-        <span class="flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i> <span data-i18n="badge_dsgvo">100% DSGVO (маскирование налоговых данных)</span></span>
-        <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4 text-sky-600"></i> <span data-i18n="badge_frist">Расчет сроков по § 41 VwVfG</span></span>
-        <span class="flex items-center gap-2"><i data-lucide="file-check" class="w-4 h-4 text-indigo-600"></i> <span data-i18n="badge_law">Немецкий юридический язык (Behördendeutsch)</span></span>
+      <!-- Trust Badges (Enlarged to 16px standard) -->
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-sm sm:text-base font-semibold text-slate-700">
+        <span class="flex items-center gap-2.5"><i data-lucide="shield-check" class="w-5 h-5 text-emerald-600 shrink-0"></i> <span data-i18n="badge_dsgvo">100% DSGVO (маскирование налоговых данных)</span></span>
+        <span class="flex items-center gap-2.5"><i data-lucide="calendar" class="w-5 h-5 text-sky-600 shrink-0"></i> <span data-i18n="badge_frist">Расчет сроков по § 41 VwVfG</span></span>
+        <span class="flex items-center gap-2.5"><i data-lucide="file-check" class="w-5 h-5 text-indigo-600 shrink-0"></i> <span data-i18n="badge_law">Немецкий юридический язык (Behördendeutsch)</span></span>
       </div>
     </div>
   </section>
@@ -127,16 +127,16 @@
       <!-- Quick Select Buttons (Unified Style) -->
       <div class="flex flex-wrap items-center justify-center gap-2.5 mb-8">
         <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mr-1" data-i18n="sim_samples">Быстрый пример:</span>
-        <button onclick="loadSample('jobcenter')" class="text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
+        <button onclick="loadSample('jobcenter')" class="text-sm font-semibold px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-800 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
           <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span> Jobcenter: Справки и счета
         </button>
-        <button onclick="loadSample('sozialamt')" class="text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
+        <button onclick="loadSample('sozialamt')" class="text-sm font-semibold px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-800 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
           <span class="w-2.5 h-2.5 rounded-full bg-purple-500 shrink-0"></span> Sozialamt: Продление SGB XII
         </button>
-        <button onclick="loadSample('aok')" class="text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
+        <button onclick="loadSample('aok')" class="text-sm font-semibold px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-800 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
           <span class="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0"></span> AOK: Угроза 1050 €/мес
         </button>
-        <button onclick="loadSample('finanzamt')" class="text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
+        <button onclick="loadSample('finanzamt')" class="text-sm font-semibold px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-800 transition-all flex items-center gap-2 shadow-sm hover:shadow active:scale-95">
           <span class="w-2.5 h-2.5 rounded-full bg-sky-500 shrink-0"></span> Finanzamt: Налоговая декларация
         </button>
         <button onclick="clearText()" class="text-xs sm:text-sm font-medium px-3.5 py-2.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 transition-all" data-i18n="btn_reset">
@@ -158,17 +158,32 @@
             </span>
           </div>
 
-          <!-- Drag and Drop Box -->
-          <div id="dropZone" class="border-2 border-dashed border-sky-300 hover:border-sky-500 rounded-2xl p-6 bg-sky-50/60 hover:bg-sky-50 transition-all text-center flex flex-col items-center justify-center cursor-pointer group shadow-inner" onclick="document.getElementById('filePicker').click()">
-            <input type="file" id="filePicker" accept=".pdf,.png,.jpg,.jpeg,.txt" class="hidden" onchange="handleFileSelect(event)">
-            <div class="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center mb-2.5 group-hover:scale-110 group-hover:shadow transition-all">
-              <i data-lucide="upload-cloud" class="w-6 h-6 text-sky-600"></i>
-            </div>
-            <span class="text-sm font-bold text-slate-800">Перетащите сюда скан письма (PDF / JPG)</span>
-            <span class="text-xs text-slate-500 mt-1">или нажмите в любое место для выбора файла</span>
+          <!-- Input Mode Switcher Tabs -->
+          <div class="flex items-center p-1 bg-slate-100 rounded-xl border border-slate-200 text-sm font-bold text-slate-600">
+            <button type="button" id="tabFileBtn" onclick="switchInputMode('file')" class="flex-1 py-2 px-3 rounded-lg bg-white text-sky-700 shadow-sm transition-all flex items-center justify-center gap-2">
+              <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+              <span data-i18n="tab_file">Загрузить скан / PDF</span>
+            </button>
+            <button type="button" id="tabTextBtn" onclick="switchInputMode('text')" class="flex-1 py-2 px-3 rounded-lg hover:text-slate-900 transition-all flex items-center justify-center gap-2 text-slate-600">
+              <i data-lucide="file-edit" class="w-4 h-4"></i>
+              <span data-i18n="tab_text">Вставить текст</span>
+            </button>
           </div>
 
-          <textarea id="briefInput" rows="8" placeholder="Или вставьте сюда текст письма на немецком..." class="w-full text-sm font-mono p-4 bg-slate-50/70 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none leading-relaxed text-slate-800 resize-none shadow-sm min-h-[190px]"></textarea>
+          <!-- Drag and Drop Box (Visible in 'file' mode) -->
+          <div id="dropZone" class="border-2 border-dashed border-sky-300 hover:border-sky-500 rounded-2xl p-8 bg-sky-50/60 hover:bg-sky-50 transition-all text-center flex flex-col items-center justify-center cursor-pointer group shadow-inner min-h-[220px]" onclick="document.getElementById('filePicker').click()">
+            <input type="file" id="filePicker" accept=".pdf,.png,.jpg,.jpeg,.txt" class="hidden" onchange="handleFileSelect(event)">
+            <div class="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center mb-3 group-hover:scale-110 group-hover:shadow transition-all text-sky-600">
+              <i data-lucide="upload-cloud" class="w-7 h-7"></i>
+            </div>
+            <span class="text-base font-bold text-slate-800" data-i18n="drop_title">Перетащите сюда скан письма (PDF / JPG)</span>
+            <span class="text-sm text-slate-500 mt-1.5" data-i18n="drop_subtitle">или нажмите в любое место для выбора файла на устройстве</span>
+          </div>
+
+          <!-- Textarea (Visible in 'text' mode, hidden by default) -->
+          <div id="textInputContainer" class="hidden flex flex-col gap-2">
+            <textarea id="briefInput" rows="7" placeholder="Вставьте сюда текст официального письма на немецком языке..." class="w-full text-base font-mono p-4 bg-slate-50/70 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none leading-relaxed text-slate-900 resize-none shadow-sm min-h-[220px]"></textarea>
+          </div>
 
           <div class="flex items-center justify-between gap-3">
             <button id="analyzeBtn" onclick="runAnalysis()" class="w-full py-4 px-6 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-base shadow-lg shadow-sky-600/25 hover:shadow-sky-600/35 transition-all flex items-center justify-center gap-2.5 active:scale-[0.98]">
@@ -513,7 +528,11 @@
         sim_desc: 'Выберите типовой образец письма от немецких ведомств или вставьте собственный текст.',
         sim_samples: 'Быстрый пример:',
         btn_reset: 'Очистить',
-        input_label: 'Текст входящего письма',
+        input_label: 'Входящее письмо или скан',
+        tab_file: 'Загрузить скан / PDF',
+        tab_text: 'Вставить текст',
+        drop_title: 'Перетащите сюда скан письма (PDF / JPG)',
+        drop_subtitle: 'или нажмите в любое место для выбора файла на устройстве',
         input_shield: 'Анонимизация активна',
         btn_analyze: 'Разобрать письмо за 10 секунд',
         out_header: 'Структурированный разбор письма',
@@ -1105,8 +1124,31 @@
       }
     };
 
+    function switchInputMode(mode) {
+      const dropZone = document.getElementById('dropZone');
+      const textContainer = document.getElementById('textInputContainer');
+      const tabFileBtn = document.getElementById('tabFileBtn');
+      const tabTextBtn = document.getElementById('tabTextBtn');
+      
+      if (!dropZone || !textContainer || !tabFileBtn || !tabTextBtn) return;
+      
+      if (mode === 'file') {
+        dropZone.classList.remove('hidden');
+        textContainer.classList.add('hidden');
+        tabFileBtn.className = 'flex-1 py-2 px-3 rounded-lg bg-white text-sky-700 shadow-sm transition-all flex items-center justify-center gap-2';
+        tabTextBtn.className = 'flex-1 py-2 px-3 rounded-lg hover:text-slate-900 transition-all flex items-center justify-center gap-2 text-slate-600';
+      } else {
+        dropZone.classList.add('hidden');
+        textContainer.classList.remove('hidden');
+        tabTextBtn.className = 'flex-1 py-2 px-3 rounded-lg bg-white text-sky-700 shadow-sm transition-all flex items-center justify-center gap-2';
+        tabFileBtn.className = 'flex-1 py-2 px-3 rounded-lg hover:text-slate-900 transition-all flex items-center justify-center gap-2 text-slate-600';
+        document.getElementById('briefInput').focus();
+      }
+    }
+
     function loadSample(key) {
       const data = sampleData[key];
+      switchInputMode('text');
       document.getElementById('briefInput').value = data.text;
       renderResult(data);
     }
