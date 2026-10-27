@@ -11,39 +11,315 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; }
-    th { background-color: #f1f5f9; padding: 0.75rem 1rem; text-align: left; font-weight: 700; border: 1px solid #cbd5e1; color: #1e293b; }
-    td { padding: 0.75rem 1rem; border: 1px solid #e2e8f0; color: #334155; }
+    h1 { font-size: 1.875rem; font-weight: 800; color: #0f172a; margin-top: 1.5rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+    h2 { font-size: 1.35rem; font-weight: 700; color: #1e293b; margin-top: 2rem; margin-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.4rem; }
+    h3 { font-size: 1.05rem; font-weight: 700; color: #334155; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+    p { margin-bottom: 1rem; line-height: 1.65; color: #334155; font-size: 0.95rem; }
+    ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+    ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1rem; }
+    li { margin-bottom: 0.35rem; color: #334155; font-size: 0.95rem; }
+    blockquote { border-left: 4px solid #0284c7; background-color: #f0f9ff; padding: 0.75rem 1rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; color: #0369a1; font-size: 0.9rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    th { background-color: #f8fafc; padding: 0.65rem 0.75rem; text-align: left; font-weight: 700; border: 1px solid #cbd5e1; color: #0f172a; }
+    td { padding: 0.65rem 0.75rem; border: 1px solid #e2e8f0; color: #334155; }
     tr:nth-child(even) { background-color: #f8fafc; }
-    code { background-color: #f1f5f9; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.85em; color: #0284c7; }
-    pre { background-color: #0f172a; color: #f8fafc; padding: 1.25rem; border-radius: 0.75rem; overflow-x: auto; margin: 1.5rem 0; }
+    code { background-color: #f1f5f9; padding: 0.15rem 0.35rem; border-radius: 0.25rem; font-size: 0.85em; color: #0284c7; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    pre { background-color: #0f172a; color: #f8fafc; padding: 1rem; border-radius: 0.75rem; overflow-x: auto; margin: 1.25rem 0; font-size: 0.85rem; line-height: 1.5; }
     pre code { background-color: transparent; color: inherit; padding: 0; }
+    a { color: #0284c7; text-decoration: underline; text-underline-offset: 2px; }
+    a:hover { color: #0369a1; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-4xl mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-xl border border-slate-200">
-    <div class="border-b border-slate-200 pb-6 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<body class="bg-slate-100/70 text-slate-800 antialiased py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto bg-white p-6 sm:p-10 rounded-2xl shadow-xl border border-slate-200">
+    <div class="border-b border-slate-200 pb-5 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div>
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-800 uppercase tracking-wide mb-2">
-          AIT AI Engineer · Домашнее задание 3
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-800 uppercase tracking-wide mb-1.5">
+          🎓 AIT AI Engineer · Домашнее задание 3
         </span>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">SEO-стратегия и семантическое ядро</h1>
-        <p class="text-sm text-slate-500 mt-1">Проект: <strong>KlarBrief AI</strong> | Студент: <strong>Илья Лонский</strong> | Преподаватель: <strong>Светлана Жогальская</strong></p>
+        <div class="text-xs text-slate-500">
+          Студент: <strong class="text-slate-800">Илья Лонский</strong> · Преподаватель: <strong class="text-slate-800">Светлана Жогальская</strong>
+        </div>
       </div>
-      <a href="https://illialonskyi84-creator.github.io/klarbrief-ai/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg shadow-sm transition-all">
-        Открыть сервис ↗
+      <a href="https://illialonskyi84-creator.github.io/klarbrief-ai/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg shadow-sm transition-all" style="text-decoration: none;">
+        Открыть сервис KlarBrief AI ↗
       </a>
     </div>
 
-    <div id="content" class="space-y-6 text-sm sm:text-base leading-relaxed text-slate-700">
-      <!-- Content rendered here -->
+    <div>
+      <h1>Домашнее задание 3: SEO-стратегия и семантическое ядро проекта KlarBrief AI</h1>
+<blockquote>
+<p><strong>Модуль:</strong> AI Product Prototyping (No-Code Track)<br />
+<strong>Студент:</strong> Илья Лонский (Ilia Lonsky)<br />
+<strong>Преподаватель:</strong> Светлана Жогальская<br />
+<strong>Дата выполнения:</strong> 27.10.2026<br />
+<strong>Проект:</strong> KlarBrief AI (Amtsdeutsch Navigator)<br />
+<strong>Опубликованный сервис:</strong> <a href="https://illialonskyi84-creator.github.io/klarbrief-ai/">https://illialonskyi84-creator.github.io/klarbrief-ai/</a><br />
+<strong>Статус:</strong> Выполнено в коде, задеплоено на GitHub Pages и верифицировано</p>
+</blockquote>
+<hr />
+<h2>1. Введение и продуктовое позиционирование</h2>
+<p><strong>KlarBrief AI</strong> — специализированный веб-сервис и интерактивный ассистент для жителей Германии (экспатов, иммигрантов по § 24, студентов, самозанятых), сталкивающихся со стрессом при получении официальных писем от государственных органов (<em>Jobcenter</em>, <em>Finanzamt</em>, <em>Krankenkasse</em>, <em>Rentenversicherung</em>).</p>
+<ul>
+<li><strong>Главное УТП (Unique Value Proposition):</strong> Мгновенная расшифровка бюрократического немецкого языка (<em>Behördendeutsch</em>) за 10 секунд, юридически выверенный расчет процессуальных сроков по § 41 VwVfG / § 37 SGB X с учетом «фикции трех дней» (<em>Zugangsfiktion</em>) и автоматическая генерация официального ответа в 1 клик.</li>
+<li><strong>Целевая аудитория:</strong> Экспаты и иммигранты (уровень немецкого A0–B2), испытывающие <em>«Briefangst»</em> (страх перед официальной почтой) и рискующие пропустить критические дедлайны обжалования (<em>Widerspruchsfrist</em>).</li>
+<li><strong>Языковые версии:</strong> Русский (базовый интент русскоязычных экспатов), украинский, немецкий и английский.</li>
+</ul>
+<hr />
+<h2>2. Семантическое ядро (Semantic Core)</h2>
+<p>Семантическое ядро собрано и кластеризовано по методологии <strong>Google Ads Keyword Planner + AI-анализ интентов</strong>. В связи со спецификой экспатской аудитории в Германии, ядро разделено на <strong>двуязычные потоки</strong>: русскоязычные запросы (поиск решения на родном языке) и немецкоязычные термины (точные формулировки из полученных писем).</p>
+<h3>Кластер 1: Jobcenter, Bürgergeld и пособия (Проблемный интент)</h3>
+<table>
+<thead>
+<tr>
+<th>Поисковый запрос</th>
+<th>Язык</th>
+<th>Частотность / Спрос</th>
+<th>Интент</th>
+<th>Целевой экран / Релевантность</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>письмо из джобцентра что делать</em></td>
+<td>RU</td>
+<td>Высокая (Трендовый)</td>
+<td>Проблемный / Срочный</td>
+<td>Hero + Симулятор (Пресет Jobcenter)</td>
+</tr>
+<tr>
+<td><em>Jobcenter Mitwirkungspflicht перевод</em></td>
+<td>RU/DE</td>
+<td>Средняя</td>
+<td>Информационный</td>
+<td>Симулятор (Разбор требований)</td>
+</tr>
+<tr>
+<td><em>письмо jobcenter aufforderung zur mitwirkung</em></td>
+<td>DE/RU</td>
+<td>Высокая</td>
+<td>Проблемно-технический</td>
+<td>Симулятор + Генератор ответа</td>
+</tr>
+<tr>
+<td><em>как написать ответ в джобцентр</em></td>
+<td>RU</td>
+<td>Высокая</td>
+<td>Транзакционный</td>
+<td>Блок «Генерация официального ответа»</td>
+</tr>
+<tr>
+<td><em>Widerspruch Jobcenter Muster</em></td>
+<td>DE</td>
+<td>Очень высокая</td>
+<td>Транзакционный</td>
+<td>Блок «Шаблоны возражений (Pro)»</td>
+</tr>
+</tbody>
+</table>
+<h3>Кластер 2: Finanzamt, налоги и доплаты (Финансовый интент)</h3>
+<table>
+<thead>
+<tr>
+<th>Поисковый запрос</th>
+<th>Язык</th>
+<th>Частотность / Спрос</th>
+<th>Интент</th>
+<th>Целевой экран / Релевантность</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>письмо из финансамта германия перевод</em></td>
+<td>RU</td>
+<td>Высокая</td>
+<td>Информационный</td>
+<td>Hero + Селектор ведомств</td>
+</tr>
+<tr>
+<td><em>Finanzamt Schätzung что делать</em></td>
+<td>RU/DE</td>
+<td>Высокая (Стресс)</td>
+<td>Экстренный</td>
+<td>Симулятор (Пресет Finanzamt)</td>
+</tr>
+<tr>
+<td><em>срок ответа на письмо финансамт</em></td>
+<td>RU</td>
+<td>Средняя</td>
+<td>Экспертный (Сроки)</td>
+<td>Карточка расчета сроков (§ 41 VwVfG)</td>
+</tr>
+<tr>
+<td><em>Finanzamt Fristverlängerung Muster</em></td>
+<td>DE</td>
+<td>Высокая</td>
+<td>Транзакционный</td>
+<td>Шаблон запроса на продление срока</td>
+</tr>
+<tr>
+<td><em>налоговый номер steuer id где найти в письме</em></td>
+<td>RU</td>
+<td>Средняя</td>
+<td>Навигационный</td>
+<td>Блок маскирования персональных данных</td>
+</tr>
+</tbody>
+</table>
+<h3>Кластер 3: Процессуальные сроки и правовые нормы (Экспертный интент)</h3>
+<table>
+<thead>
+<tr>
+<th>Поисковый запрос</th>
+<th>Язык</th>
+<th>Частотность / Спрос</th>
+<th>Интент</th>
+<th>Целевой экран / Релевантность</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>как считаются сроки писем в германии</em></td>
+<td>RU</td>
+<td>Средняя</td>
+<td>Информационный</td>
+<td>Секция «Калькулятор сроков»</td>
+</tr>
+<tr>
+<td><em>фикция вручения 3 дня германия 41 vwvfg</em></td>
+<td>RU/DE</td>
+<td>Целевая (Экспертная)</td>
+<td>Юридический</td>
+<td>Блок доверия: DSGVO и § 41 VwVfG</td>
+</tr>
+<tr>
+<td><em>Rechtsbehelfsbelehrung что это простыми словами</em></td>
+<td>RU/DE</td>
+<td>Средняя</td>
+<td>Информационный</td>
+<td>FAQ + Встроенный подсказчик</td>
+</tr>
+<tr>
+<td><em>желтое письмо из суда германия желтый конверт</em></td>
+<td>RU</td>
+<td>Высокая (Пиковый стресс)</td>
+<td>Экстренный</td>
+<td>Hero Badge («Забудьте про страх»)</td>
+</tr>
+<tr>
+<td><em>Widerspruchsfrist berechnen Behörde</em></td>
+<td>DE</td>
+<td>Высокая</td>
+<td>Калькуляторный</td>
+<td>Интерактивный таймлайн в симуляторе</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. Эталонный AI-промпт глубокого SEO-анализа (по методике Лекции 6)</h2>
+<p>Для автоматической очистки дублей, группировки по интентам и подготовки мета-тегов использовался эталонный промпт Светланы Жогальской:</p>
+<pre><code class="language-text">Ты — ведущий эксперт по SEO-оптимизации и контекстной рекламе с опытом 10+ лет на европейском рынке (в частности, в Германии).
+
+Входные данные:
+Проект: «KlarBrief AI» — веб-сервис и интерактивный симулятор для разбора официальных писем немецких ведомств (Jobcenter, Finanzamt, Krankenkasse, Sozialamt), автоматического расчета сроков по § 41 VwVfG и подготовки официальных ответов на немецком языке.
+Целевая аудитория: экспаты, иммигранты (§ 24), иностранные специалисты и студенты в Германии.
+
+Твоя задача:
+1. Провести кластеризацию ключевых запросов по 3 типам интентов:
+   - Информационный (понять, что написано в письме);
+   - Экстренно-проблемный (страх санкций, пропуск сроков, отмена выплат);
+   - Транзакционный (получить готовый официальный ответ / Widerspruch).
+2. Выделить Quick Wins (запросы с высоким спросом и низкой конкуренцией в экспатской среде).
+3. Сформировать рекомендации по структуре заголовков H1-H3 и мета-тегов (Title, Description, Open Graph).
+4. Определить стратегию мультиязычного позиционирования (RU/DE/UA).
+</code></pre>
+<hr />
+<h2>4. On-Page архитектура и иерархия заголовков</h2>
+<p>По результатам семантического анализа структура страницы выстроена со строгим соблюдением иерархии (1x <code>H1</code>, 5x <code>H2</code>, 7x <code>H3</code>):</p>
+<ul>
+<li><strong><code>H1</code> (Главное УТП с фокусным ключом):</strong><br />
+<code>Разберите официальное письмо из немецких ведомств за 10 секунд и получите готовый ответ.</code><br />
+<em>(Фокусные ключи: официальное письмо, немецкие ведомства, 10 секунд, готовый ответ).</em></li>
+<li><strong><code>H2</code> (Кластеры болей и функционала):</strong></li>
+<li><code>H2: Протестируйте ассистента KlarBrief прямо сейчас</code> (Интерактивный симулятор / Демо)</li>
+<li><code>H2: Знакомая ситуация с немецкой почтой?</code> (Проблемы ЦА: Briefangst, непонятный язык, дедлайны)</li>
+<li><code>H2: Как работает ассистент KlarBrief</code> (Пошаговый алгоритм: Загрузка ➔ Анализ ➔ Ответ)</li>
+<li><code>H2: Почему KlarBrief надежнее обычного переводчика</code> (Сравнительная таблица)</li>
+<li><code>H2: Часто задаваемые вопросы (FAQ)</code> (Снятие возражений по безопасности и праву)</li>
+<li><strong><code>H3</code> (Карточки сценариев и шагов):</strong></li>
+<li><code>H3: Непонятный язык законов (Behördendeutsch)</code></li>
+<li><code>H3: Страх пропустить процессуальный срок (Frist)</code></li>
+<li><code>H3: Трудности с составлением официального ответа</code></li>
+<li><code>H3: 1. Вставьте текст или скан письма</code></li>
+<li><code>H3: 2. Мгновенная структура и расчет сроков</code></li>
+<li><code>H3: 3. Официальный ответ на немецком в 1 клик</code></li>
+</ul>
+<hr />
+<h2>5. Техническая реализация мета-тегов в коде (<code>index.html</code>)</h2>
+<p>Все необходимые мета-теги и микроразметка внедрены в блок <code>&lt;head&gt;</code> проекта и опубликованы на GitHub Pages:</p>
+<h3>5.1. Базовые поисковые мета-теги</h3>
+<pre><code class="language-html">&lt;!-- Primary SEO Meta Tags --&gt;
+&lt;title&gt;KlarBrief AI — Разбор официальных писем из ведомств Германии за 10 секунд&lt;/title&gt;
+&lt;meta name=&quot;title&quot; content=&quot;KlarBrief AI — Разбор официальных писем из ведомств Германии за 10 секунд&quot;&gt;
+&lt;meta name=&quot;description&quot; content=&quot;Интеллектуальный веб-ассистент по ведомственной корреспонденции Германии (Jobcenter, Finanzamt, Krankenkasse). Расчет процессуальных сроков по § 41 VwVfG, маскирование данных и готовый ответ.&quot;&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;KlarBrief, Amtsdeutsch, Behördenbrief verstehen, Jobcenter Brief Hilfe, Finanzamt Fristberechnung, § 41 VwVfG, официальное письмо Германия, перевод писем Германия&quot;&gt;
+&lt;meta name=&quot;author&quot; content=&quot;Ilia Lonskyi&quot;&gt;
+&lt;link rel=&quot;canonical&quot; href=&quot;https://illialonskyi84-creator.github.io/klarbrief-ai/&quot;&gt;
+</code></pre>
+<h3>5.2. Разметка Open Graph (социальные сети, Telegram, WhatsApp)</h3>
+<pre><code class="language-html">&lt;!-- Open Graph / Facebook / Telegram / WhatsApp --&gt;
+&lt;meta property=&quot;og:type&quot; content=&quot;website&quot;&gt;
+&lt;meta property=&quot;og:site_name&quot; content=&quot;KlarBrief AI&quot;&gt;
+&lt;meta property=&quot;og:url&quot; content=&quot;https://illialonskyi84-creator.github.io/klarbrief-ai/&quot;&gt;
+&lt;meta property=&quot;og:title&quot; content=&quot;KlarBrief AI — Разбор официальных писем из ведомств Германии за 10 секунд&quot;&gt;
+&lt;meta property=&quot;og:description&quot; content=&quot;Понятный перевод сложного немецкого Behördendeutsch, строгий расчет сроков обжалования (§ 41 VwVfG) и генерация официального ответа в 1 клик.&quot;&gt;
+&lt;meta property=&quot;og:image&quot; content=&quot;https://illialonskyi84-creator.github.io/klarbrief-ai/hero_mockup_klarbrief.png&quot;&gt;
+&lt;meta property=&quot;og:locale&quot; content=&quot;ru_RU&quot;&gt;
+&lt;meta property=&quot;og:locale:alternate&quot; content=&quot;de_DE&quot;&gt;
+&lt;meta property=&quot;og:locale:alternate&quot; content=&quot;uk_UA&quot;&gt;
+&lt;meta property=&quot;og:locale:alternate&quot; content=&quot;en_US&quot;&gt;
+</code></pre>
+<h3>5.3. Структурированные микроданные (Schema.org JSON-LD)</h3>
+<pre><code class="language-html">&lt;!-- Structured Data: Schema.org JSON-LD --&gt;
+&lt;script type=&quot;application/ld+json&quot;&gt;
+{
+  &quot;@context&quot;: &quot;https://schema.org&quot;,
+  &quot;@type&quot;: &quot;SoftwareApplication&quot;,
+  &quot;name&quot;: &quot;KlarBrief AI&quot;,
+  &quot;applicationCategory&quot;: &quot;EducationalApplication&quot;,
+  &quot;operatingSystem&quot;: &quot;Web Browser&quot;,
+  &quot;url&quot;: &quot;https://illialonskyi84-creator.github.io/klarbrief-ai/&quot;,
+  &quot;description&quot;: &quot;Интеллектуальный веб-сервис для анализа немецких ведомственных писем (Jobcenter, Finanzamt, Krankenkasse), контроля процессуальных сроков и подготовки официальных ответов.&quot;,
+  &quot;author&quot;: {
+    &quot;@type&quot;: &quot;Person&quot;,
+    &quot;name&quot;: &quot;Ilia Lonskyi&quot;
+  },
+  &quot;inLanguage&quot;: [&quot;ru&quot;, &quot;de&quot;, &quot;uk&quot;, &quot;en&quot;],
+  &quot;offers&quot;: {
+    &quot;@type&quot;: &quot;Offer&quot;,
+    &quot;price&quot;: &quot;0&quot;,
+    &quot;priceCurrency&quot;: &quot;EUR&quot;
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<hr />
+<h2>6. Профессиональный гейт: режим Pre-launch Staging (noindex)</h2>
+<p>В соответствии с каноническими правилами промышленной веб-разработки и немецким правовым регулированием:<br />
+* На тестовом стенде (GitHub Pages) сохранен тег:<br />
+<code>html
+  &lt;meta name="robots" content="noindex, nofollow, noarchive"&gt;</code><br />
+* <strong>Обоснование:</strong> На этапе академического прототипирования (<em>MVP / Proof of Concept</em>) тестовый домен закрывается от индексации поисковыми роботами, чтобы предотвратить склейку дублей с будущим коммерческим доменом и исключить коллизии товарных знаков до момента официального релиза. Вся On-Page разметка полностью развернута и протестирована через расширение <strong>SEO META in 1 CLICK</strong>.</p>
+<hr />
+<h2>7. Результаты проверки в расширении «SEO META in 1 CLICK»</h2>
+<ul>
+<li><strong>Title:</strong> 74 символа — строго в рекомендованном диапазоне Google (до 70-80 символов), фокусный ключ в первой трети строки.</li>
+<li><strong>Description:</strong> 215 символов — информативный оффер с указанием ключевых ведомств и законов.</li>
+<li><strong>Headings:</strong> Идеальная структура (1x H1, 5x H2, 7x H3), пропусков уровней нет.</li>
+<li><strong>Open Graph:</strong> Полный комплект тегов (Title, Description, Image, URL, Type, 4 локали).</li>
+<li><strong>Canonical URL:</strong> Присутствует и указывает на канонический адрес сервиса.</li>
+</ul>
     </div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script>
-    const markdown = "# Домашнее задание 3: SEO-стратегия и семантическое ядро проекта KlarBrief AI\n\n> **Модуль:** AI Product Prototyping (No-Code Track)  \n> **Студент:** Илья Лонский (Ilia Lonsky)  \n> **Преподаватель:** Светлана Жогальская  \n> **Дата выполнения:** 27.10.2026  \n> **Проект:** KlarBrief AI (Amtsdeutsch Navigator)  \n> **Опубликованный сервис:** [https://illialonskyi84-creator.github.io/klarbrief-ai/](https://illialonskyi84-creator.github.io/klarbrief-ai/)  \n> **Статус:** Выполнено в коде, задеплоено на GitHub Pages и верифицировано\n\n---\n\n## 1. Введение и продуктовое позиционирование\n\n**KlarBrief AI** — специализированный веб-сервис и интерактивный ассистент для жителей Германии (экспатов, иммигрантов по § 24, студентов, самозанятых), сталкивающихся со стрессом при получении официальных писем от государственных органов (*Jobcenter*, *Finanzamt*, *Krankenkasse*, *Rentenversicherung*).\n\n* **Главное УТП (Unique Value Proposition):** Мгновенная расшифровка бюрократического немецкого языка (*Behördendeutsch*) за 10 секунд, юридически выверенный расчет процессуальных сроков по § 41 VwVfG / § 37 SGB X с учетом «фикции трех дней» (*Zugangsfiktion*) и автоматическая генерация официального ответа в 1 клик.\n* **Целевая аудитория:** Экспаты и иммигранты (уровень немецкого A0–B2), испытывающие *«Briefangst»* (страх перед официальной почтой) и рискующие пропустить критические дедлайны обжалования (*Widerspruchsfrist*).\n* **Языковые версии:** Русский (базовый интент русскоязычных экспатов), украинский, немецкий и английский.\n\n---\n\n## 2. Семантическое ядро (Semantic Core)\n\nСемантическое ядро собрано и кластеризовано по методологии **Google Ads Keyword Planner + AI-анализ интентов**. В связи со спецификой экспатской аудитории в Германии, ядро разделено на **двуязычные потоки**: русскоязычные запросы (поиск решения на родном языке) и немецкоязычные термины (точные формулировки из полученных писем).\n\n### Кластер 1: Jobcenter, Bürgergeld и пособия (Проблемный интент)\n| Поисковый запрос | Язык | Частотность / Спрос | Интент | Целевой экран / Релевантность |\n|---|---|---|---|---|\n| *письмо из джобцентра что делать* | RU | Высокая (Трендовый) | Проблемный / Срочный | Hero + Симулятор (Пресет Jobcenter) |\n| *Jobcenter Mitwirkungspflicht перевод* | RU/DE | Средняя | Информационный | Симулятор (Разбор требований) |\n| *письмо jobcenter aufforderung zur mitwirkung* | DE/RU | Высокая | Проблемно-технический | Симулятор + Генератор ответа |\n| *как написать ответ в джобцентр* | RU | Высокая | Транзакционный | Блок «Генерация официального ответа» |\n| *Widerspruch Jobcenter Muster* | DE | Очень высокая | Транзакционный | Блок «Шаблоны возражений (Pro)» |\n\n### Кластер 2: Finanzamt, налоги и доплаты (Финансовый интент)\n| Поисковый запрос | Язык | Частотность / Спрос | Интент | Целевой экран / Релевантность |\n|---|---|---|---|---|\n| *письмо из финансамта германия перевод* | RU | Высокая | Информационный | Hero + Селектор ведомств |\n| *Finanzamt Schätzung что делать* | RU/DE | Высокая (Стресс) | Экстренный | Симулятор (Пресет Finanzamt) |\n| *срок ответа на письмо финансамт* | RU | Средняя | Экспертный (Сроки) | Карточка расчета сроков (§ 41 VwVfG) |\n| *Finanzamt Fristverlängerung Muster* | DE | Высокая | Транзакционный | Шаблон запроса на продление срока |\n| *налоговый номер steuer id где найти в письме* | RU | Средняя | Навигационный | Блок маскирования персональных данных |\n\n### Кластер 3: Процессуальные сроки и правовые нормы (Экспертный интент)\n| Поисковый запрос | Язык | Частотность / Спрос | Интент | Целевой экран / Релевантность |\n|---|---|---|---|---|\n| *как считаются сроки писем в германии* | RU | Средняя | Информационный | Секция «Калькулятор сроков» |\n| *фикция вручения 3 дня германия 41 vwvfg* | RU/DE | Целевая (Экспертная) | Юридический | Блок доверия: DSGVO и § 41 VwVfG |\n| *Rechtsbehelfsbelehrung что это простыми словами* | RU/DE | Средняя | Информационный | FAQ + Встроенный подсказчик |\n| *желтое письмо из суда германия желтый конверт* | RU | Высокая (Пиковый стресс) | Экстренный | Hero Badge («Забудьте про страх») |\n| *Widerspruchsfrist berechnen Behörde* | DE | Высокая | Калькуляторный | Интерактивный таймлайн в симуляторе |\n\n---\n\n## 3. Эталонный AI-промпт глубокого SEO-анализа (по методике Лекции 6)\n\nДля автоматической очистки дублей, группировки по интентам и подготовки мета-тегов использовался эталонный промпт Светланы Жогальской:\n\n```text\nТы — ведущий эксперт по SEO-оптимизации и контекстной рекламе с опытом 10+ лет на европейском рынке (в частности, в Германии).\n\nВходные данные:\nПроект: «KlarBrief AI» — веб-сервис и интерактивный симулятор для разбора официальных писем немецких ведомств (Jobcenter, Finanzamt, Krankenkasse, Sozialamt), автоматического расчета сроков по § 41 VwVfG и подготовки официальных ответов на немецком языке.\nЦелевая аудитория: экспаты, иммигранты (§ 24), иностранные специалисты и студенты в Германии.\n\nТвоя задача:\n1. Провести кластеризацию ключевых запросов по 3 типам интентов:\n   - Информационный (понять, что написано в письме);\n   - Экстренно-проблемный (страх санкций, пропуск сроков, отмена выплат);\n   - Транзакционный (получить готовый официальный ответ / Widerspruch).\n2. Выделить Quick Wins (запросы с высоким спросом и низкой конкуренцией в экспатской среде).\n3. Сформировать рекомендации по структуре заголовков H1-H3 и мета-тегов (Title, Description, Open Graph).\n4. Определить стратегию мультиязычного позиционирования (RU/DE/UA).\n```\n\n---\n\n## 4. On-Page архитектура и иерархия заголовков\n\nПо результатам семантического анализа структура страницы выстроена со строгим соблюдением иерархии (1x `H1`, 5x `H2`, 7x `H3`):\n\n* **`H1` (Главное УТП с фокусным ключом):**  \n  `Разберите официальное письмо из немецких ведомств за 10 секунд и получите готовый ответ.`  \n  *(Фокусные ключи: официальное письмо, немецкие ведомства, 10 секунд, готовый ответ).*\n* **`H2` (Кластеры болей и функционала):**\n  * `H2: Протестируйте ассистента KlarBrief прямо сейчас` (Интерактивный симулятор / Демо)\n  * `H2: Знакомая ситуация с немецкой почтой?` (Проблемы ЦА: Briefangst, непонятный язык, дедлайны)\n  * `H2: Как работает ассистент KlarBrief` (Пошаговый алгоритм: Загрузка ➔ Анализ ➔ Ответ)\n  * `H2: Почему KlarBrief надежнее обычного переводчика` (Сравнительная таблица)\n  * `H2: Часто задаваемые вопросы (FAQ)` (Снятие возражений по безопасности и праву)\n* **`H3` (Карточки сценариев и шагов):**\n  * `H3: Непонятный язык законов (Behördendeutsch)`\n  * `H3: Страх пропустить процессуальный срок (Frist)`\n  * `H3: Трудности с составлением официального ответа`\n  * `H3: 1. Вставьте текст или скан письма`\n  * `H3: 2. Мгновенная структура и расчет сроков`\n  * `H3: 3. Официальный ответ на немецком в 1 клик`\n\n---\n\n## 5. Техническая реализация мета-тегов в коде (`index.html`)\n\nВсе необходимые мета-теги и микроразметка внедрены в блок `<head>` проекта и опубликованы на GitHub Pages:\n\n### 5.1. Базовые поисковые мета-теги\n```html\n<!-- Primary SEO Meta Tags -->\n<title>KlarBrief AI — Разбор официальных писем из ведомств Германии за 10 секунд</title>\n<meta name=\"title\" content=\"KlarBrief AI — Разбор официальных писем из ведомств Германии за 10 секунд\">\n<meta name=\"description\" content=\"Интеллектуальный веб-ассистент по ведомственной корреспонденции Германии (Jobcenter, Finanzamt, Krankenkasse). Расчет процессуальных сроков по § 41 VwVfG, маскирование данных и готовый ответ.\">\n<meta name=\"keywords\" content=\"KlarBrief, Amtsdeutsch, Behördenbrief verstehen, Jobcenter Brief Hilfe, Finanzamt Fristberechnung, § 41 VwVfG, официальное письмо Германия, перевод писем Германия\">\n<meta name=\"author\" content=\"Ilia Lonskyi\">\n<link rel=\"canonical\" href=\"https://illialonskyi84-creator.github.io/klarbrief-ai/\">\n```\n\n### 5.2. Разметка Open Graph (социальные сети, Telegram, WhatsApp)\n```html\n<!-- Open Graph / Facebook / Telegram / WhatsApp -->\n<meta property=\"og:type\" content=\"website\">\n<meta property=\"og:site_name\" content=\"KlarBrief AI\">\n<meta property=\"og:url\" content=\"https://illialonskyi84-creator.github.io/klarbrief-ai/\">\n<meta property=\"og:title\" content=\"KlarBrief AI — Разбор официальных писем из ведомств Германии за 10 секунд\">\n<meta property=\"og:description\" content=\"Понятный перевод сложного немецкого Behördendeutsch, строгий расчет сроков обжалования (§ 41 VwVfG) и генерация официального ответа в 1 клик.\">\n<meta property=\"og:image\" content=\"https://illialonskyi84-creator.github.io/klarbrief-ai/hero_mockup_klarbrief.png\">\n<meta property=\"og:locale\" content=\"ru_RU\">\n<meta property=\"og:locale:alternate\" content=\"de_DE\">\n<meta property=\"og:locale:alternate\" content=\"uk_UA\">\n<meta property=\"og:locale:alternate\" content=\"en_US\">\n```\n\n### 5.3. Структурированные микроданные (Schema.org JSON-LD)\n```html\n<!-- Structured Data: Schema.org JSON-LD -->\n<script type=\"application/ld+json\">\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"SoftwareApplication\",\n  \"name\": \"KlarBrief AI\",\n  \"applicationCategory\": \"EducationalApplication\",\n  \"operatingSystem\": \"Web Browser\",\n  \"url\": \"https://illialonskyi84-creator.github.io/klarbrief-ai/\",\n  \"description\": \"Интеллектуальный веб-сервис для анализа немецких ведомственных писем (Jobcenter, Finanzamt, Krankenkasse), контроля процессуальных сроков и подготовки официальных ответов.\",\n  \"author\": {\n    \"@type\": \"Person\",\n    \"name\": \"Ilia Lonskyi\"\n  },\n  \"inLanguage\": [\"ru\", \"de\", \"uk\", \"en\"],\n  \"offers\": {\n    \"@type\": \"Offer\",\n    \"price\": \"0\",\n    \"priceCurrency\": \"EUR\"\n  }\n}\n</script>\n```\n\n---\n\n## 6. Профессиональный гейт: режим Pre-launch Staging (noindex)\n\nВ соответствии с каноническими правилами промышленной веб-разработки и немецким правовым регулированием:\n* На тестовом стенде (GitHub Pages) сохранен тег:\n  ```html\n  <meta name=\"robots\" content=\"noindex, nofollow, noarchive\">\n  ```\n* **Обоснование:** На этапе академического прототипирования (*MVP / Proof of Concept*) тестовый домен закрывается от индексации поисковыми роботами, чтобы предотвратить склейку дублей с будущим коммерческим доменом и исключить коллизии товарных знаков до момента официального релиза. Вся On-Page разметка полностью развернута и протестирована через расширение **SEO META in 1 CLICK**.\n\n---\n\n## 7. Результаты проверки в расширении «SEO META in 1 CLICK»\n* **Title:** 74 символа — строго в рекомендованном диапазоне Google (до 70-80 символов), фокусный ключ в первой трети строки.\n* **Description:** 215 символов — информативный оффер с указанием ключевых ведомств и законов.\n* **Headings:** Идеальная структура (1x H1, 5x H2, 7x H3), пропусков уровней нет.\n* **Open Graph:** Полный комплект тегов (Title, Description, Image, URL, Type, 4 локали).\n* **Canonical URL:** Присутствует и указывает на канонический адрес сервиса.\n";
-    document.getElementById('content').innerHTML = marked.parse(markdown);
-  </script>
 </body>
 </html>
