@@ -57,6 +57,56 @@
   }
   </script>
 
+  <!-- FAQPage Schema for GEO / LLMs -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Заменяет ли KlarBrief AI адвоката?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Нет. KlarBrief AI — это технологический и лингвистический ассистент для разбора текстов и контроля сроков. Сервис не оказывает индивидуальных юридических консультаций по смыслу закона § 2 RDG."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Что происходит с моими персональными данными?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Данные обрабатываются строго по регламенту европейского стандарта DSGVO. Чувствительные данные (Steuer-ID, IBAN, телефоны) автоматически маскируются перед анализом."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Как рассчитываются процессуальные сроки (Fristen)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Алгоритм учитывает так называемую «фикцию вручения» (§ 41 Abs. 2 VwVfG / § 37 Abs. 2 SGB X): отправленное по почте письмо считается доставленным на третий день после отправки."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Что делать при требовании содействия от Jobcenter (§ 60 SGB I)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "KlarBrief AI распознает список запрашиваемых документов (выписки со счета, справка о квартплате) и генерирует официальное сопроводительное письмо (Begleitschreiben) с указанием Aktenzeichen, подтверждая своевременное выполнение обязанности содействия."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Как и в какой срок подается возражение (Widerspruch)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Согласно § 70 VwGO стандартный срок подачи Widerspruch составляет 1 месяц с момента вручения решения (Bescheid). KlarBrief AI выделяет спорные основания и готовит черновик мотивированного возражения на ведомственном немецком (Behördendeutsch)."
+        }
+      }
+    ]
+  }
+  </script>
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
@@ -508,6 +558,26 @@
             Алгоритм учитывает так называемую «фикцию вручения» (§ 41 Abs. 2 VwVfG / § 37 Abs. 2 SGB X): отправленное по почте письмо считается доставленным на третий день после отправки. С этой даты исчисляется реальный срок на подачу возражения или документов.
           </p>
         </details>
+
+        <details class="group bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          <summary class="flex justify-between items-center cursor-pointer font-bold text-slate-900 list-none">
+            <span data-i18n="q4_q">Что делать при требовании содействия от Jobcenter (§ 60 SGB I)?</span>
+            <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5 text-slate-500"></i></span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 leading-relaxed" data-i18n="q4_a">
+            KlarBrief AI распознает конкретный список запрашиваемых документов (выписки со счета, справки) и генерирует официальное сопроводительное письмо (Begleitschreiben) с указанием вашего Aktenzeichen, фиксируя своевременное выполнение обязанности содействия.
+          </p>
+        </details>
+
+        <details class="group bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          <summary class="flex justify-between items-center cursor-pointer font-bold text-slate-900 list-none">
+            <span data-i18n="q5_q">Как и в какой срок подается возражение (Widerspruch)?</span>
+            <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-5 h-5 text-slate-500"></i></span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 leading-relaxed" data-i18n="q5_a">
+            Согласно § 70 VwGO стандартный срок подачи Widerspruch составляет 1 месяц с момента вручения решения (Bescheid). KlarBrief AI выделяет спорные основания и готовит черновик мотивированного возражения на ведомственном немецком (Behördendeutsch) с запросом ознакомления с делом (Akteneinsicht).
+          </p>
+        </details>
       </div>
 
       <!-- Legal Disclaimer Box -->
@@ -644,6 +714,14 @@
         q2_a: 'Данные обрабатываются строго по регламенту европейского стандарта DSGVO. Чувствительные данные (Steuer-ID, IBAN, телефоны) автоматически маскируются перед анализом.',
         q3_q: 'Как рассчитываются процессуальные сроки (Fristen)?',
         q3_a: 'Алгоритм учитывает так называемую «фикцию вручения» (§ 41 Abs. 2 VwVfG / § 37 Abs. 2 SGB X): отправленное по почте письмо считается доставленным на третий день после отправки.',
+        q4_q: 'Что делать при требовании содействия от Jobcenter (§ 60 SGB I)?',
+        q4_a: 'KlarBrief AI распознает список запрашиваемых документов (выписки, справки) и генерирует официальное сопроводительное письмо (Begleitschreiben) с указанием Aktenzeichen, подтверждая своевременное выполнение обязанности содействия.',
+        q5_q: 'Как и в какой срок подается возражение (Widerspruch)?',
+        q5_a: 'Согласно § 70 VwGO стандартный срок подачи Widerspruch составляет 1 месяц с момента вручения решения (Bescheid). KlarBrief AI выделяет спорные основания и готовит черновик мотивированного возражения на ведомственном немецком (Behördendeutsch).',
+        cookie_title: 'Файлы Cookie и защита данных',
+        cookie_desc: 'Мы используем технические файлы cookie для сохранения настроек языка и параметров симулятора в строгом соответствии с регламентом DSGVO.',
+        cookie_accept_all: 'Принять все',
+        cookie_essential: 'Только обязательные',
         disclaimer_title: 'Правовое уведомление согласно § 2 RDG:',
         disclaimer_text: 'Сервис KlarBrief AI предназначен исключительно для языкового перевода, структурирования информации и административной помощи. Сервис не является юридической службой или адвокатской консультацией.'
       },
@@ -727,6 +805,14 @@
         q2_a: 'Обробка відповідає стандарту DSGVO. Чутливі дані автоматично маскуються.',
         q3_q: 'Як вираховуються процесуальні строки (Fristen)?',
         q3_a: 'Враховується презумпція отримання пошти протягом 3 днів за § 41 Abs. 2 VwVfG / § 37 Abs. 2 SGB X.',
+        q4_q: 'Що робити при вимозі співпраці від Jobcenter (§ 60 SGB I)?',
+        q4_a: 'KlarBrief AI розпізнає перелік запитуваних документів та генерує офіційний супровідний лист (Begleitschreiben) із вашим Aktenzeichen, фіксуючи своєчасне виконання обовʼязку.',
+        q5_q: 'Як та у який строк подається заперечення (Widerspruch)?',
+        q5_a: 'За § 70 VwGO термін подання Widerspruch становить 1 місяць. KlarBrief AI формує офіційний мотивований проект заперечення на Behördendeutsch.',
+        cookie_title: 'Файли Cookie та захист даних',
+        cookie_desc: 'Ми використовуємо технічні файли cookie для збереження мовних налаштувань та параметрів симулятора згідно зі стандартом DSGVO.',
+        cookie_accept_all: 'Прийняти всі',
+        cookie_essential: 'Лише обовʼязкові',
         disclaimer_title: 'Юридичне повідомлення згідно з § 2 RDG:',
         disclaimer_text: 'Сервіс призначений виключно для мовного перекладу та структурування інформації. Не є юридичною консультацією.'
       },
@@ -810,6 +896,14 @@
         q2_a: 'Deine Daten werden streng nach DSGVO verarbeitet. Sensible Kennungen werden maskiert.',
         q3_q: 'Wie funktioniert die Fristberechnung?',
         q3_a: 'Die KI berücksichtigt die Bekanntgabefiktion nach § 41 Abs. 2 VwVfG / § 37 Abs. 2 SGB X.',
+        q4_q: 'Was tun bei einer Mitwirkungsaufforderung des Jobcenters (§ 60 SGB I)?',
+        q4_a: 'KlarBrief AI erkennt angeforderte Nachweise (Kontoauszüge, Mietbescheinigung) und erstellt ein präzises Begleitschreiben mit Aktenzeichen zur fristgerechten Erfüllung.',
+        q5_q: 'Wie und innerhalb welcher Frist ist ein Widerspruch einzulegen?',
+        q5_a: 'Nach § 70 VwGO beträgt die Widerspruchsfrist 1 Monat ab Bekanntgabe des Bescheids. KlarBrief AI formuliert einen begründeten Entwurf auf Behördendeutsch.',
+        cookie_title: 'Cookies & Datenschutz',
+        cookie_desc: 'Wir verwenden notwendige technische Cookies zur Speicherung Ihrer Sprach- und Simulationseinstellungen gemäß DSGVO.',
+        cookie_accept_all: 'Alle akzeptieren',
+        cookie_essential: 'Nur essenzielle',
         disclaimer_title: 'Rechtlicher Hinweis nach § 2 RDG:',
         disclaimer_text: 'KlarBrief AI dient ausschließlich dem sprachlichen Verständnis und der administrativen Strukturierung von Dokumenten. Es handelt sich um keine Rechtsberatung.'
       },
@@ -893,6 +987,14 @@
         q2_a: 'Data is handled strictly under GDPR. Sensitive IDs are masked.',
         q3_q: 'How are deadlines calculated?',
         q3_a: 'AI applies the 3-day postal delivery presumption under § 41 (2) VwVfG.',
+        q4_q: 'What to do when Jobcenter requests documents (§ 60 SGB I)?',
+        q4_a: 'KlarBrief AI identifies the requested documents (bank statements, rent certificates) and generates an official cover letter with your case number (Aktenzeichen).',
+        q5_q: 'How and within what deadline should an objection (Widerspruch) be filed?',
+        q5_a: 'Under § 70 VwGO the standard objection deadline is 1 month from delivery. KlarBrief AI drafts a formal response in administrative German (Behördendeutsch).',
+        cookie_title: 'Cookies & Privacy',
+        cookie_desc: 'We use necessary technical cookies to store language and simulator preferences in full compliance with GDPR.',
+        cookie_accept_all: 'Accept all',
+        cookie_essential: 'Essential only',
         disclaimer_title: 'Legal notice under § 2 RDG:',
         disclaimer_text: 'KlarBrief AI is solely for linguistic understanding and administrative assistance. It is not legal advice.'
       }
@@ -1672,5 +1774,24 @@
     // Default to Russian on load
     setLang('ru');
   </script>
+  <!-- Cookie Consent Banner (DSGVO / ePrivacy) -->
+  <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md bg-slate-900 text-white p-5 rounded-2xl shadow-2xl border border-slate-700 z-50 transition-all duration-300">
+    <div class="flex items-start gap-3">
+      <div class="w-8 h-8 rounded-lg bg-sky-600/30 text-sky-400 flex items-center justify-center shrink-0 mt-0.5">
+        <i data-lucide="cookie" class="w-4 h-4"></i>
+      </div>
+      <div>
+        <h4 class="text-sm font-bold text-white mb-1" data-i18n="cookie_title">Файлы Cookie и защита данных</h4>
+        <p class="text-xs text-slate-400 leading-relaxed mb-4" data-i18n="cookie_desc">
+          Мы используем необходимые технические cookie для работы тренажера и анонимную аналитику для улучшения сервиса в соответствии с DSGVO.
+        </p>
+        <div class="flex items-center gap-2">
+          <button onclick="acceptCookies('all')" class="flex-1 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold py-2 px-3 rounded-lg transition" data-i18n="cookie_accept_all">Принять все</button>
+          <button onclick="acceptCookies('essential')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium py-2 px-3 rounded-lg border border-slate-700 transition" data-i18n="cookie_essential">Только обязательные</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
