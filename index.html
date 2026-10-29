@@ -1790,9 +1790,18 @@
     }
     window.acceptCookies = acceptCookies;
 
-    // Check if consent was given
+    // Check if consent was given or reset requested via URL parameter
     try {
-      if (localStorage.getItem('klarbrief_cookie_consent')) {
+      const p = new URLSearchParams(window.location.search);
+      if (p.has('reset_cookie') || p.has('test_cookie') || p.has('preview_cookie')) {
+        localStorage.removeItem('klarbrief_cookie_consent');
+        const co = document.getElementById('cookie-overlay');
+        if (co) {
+          co.style.display = 'flex';
+          co.style.opacity = '1';
+          co.style.pointerEvents = 'auto';
+        }
+      } else if (localStorage.getItem('klarbrief_cookie_consent')) {
         const co = document.getElementById('cookie-overlay');
         if (co) co.style.display = 'none';
         const cb = document.getElementById('cookie-banner');
@@ -1806,9 +1815,12 @@
   <!-- Cookie Consent Modal Overlay (Universelles Overlay / CCM19 Standard) -->
   <div id="cookie-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-all duration-300">
     <script>
-      // Immediate inline hide if consent already exists in localStorage
+      // Immediate inline hide if consent already exists in localStorage (unless reset requested)
       try {
-        if (localStorage.getItem('klarbrief_cookie_consent')) {
+        const p = new URLSearchParams(window.location.search);
+        if (p.has('reset_cookie') || p.has('test_cookie') || p.has('preview_cookie')) {
+          localStorage.removeItem('klarbrief_cookie_consent');
+        } else if (localStorage.getItem('klarbrief_cookie_consent')) {
           document.getElementById('cookie-overlay').style.display = 'none';
         }
       } catch(e) {}
