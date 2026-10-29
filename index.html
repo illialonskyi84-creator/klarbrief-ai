@@ -1383,32 +1383,8 @@
             setLang('en');
           } else if (rejectReason === 'ukrainian') {
             setLang('ua');
-          } else if (rejectReason === 'russian') {
+                    } else if (rejectReason === 'russian') {
             setLang('ru');
-
-    // --- Cookie Consent Logic ---
-    function acceptCookies(type) {
-      try {
-        localStorage.setItem('klarbrief_cookie_consent', type || 'all');
-      } catch (e) {}
-      const banner = document.getElementById('cookie-banner');
-      if (banner) {
-        banner.style.opacity = '0';
-        banner.style.transform = 'translateY(16px)';
-        setTimeout(() => {
-          banner.style.display = 'none';
-        }, 250);
-      }
-    }
-
-    // Auto-hide cookie banner if previously accepted
-    try {
-      if (localStorage.getItem('klarbrief_cookie_consent')) {
-        const b = document.getElementById('cookie-banner');
-        if (b) b.style.display = 'none';
-      }
-    } catch (e) {}
-
           }
           renderGuardrailError(rejectReason);
           return;
@@ -1795,11 +1771,44 @@
       }
     }
 
+    // --- Cookie Consent Global Logic ---
+    function acceptCookies(type) {
+      try {
+        localStorage.setItem('klarbrief_cookie_consent', type || 'all');
+      } catch (e) {}
+      const banner = document.getElementById('cookie-banner');
+      if (banner) {
+        banner.style.opacity = '0';
+        banner.style.pointerEvents = 'none';
+        banner.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          banner.style.display = 'none';
+        }, 200);
+      }
+    }
+    window.acceptCookies = acceptCookies;
+
+    // Check if consent was given
+    try {
+      if (localStorage.getItem('klarbrief_cookie_consent')) {
+        const cb = document.getElementById('cookie-banner');
+        if (cb) cb.style.display = 'none';
+      }
+    } catch (e) {}
+
     // Default to Russian on load
     setLang('ru');
   </script>
   <!-- Cookie Consent Banner (DSGVO / ePrivacy) -->
   <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 sm:right-auto sm:left-6 sm:max-w-md bg-slate-900 text-white p-5 rounded-2xl shadow-2xl border border-slate-700 z-50 transition-all duration-300">
+    <script>
+      // Immediate inline hide if already consented
+      try {
+        if (localStorage.getItem('klarbrief_cookie_consent')) {
+          document.getElementById('cookie-banner').style.display = 'none';
+        }
+      } catch(e) {}
+    </script>
     <div class="flex items-start gap-3">
       <div class="w-8 h-8 rounded-lg bg-sky-600/30 text-sky-400 flex items-center justify-center shrink-0 mt-0.5">
         <i data-lucide="cookie" class="w-4 h-4"></i>
@@ -1810,8 +1819,8 @@
           Мы используем необходимые технические cookie для работы тренажера и анонимную аналитику для улучшения сервиса в соответствии с DSGVO.
         </p>
         <div class="flex items-center gap-2">
-          <button onclick="acceptCookies('all')" class="flex-1 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold py-2 px-3 rounded-lg transition" data-i18n="cookie_accept_all">Принять все</button>
-          <button onclick="acceptCookies('essential')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium py-2 px-3 rounded-lg border border-slate-700 transition" data-i18n="cookie_essential">Только обязательные</button>
+          <button id="btnCookieAll" onclick="acceptCookies('all')" class="flex-1 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold py-2 px-3 rounded-lg transition" data-i18n="cookie_accept_all">Принять все</button>
+          <button id="btnCookieEssential" onclick="acceptCookies('essential')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium py-2 px-3 rounded-lg border border-slate-700 transition" data-i18n="cookie_essential">Только обязательные</button>
         </div>
       </div>
     </div>
