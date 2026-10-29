@@ -316,7 +316,7 @@
             </div>
 
             <!-- Ghost Preview Card (Value demonstration) -->
-            <div class="p-5 rounded-2xl bg-slate-50 border border-dashed border-slate-300 flex flex-col gap-3.5 text-xs opacity-75 select-none transition-all">
+            <div onclick="loadSample('jobcenter')" class="p-5 rounded-2xl bg-slate-50 border border-dashed border-slate-300 hover:border-sky-500 hover:bg-sky-50/60 hover:shadow-md flex flex-col gap-3.5 text-xs opacity-85 hover:opacity-100 cursor-pointer transition-all group" title="Нажмите для мгновенного разбора этого образца">
               <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
                 <span class="font-bold text-slate-500 uppercase tracking-wider text-[11px]" data-i18n="preview_badge">Образец результата разбора</span>
                 <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">Muster</span>
@@ -1385,6 +1385,30 @@
             setLang('ua');
           } else if (rejectReason === 'russian') {
             setLang('ru');
+
+    // --- Cookie Consent Logic ---
+    function acceptCookies(type) {
+      try {
+        localStorage.setItem('klarbrief_cookie_consent', type || 'all');
+      } catch (e) {}
+      const banner = document.getElementById('cookie-banner');
+      if (banner) {
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateY(16px)';
+        setTimeout(() => {
+          banner.style.display = 'none';
+        }, 250);
+      }
+    }
+
+    // Auto-hide cookie banner if previously accepted
+    try {
+      if (localStorage.getItem('klarbrief_cookie_consent')) {
+        const b = document.getElementById('cookie-banner');
+        if (b) b.style.display = 'none';
+      }
+    } catch (e) {}
+
           }
           renderGuardrailError(rejectReason);
           return;
