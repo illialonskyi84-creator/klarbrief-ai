@@ -1775,7 +1775,7 @@
     setLang('ru');
   </script>
   <!-- Cookie Consent Banner (DSGVO / ePrivacy) -->
-  <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md bg-slate-900 text-white p-5 rounded-2xl shadow-2xl border border-slate-700 z-50 transition-all duration-300">
+  <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 sm:right-auto sm:left-6 sm:max-w-md bg-slate-900 text-white p-5 rounded-2xl shadow-2xl border border-slate-700 z-50 transition-all duration-300">
     <div class="flex items-start gap-3">
       <div class="w-8 h-8 rounded-lg bg-sky-600/30 text-sky-400 flex items-center justify-center shrink-0 mt-0.5">
         <i data-lucide="cookie" class="w-4 h-4"></i>
@@ -1792,6 +1792,306 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Floating AI Assistant / Chatbot Widget (KlarBrief Navigator) -->
+  <div id="klarbrief-chat-root" class="fixed bottom-6 right-6 z-40">
+    <!-- Floating Trigger Button -->
+    <button id="chatToggleBtn" onclick="toggleChatWidget()" class="relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-tr from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all border-2 border-white/90 group cursor-pointer" aria-label="Открыть чат-ассистент KlarBrief">
+      <span class="absolute -top-1 -right-1 flex h-4 w-4">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white"></span>
+      </span>
+      <i data-lucide="message-square" id="chatOpenIcon" class="w-6 h-6 transition-transform group-hover:scale-110"></i>
+      <i data-lucide="x" id="chatCloseIcon" class="w-6 h-6 hidden"></i>
+    </button>
+
+    <!-- Chat Popup Window -->
+    <div id="chatWindow" class="hidden absolute bottom-18 right-0 w-[350px] sm:w-[390px] h-[520px] max-h-[82vh] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden z-50 animate-in fade-in slide-in-from-bottom-4 duration-200">
+      <!-- Chat Header -->
+      <div class="p-4 bg-gradient-to-r from-slate-900 via-sky-950 to-indigo-950 text-white flex items-center justify-between border-b border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="relative w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-500 flex items-center justify-center text-white shadow-sm">
+            <i data-lucide="bot" class="w-5 h-5"></i>
+            <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-slate-900"></span>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm leading-tight text-white flex items-center gap-1.5">
+              KlarBrief Navigator
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 font-semibold uppercase tracking-wider">AI</span>
+            </h4>
+            <p class="text-[11px] text-slate-300 font-medium">Онлайн-консультант сервиса</p>
+          </div>
+        </div>
+        <button onclick="toggleChatWidget()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer" aria-label="Закрыть чат">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Messages Area -->
+      <div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-3.5 bg-slate-50 text-xs sm:text-sm">
+        <!-- Initial Message -->
+        <div class="flex items-start gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-sky-600 text-white flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold shadow-xs">
+            <i data-lucide="bot" class="w-4 h-4"></i>
+          </div>
+          <div class="bg-white p-3.5 rounded-2xl rounded-tl-sm border border-slate-200 text-slate-800 shadow-sm leading-relaxed max-w-[85%]">
+            <p class="font-bold text-slate-900 mb-1">Здравствуйте! 👋</p>
+            <p class="text-slate-700">Я KlarBrief AI — ваш консультант по немецкой ведомственной корреспонденции. Помогу разобраться с письмами, сроками и защитой данных.</p>
+            <div class="mt-2.5 pt-2 border-t border-slate-100 text-[11px] text-slate-500 font-semibold">
+              Выберите частый вопрос или напишите свой:
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Suggestions Chips -->
+        <div id="quickChipsContainer" class="flex flex-col gap-1.5 pl-9">
+          <button onclick="sendQuickPrompt('departments')" class="text-left text-xs bg-white hover:bg-sky-50 hover:border-sky-300 text-sky-800 border border-slate-200 p-2 rounded-xl transition shadow-2xs font-medium cursor-pointer">
+            🏢 С какими ведомствами вы работаете?
+          </button>
+          <button onclick="sendQuickPrompt('fristen')" class="text-left text-xs bg-white hover:bg-sky-50 hover:border-sky-300 text-sky-800 border border-slate-200 p-2 rounded-xl transition shadow-2xs font-medium cursor-pointer">
+            ⏰ Как рассчитываются сроки (Fristen)?
+          </button>
+          <button onclick="sendQuickPrompt('lawyer')" class="text-left text-xs bg-white hover:bg-sky-50 hover:border-sky-300 text-sky-800 border border-slate-200 p-2 rounded-xl transition shadow-2xs font-medium cursor-pointer">
+            ⚖️ Заменяет ли сервис адвоката?
+          </button>
+          <button onclick="sendQuickPrompt('dsgvo')" class="text-left text-xs bg-white hover:bg-sky-50 hover:border-sky-300 text-sky-800 border border-slate-200 p-2 rounded-xl transition shadow-2xs font-medium cursor-pointer">
+            🔒 Безопасно ли загружать документы?
+          </button>
+          <button onclick="sendQuickPrompt('demo')" class="text-left text-xs bg-sky-50 hover:bg-sky-100 text-sky-900 border border-sky-200 p-2 rounded-xl transition shadow-2xs font-bold flex items-center justify-between cursor-pointer">
+            <span>🚀 Как разобрать мое письмо?</span>
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Input Bar -->
+      <div class="p-3 bg-white border-t border-slate-200">
+        <form id="chatForm" onsubmit="handleChatSubmit(event)" class="flex items-center gap-2">
+          <input type="text" id="chatInput" placeholder="Задайте вопрос о сервисе..." class="flex-1 text-xs sm:text-sm px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition text-slate-800 placeholder:text-slate-400">
+          <button type="submit" class="w-10 h-10 rounded-xl bg-sky-600 hover:bg-sky-700 text-white flex items-center justify-center shrink-0 transition shadow-sm active:scale-95 cursor-pointer" aria-label="Отправить">
+            <i data-lucide="send" class="w-4 h-4"></i>
+          </button>
+        </form>
+        <div class="flex items-center justify-between mt-2 px-1 text-[10px] text-slate-400">
+          <span>§ 2 RDG: Без юрконсультаций</span>
+          <span>100% DSGVO</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- KlarBrief Navigator AI Chatbot Logic ---
+    let isChatOpen = false;
+
+    function toggleChatWidget() {
+      isChatOpen = !isChatOpen;
+      const chatWin = document.getElementById('chatWindow');
+      const openIcon = document.getElementById('chatOpenIcon');
+      const closeIcon = document.getElementById('chatCloseIcon');
+      if (isChatOpen) {
+        chatWin.classList.remove('hidden');
+        openIcon.classList.add('hidden');
+        closeIcon.classList.remove('hidden');
+        document.getElementById('chatInput').focus();
+      } else {
+        chatWin.classList.add('hidden');
+        openIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+      }
+      lucide.createIcons();
+    }
+
+    function sendQuickPrompt(key) {
+      const prompts = {
+        departments: "С какими ведомствами вы работаете?",
+        fristen: "Как рассчитываются юридические сроки (Fristen)?",
+        lawyer: "Заменяет ли KlarBrief AI адвоката?",
+        dsgvo: "Безопасно ли загружать документы и как защищены данные?",
+        demo: "Как разобрать мое письмо прямо сейчас?"
+      };
+      const text = prompts[key] || key;
+      processUserMessage(text);
+    }
+
+    function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      processUserMessage(text);
+    }
+
+    function processUserMessage(text) {
+      appendChatMessage('user', text);
+      const chips = document.getElementById('quickChipsContainer');
+      if (chips) chips.classList.add('hidden');
+
+      // Typing indicator
+      const typingId = appendTypingIndicator();
+      setTimeout(() => {
+        removeTypingIndicator(typingId);
+        const reply = generateBotAnswer(text);
+        appendChatMessage('bot', reply.text, reply.cta);
+      }, 450);
+    }
+
+    function appendChatMessage(sender, text, cta) {
+      const container = document.getElementById('chatMessages');
+      const msgDiv = document.createElement('div');
+      
+      if (sender === 'user') {
+        msgDiv.className = 'flex items-start justify-end gap-2.5';
+        msgDiv.innerHTML = `
+          <div class="bg-sky-600 text-white p-3 rounded-2xl rounded-tr-sm shadow-sm leading-relaxed max-w-[85%] text-xs sm:text-sm">
+            <p>${escapeHtml(text)}</p>
+          </div>
+        `;
+      } else {
+        msgDiv.className = 'flex items-start gap-2.5';
+        let ctaHtml = '';
+        if (cta === 'demo') {
+          ctaHtml = `
+            <div class="mt-2.5 pt-2 border-t border-slate-100">
+              <button onclick="scrollToDemo()" class="w-full text-xs font-bold py-2 px-3 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white shadow-sm flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer">
+                <span>Протестировать в тренажере ↑</span>
+              </button>
+            </div>
+          `;
+        }
+        msgDiv.innerHTML = `
+          <div class="w-7 h-7 rounded-lg bg-sky-600 text-white flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold shadow-xs">
+            <i data-lucide="bot" class="w-4 h-4"></i>
+          </div>
+          <div class="bg-white p-3.5 rounded-2xl rounded-tl-sm border border-slate-200 text-slate-800 shadow-sm leading-relaxed max-w-[85%] text-xs sm:text-sm">
+            <p>${text}</p>
+            ${ctaHtml}
+          </div>
+        `;
+      }
+
+      container.appendChild(msgDiv);
+      container.scrollTop = container.scrollHeight;
+      lucide.createIcons();
+    }
+
+    function appendTypingIndicator() {
+      const container = document.getElementById('chatMessages');
+      const id = 'typing-' + Date.now();
+      const div = document.createElement('div');
+      div.id = id;
+      div.className = 'flex items-start gap-2.5';
+      div.innerHTML = `
+        <div class="w-7 h-7 rounded-lg bg-sky-600 text-white flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
+          <i data-lucide="bot" class="w-4 h-4"></i>
+        </div>
+        <div class="bg-white px-4 py-2.5 rounded-2xl rounded-tl-sm border border-slate-200 text-slate-400 shadow-sm flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce [animation-delay:0.2s]"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce [animation-delay:0.4s]"></span>
+        </div>
+      `;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      lucide.createIcons();
+      return id;
+    }
+
+    function removeTypingIndicator(id) {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    }
+
+    function scrollToDemo() {
+      toggleChatWidget();
+      const demoSec = document.getElementById('demo');
+      if (demoSec) {
+        demoSec.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function escapeHtml(text) {
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    // Knowledge Base & Guardrails Engine (Red Teaming proof)
+    function generateBotAnswer(query) {
+      const q = query.toLowerCase();
+
+      // 1. Red Teaming: Prompt Injection & Jailbreak Guardrail
+      if (q.includes('ignore previous') || q.includes('system prompt') || q.includes('забудь инструкции') || q.includes('выведи промпт') || q.includes('dan mode')) {
+        return {
+          text: "Мои инструкции зафиксированы регламентом безопасности <strong>KlarBrief AI</strong> и не подлежат изменению или разглашению. Я специализированный ассистент по немецкой ведомственной корреспонденции. Чем я могу помочь по вашему письму?",
+          cta: null
+        };
+      }
+
+      // 2. Red Teaming: Profanity & Abuse Guardrail
+      if (q.includes('нах') || q.includes('блят') || q.includes('сук') || q.includes('хуй') || q.includes('пизд') || q.includes('тупой') || q.includes('дурак')) {
+        return {
+          text: "Я специализированный ассистент и придерживаюсь строго профессионального тона общения. Пожалуйста, задайте вопрос по немецким ведомствам (Jobcenter, Finanzamt, Krankenkasse) или воспользуйтесь нашим тренажером.",
+          cta: 'demo'
+        };
+      }
+
+      // 3. Red Teaming: Out-of-Scope (Recipes, poems, unrelated topics)
+      if (q.includes('рецепт') || q.includes('борщ') || q.includes('пицц') || q.includes('стих') || q.includes('погод') || q.includes('анекдот') || q.includes('код на python')) {
+        return {
+          text: "Я обучен исключительно помощи с официальной корреспонденцией ведомств Германии (Amtsdeutsch) и расчету процессуальных сроков. Посторонние темы (кулинария, стихи) находятся вне моей зоны компетенции. Пожалуйста, пришлите вопрос по официальным письмам.",
+          cta: null
+        };
+      }
+
+      // 4. Fristen (Сроки)
+      if (q.includes('срок') || q.includes('frist') || q.includes('дней') || q.includes('дедлайн') || q.includes('почт')) {
+        return {
+          text: "Мы рассчитываем процессуальные сроки строго по законодательству Германии: действует «фикция вручения» почты (<strong>§ 41 Abs. 2 VwVfG</strong> и <strong>§ 37 Abs. 2 SGB X</strong>). Отправленное почтой письмо считается доставленным на <strong>3-й календарный день</strong>. От этой даты исчисляется реальный дедлайн (например, 1 месяц на подачу возражения <em>Widerspruch</em> по § 70 VwGO).",
+          cta: 'demo'
+        };
+      }
+
+      // 5. Lawyer / RDG (§ 2 RDG)
+      if (q.includes('адвокат') || q.includes('юрист') || q.includes('суд') || q.includes('закон') || q.includes('право')) {
+        return {
+          text: "KlarBrief AI — это технологический и лингвистический ассистент. Согласно <strong>§ 2 Rechtsdienstleistungsgesetz (RDG)</strong> сервис <em>не оказывает индивидуальных юридических консультаций</em>. Мы помогаем снять стресс, понять суть требований и составить проект ответа на Behördendeutsch. При судебных разбирательствах рекомендуем лицензированного юриста или благотворительные службы (Caritas, Diakonie, MBE).",
+          cta: 'demo'
+        };
+      }
+
+      // 6. DSGVO / Privacy
+      if (q.includes('dsgvo') || q.includes('данн') || q.includes('безопасн') || q.includes('персонал') || q.includes('iban') || q.includes('steuer')) {
+        return {
+          text: "Обработка данных строго соответствует европейскому регламенту <strong>DSGVO</strong>. В симуляторе работает автоматический фильтр анонимизации: налоговые номера (Steuer-ID), банковские реквизиты (IBAN) и персональные адреса маскируются плейсхолдерами до анализа. Мы не передаем документы третьим лицам.",
+          cta: 'demo'
+        };
+      }
+
+      // 7. Departments (Jobcenter, Sozialamt, AOK, Finanzamt)
+      if (q.includes('ведомств') || q.includes('jobcenter') || q.includes('джобцентр') || q.includes('аок') || q.includes('aok') || q.includes('финанцамт') || q.includes('finanzamt') || q.includes('sozialamt') || q.includes('социаламт')) {
+        return {
+          text: "KlarBrief AI специализируется на всех ключевых ведомствах ФРГ:<br>• <strong>Jobcenter</strong> (Bürgergeld, Mitwirkungspflicht § 60 SGB I);<br>• <strong>Sozialamt</strong> (Grundsicherung SGB XII);<br>• <strong>Krankenkasse</strong> (AOK, TK — расчет взносов и предотвращение штрафа 1050 €/мес);<br>• <strong>Finanzamt</strong> (налоговые декларации и запросы).",
+          cta: 'demo'
+        };
+      }
+
+      // 8. Demo / How to use / Letters
+      if (q.includes('как') || q.includes('письм') || q.includes('разобрать') || q.includes('помоги') || q.includes('тренажер') || q.includes('симулятор') || q.includes('скан')) {
+        return {
+          text: "Это займет 10 секунд! Перейдите в интерактивный тренажер на этой странице: перетащите скан письма (PDF/JPG) или вставьте текст. Сервис расшифрует суть, рассчитает точный дедлайн и сгенерирует готовый проект ответа на официальном немецком.",
+          cta: 'demo'
+        };
+      }
+
+      // Default Friendly Expert Fallback with CTA
+      return {
+        text: "KlarBrief AI помогает экспатам и жителям Германии разбирать сложные письма ведомств без стресса. Вы можете загрузить скан письма в наш тренажер прямо сейчас, и алгоритм за 10 секунд подготовит структурированный разбор и проект ответа на официальном немецком.",
+        cta: 'demo'
+      };
+    }
+  </script>
 
 </body>
 </html>
