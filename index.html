@@ -1795,6 +1795,10 @@
       const p = new URLSearchParams(window.location.search);
       if (p.has('reset_cookie') || p.has('test_cookie') || p.has('preview_cookie')) {
         localStorage.removeItem('klarbrief_cookie_consent');
+        // Clean URL so subsequent F5 reloads don't reset consent again
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
         const co = document.getElementById('cookie-overlay');
         if (co) {
           co.style.display = 'flex';
@@ -1804,8 +1808,6 @@
       } else if (localStorage.getItem('klarbrief_cookie_consent')) {
         const co = document.getElementById('cookie-overlay');
         if (co) co.style.display = 'none';
-        const cb = document.getElementById('cookie-banner');
-        if (cb) cb.style.display = 'none';
       }
     } catch (e) {}
 
