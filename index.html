@@ -1776,21 +1776,25 @@
       try {
         localStorage.setItem('klarbrief_cookie_consent', type || 'all');
       } catch (e) {}
-      const banner = document.getElementById('cookie-banner');
-      if (banner) {
-        banner.style.opacity = '0';
-        banner.style.pointerEvents = 'none';
-        banner.style.transform = 'translateY(20px)';
+      const overlay = document.getElementById('cookie-overlay');
+      if (overlay) {
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
         setTimeout(() => {
-          banner.style.display = 'none';
-        }, 200);
+          overlay.style.display = 'none';
+        }, 250);
       }
+      // Also hide legacy banner if present
+      const banner = document.getElementById('cookie-banner');
+      if (banner) banner.style.display = 'none';
     }
     window.acceptCookies = acceptCookies;
 
     // Check if consent was given
     try {
       if (localStorage.getItem('klarbrief_cookie_consent')) {
+        const co = document.getElementById('cookie-overlay');
+        if (co) co.style.display = 'none';
         const cb = document.getElementById('cookie-banner');
         if (cb) cb.style.display = 'none';
       }
@@ -1799,31 +1803,84 @@
     // Default to Russian on load
     setLang('ru');
   </script>
-  <!-- Cookie Consent Banner (DSGVO / ePrivacy) -->
-  <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 sm:right-auto sm:left-6 sm:max-w-md bg-slate-900 text-white p-5 rounded-2xl shadow-2xl border border-slate-700 z-50 transition-all duration-300">
+  <!-- Cookie Consent Modal Overlay (Universelles Overlay / CCM19 Standard) -->
+  <div id="cookie-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-all duration-300">
     <script>
-      // Immediate inline hide if already consented
+      // Immediate inline hide if consent already exists in localStorage
       try {
         if (localStorage.getItem('klarbrief_cookie_consent')) {
-          document.getElementById('cookie-banner').style.display = 'none';
+          document.getElementById('cookie-overlay').style.display = 'none';
         }
       } catch(e) {}
     </script>
-    <div class="flex items-start gap-3">
-      <div class="w-8 h-8 rounded-lg bg-sky-600/30 text-sky-400 flex items-center justify-center shrink-0 mt-0.5">
-        <i data-lucide="cookie" class="w-4 h-4"></i>
-      </div>
-      <div>
-        <h4 class="text-sm font-bold text-white mb-1" data-i18n="cookie_title">Файлы Cookie и защита данных</h4>
-        <p class="text-xs text-slate-400 leading-relaxed mb-4" data-i18n="cookie_desc">
-          Мы используем необходимые технические cookie для работы тренажера и анонимную аналитику для улучшения сервиса в соответствии с DSGVO.
-        </p>
-        <div class="flex items-center gap-2">
-          <button id="btnCookieAll" onclick="acceptCookies('all')" class="flex-1 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold py-2 px-3 rounded-lg transition" data-i18n="cookie_accept_all">Принять все</button>
-          <button id="btnCookieEssential" onclick="acceptCookies('essential')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium py-2 px-3 rounded-lg border border-slate-700 transition" data-i18n="cookie_essential">Только обязательные</button>
+    <div id="cookie-modal-card" class="max-w-lg w-full bg-slate-900 border border-slate-700/80 p-6 sm:p-8 rounded-3xl shadow-2xl text-white flex flex-col gap-5 animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Modal Header -->
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 border border-sky-500/30 flex items-center justify-center shrink-0">
+          <i data-lucide="shield-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-lg sm:text-xl font-bold text-white tracking-tight" data-i18n="cookie_modal_title">Настройки конфиденциальности (DSGVO)</h3>
+          <p class="text-xs text-slate-400 mt-1" data-i18n="cookie_modal_subtitle">Управление согласием на обработку данных по § 25 TDDDG</p>
         </div>
       </div>
+
+      <!-- Description Body -->
+      <div class="text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2">
+        <p data-i18n="cookie_modal_desc1">
+          Мы заботимся о вашей приватности. Перед использованием сервиса <strong>KlarBrief AI</strong> выберите параметры обработки технических и аналитических файлов cookie.
+        </p>
+        <p class="text-slate-400 text-xs" data-i18n="cookie_modal_desc2">
+          Обязательные файлы cookie необходимы для базового функционирования интерактивного симулятора и сохранения языка. Аналитические файлы помогают нам улучшать точность разбора ведомственных писем.
+        </p>
+      </div>
+
+      <!-- Cookie Categories Matrix -->
+      <div class="space-y-2.5 pt-1">
+        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-800/80 border border-slate-700/60 text-xs">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+            <div>
+              <span class="font-bold text-white block">Обязательные (Essenziell)</span>
+              <span class="text-[11px] text-slate-400">Сессия симулятора, язык, токен безопасности</span>
+            </div>
+          </div>
+          <span class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Всегда активны</span>
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-800/50 border border-slate-700/40 text-xs">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="bar-chart-2" class="w-4 h-4 text-sky-400"></i>
+            <div>
+              <span class="font-bold text-white block">Аналитика и улучшение (Statistik)</span>
+              <span class="text-[11px] text-slate-400">Анонимная статистика использования функций</span>
+            </div>
+          </div>
+          <span class="text-[11px] font-medium text-slate-400">Опционально</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons (Equal DSGVO balance) -->
+      <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+        <button id="btnCookieAll" onclick="acceptCookies('all')" class="w-full sm:flex-1 py-3 px-4 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-sky-600/30 transition active:scale-95 cursor-pointer flex items-center justify-center gap-2" data-i18n="cookie_btn_all">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Принять все</span>
+        </button>
+        <button id="btnCookieEssential" onclick="acceptCookies('essential')" class="w-full sm:flex-1 py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs sm:text-sm border border-slate-700 transition active:scale-95 cursor-pointer flex items-center justify-center gap-2" data-i18n="cookie_btn_essential">
+          <span>Только обязательные</span>
+        </button>
+      </div>
+
+      <!-- Legal Links Footer -->
+      <div class="flex items-center justify-center gap-4 text-[11px] text-slate-400 border-t border-slate-800 pt-3">
+        <button type="button" onclick="openLegalModal('impressum')" class="hover:text-sky-400 underline transition cursor-pointer">Impressum (§ 5 DDG)</button>
+        <span>•</span>
+        <button type="button" onclick="openLegalModal('datenschutz')" class="hover:text-sky-400 underline transition cursor-pointer">Datenschutz (DSGVO)</button>
+      </div>
+
     </div>
+  </div>
   </div>
 
 
