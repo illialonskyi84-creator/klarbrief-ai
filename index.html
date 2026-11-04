@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
@@ -1899,7 +1899,7 @@
 
 
   <!-- Floating AI Assistant / Chatbot Widget (KlarBrief Navigator) -->
-  <div id="klarbrief-chat-root" class="fixed bottom-6 right-6 z-40">
+  <div id="klarbrief-chat-root" class="hidden fixed bottom-6 right-6 z-40">
     <!-- Floating Trigger Button -->
     <button id="chatToggleBtn" onclick="toggleChatWidget()" class="relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-tr from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all border-2 border-white/90 group cursor-pointer" aria-label="Открыть чат-ассистент KlarBrief">
       <span class="absolute -top-1 -right-1 flex h-4 w-4">
@@ -2486,5 +2486,22 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
 
     </script>
 
+  <!-- DocsBot AI Official Integration (KlarBrief Navigator) -->
+  <script type="text/javascript">
+    window.DocsBotAI = window.DocsBotAI || {};
+    DocsBotAI.init = function(e){
+      return new Promise((t,r)=>{
+        var n=document.createElement("script");
+        n.type="text/javascript";
+        n.async=!0;
+        n.src="https://widget.docsbot.ai/chat.js";
+        let o=document.getElementsByTagName("script")[0];
+        o.parentNode.insertBefore(n,o);
+        n.addEventListener("load",(()=>{window.DocsBotAI.mount(e);t()}));
+        n.addEventListener("error",(e=>{r(e)}));
+      });
+    };
+    DocsBotAI.init({id: "5PKnFj2HvfX3ZSHCekov/wOgBIDOVoYk8skHQScu"});
+  </script>
 </body>
 </html>
