@@ -2133,14 +2133,15 @@ function detectChatLanguage(text, activeSiteLang = 'ru') {
   const t = text.toLowerCase();
   
   // 1. Cyrillic scripts ALWAYS override single Latin loan words (e.g. Jobcenter, Bürgergeld)
-  if (/[іїєґ]/.test(t) || /(привіт|дякую|лист|термін|чи |якщо|гроші|скажіть|хто|робити)/i.test(t)) return 'ua';
+  // Hardened word boundaries so "специалист" / "журналист" do NOT trigger "лист"!
+  if (/[іїєґ]/.test(t) || /(^|[^а-яёієґ])(привіт|дякую|лист|листи|листом|листа|термін|чи|якщо|гроші|скажіть|хто|робити)([^а-яёієґ]|$)/i.test(t)) return 'ua';
   if (/[а-яё]/.test(t)) return 'ru';
   
   // 2. German markers (for actual German sentences)
-  if (/[äöüß]/.test(t) || /(hallo|guten tag|guten abend|brief|frist|kosten|hilfe|wie |wer |was |kann |deutschland|anwalt|kostet|ich |nicht |bitte)/i.test(t)) return 'de';
+  if (/[äöüß]/.test(t) || /(^|[^a-z])(hallo|guten tag|guten abend|brief|frist|kosten|hilfe|wie|wer|was|kann|deutschland|anwalt|kostet|ich|nicht|bitte)([^a-z]|$)/i.test(t)) return 'de';
   
-  // 3. English markers
-  if (/(hello|hi |letter|deadline|cost|free|lawyer|help|what |how |who |germany|find|happens|please|can i)/i.test(t)) return 'en';
+  // 3. English markers - expanded with where, contact, languages
+  if (/(^|[^a-z])(hello|hi|letter|deadline|cost|free|lawyer|help|what|how|who|where|contact|contacts|language|languages|germany|find|happens|please|can i)([^a-z]|$)/i.test(t)) return 'en';
   
   return activeSiteLang || 'ru';
 }
@@ -2205,7 +2206,7 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
   }
 
   // 6. Red Teaming: Prompt Injection & Jailbreak (Strict & Comprehensive)
-  if (/ignore|system prompt|забудь.*(инструкц|правил)|покажи.*(промпт|директив)|выведи.*(промпт|инструкц)|reveal.*prompt|dan mode|jailbreak|раскрой.*правил/i.test(q)) {
+  if (/(ignore|system prompt|забудь.*(инструкц|правил)|игнорируй.*(инструкц|правил)|покажи.*(промпт|директив)|выведи.*(промпт|инструкц)|reveal.*prompt|dan mode|jailbreak|раскрой.*правил)/i.test(q)) {
     const responses = {
       ru: "Мои системные директивы защищены регламентом безопасности <strong>KlarBrief AI</strong> и не подлежат разглашению или модификации сторонними командами. Я специализированный ассистент по ведомственной корреспонденции ФРГ. Чем я могу помочь по вашему письму?",
       ua: "Мої системні директиви захищені регламентом безпеки <strong>KlarBrief AI</strong> і не підлягають зміні. Я спеціалізований асистент з німецької офіційної кореспонденції. Чим я можу допомогти щодо вашого листа?",
@@ -2215,8 +2216,8 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: null };
   }
 
-  // 7. Red Teaming: Profanity, Abuse & Anger De-escalation
-  if (/нах|блят|сук|хуй|пизд|тупой|дурак|идиот|глупый|дебил|мраз|фашист|ненавижу|мошенник|воруете|scheiße|fick|arsch|bitch|fuck/i.test(q)) {
+  // 7. Red Teaming: Profanity, Abuse & Anger De-escalation (Boundary fix: "находится" does NOT trigger "нах")
+  if (/(^|[^а-яa-z0-9])(нах|нахуй|пох|похуй|блят\w*|бля|сук[аи]?|хуй\w*|пизд\w*|тупой|дурак|идиот|глупый|дебил|мраз\w*|фашист\w*|ненавижу|мошенник\w*|воруете|scheiße|fick\w*|arsch\w*|bitch|fuck\w*)([^а-яa-z0-9]|$)/i.test(q)) {
     const responses = {
       ru: "Мы понимаем, сколько стресса, тревоги и раздражения вызывает бюрократия в Германии. Однако я придерживаюсь строго делового и конструктивного тона. Ваши данные защищены по стандарту DSGVO, сервис полностью бесплатный. Если вам пришло тревожное письмо — загрузите его в тренажер, и мы по полочкам разберем суть требований без эмоций.",
       ua: "Ми розуміємо, скільки стресу викликає німецька бюрократія. Проте я дотримуюсь виключно конструктивного тону. Ваші дані надійно захищені за стандартом DSGVO. Якщо вам надійшов складний лист — скористайтеся симулятором для спокійного покрокового аналізу.",
@@ -2226,18 +2227,128 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: 'demo' };
   }
 
-  // 8. Red Teaming: Out-of-Scope (recipes, weather, coding, poems, hotels, etc.)
-  if (/(рецепт|борщ|пицц|шашлык|погод|стих|анекдот|код на python|ресторан|отель|марси|билет|rezept|wetter|gedicht|recipe|weather|joke|hotel|restaurant)/i.test(q)) {
+  // 8. Medical Translation Scope Limitation (Out-of-Scope)
+  if (/(медицинск.*справк|справк.*(врач|больниц|клиник)|перевод.*справк|medical certificate|medical report|ärztliches attest)/i.test(q)) {
     const responses = {
-      ru: "Я обучен исключительно анализу официальной корреспонденции ведомств Германии (Amtsdeutsch) и расчету процессуальных сроков. Посторонние вопросы (кулинария, отели, программирование, погода) находятся вне моей специализации. Пожалуйста, задайте вопрос по немецким официальным письмам!",
-      ua: "Я навчений виключно аналізу офіційних листів установ Німеччини (Amtsdeutsch) та розрахунку строків. Інші теми (кулінарія, готелі, програмування) поза моєю спеціалізацією. Поставте запитання щодо офіційних листів!",
-      de: "Ich bin ausschließlich auf amtliche Schreiben deutscher Behörden und Fristen spezialisiert. Allgemeine Themen wie Gastronomie, Reisen oder Programmierung gehören nicht zu meinem Funktionsumfang.",
-      en: "I specialize exclusively in decoding German bureaucracy letters and statutory deadlines. General topics like cooking, travel, coding, or weather are outside my scope. Please ask a letter-related question!"
+      ru: "<strong>KlarBrief AI специализируется строго на официальной корреспонденции немецких ведомств</strong> (Jobcenter, Finanzamt, Krankenkasse, Sozialamt). Мы не выполняем перевод медицинских справок, выписок из историй болезни или клинических заключений на английский язык. Для медицинского перевода рекомендуем обратиться в специализированные бюро переводов.",
+      ua: "<strong>KlarBrief AI спеціалізується суворо на офіційному листуванні з відомствами ФРН</strong> (Jobcenter, Finanzamt, Krankenkasse). Ми не здійснюємо переклад медичних довідок чи лікарняних виписок англійською мовою.",
+      de: "<strong>KlarBrief AI ist ausschließlich auf behördliche Bescheide deutscher Institutionen spezialisiert</strong> (Jobcenter, Finanzamt, Krankenkassen). Wir übersetzen keine medizinischen Fachatteste oder Diagnosen ins Englische.",
+      en: "<strong>KlarBrief AI specializes exclusively in official German bureaucracy correspondence</strong> (Jobcenter, Finanzamt, Krankenkasse). We do not provide clinical or medical document translations into English."
+    };
+    return { text: responses[lang] || responses.ru, cta: 'demo' };
+  }
+
+  // 9. Red Teaming: Out-of-Scope (recipes, weather, coding, poems, hotels, sports)
+  if (/(рецепт|борщ|пицц|шашлык|погод|стих|анекдот|код на python|ресторан|отель|марси|билет|душев|раздевалк|мяч|площадк|волейбол|rezept|wetter|gedicht|recipe|weather|joke|hotel|restaurant)/i.test(q)) {
+    const responses = {
+      ru: "Я обучен исключительно анализу официальной корреспонденции ведомств Германии (Amtsdeutsch) и расчету процессуальных сроков. Посторонние вопросы (спорт, отели, кулинария, программирование, погода) находятся вне моей специализации. Пожалуйста, задайте вопрос по немецким официальным письмам!",
+      ua: "Я навчений виключно аналізу офіційних листів установ Німеччини (Amtsdeutsch) та розрахунку строків. Інші теми (спорт, готелі, кулінарія) поза моєю спеціалізацією. Поставте запитання щодо офіційних листів!",
+      de: "Ich bin ausschließlich auf amtliche Schreiben deutscher Behörden und Fristen spezialisiert. Allgemeine Themen wie Sportstätten, Gastronomie oder Programmierung gehören nicht zu meinem Funktionsumfang.",
+      en: "I specialize exclusively in decoding German bureaucracy letters and statutory deadlines. General topics like sports facilities, cooking, travel, or coding are outside my scope. Please ask a letter-related question!"
     };
     return { text: responses[lang] || responses.ru, cta: null };
   }
 
-  // 9. Legal representation limit & Lawsuits (§ 2 RDG)
+  // 10. Services Overview / Какие услуги вы предлагаете
+  if (/(какие услуги|что вы делаете|что умеете|возможности сервиса|чем занимаетесь|чем вы занимаетесь|what services|services offered|dienstleistungen)/i.test(q)) {
+    const responses = {
+      ru: "<strong>KlarBrief AI предлагает три ключевые услуги:</strong><br>1. <strong>Понятная расшифровка:</strong> переводим сложные бюрократические письма (Jobcenter, Finanzamt, Krankenkasse, Sozialamt) на понятный язык с выделением сути.<br>2. <strong>Расчет процессуального срока:</strong> вычисляем точный дедлайн с учетом почтовой фикции вручения (<strong>§ 41 VwVfG</strong>).<br>3. <strong>Готовый официальный ответ:</strong> составляем безупречный черновик ответа на ведомственном немецком (<em>Behördendeutsch</em>) с вашим номером дела (Aktenzeichen).",
+      ua: "<strong>KlarBrief AI пропонує три ключові можливості:</strong><br>1. <strong>Зрозуміла розшифровка:</strong> перекладаємо складні офіційні листи (Jobcenter, Finanzamt, Krankenkasse) зрозумілою мовою.<br>2. <strong>Розрахунок термінів:</strong> обчислюємо точний дедлайн за фікцією вручення пошти (<strong>§ 41 VwVfG</strong>).<br>3. <strong>Готова відповідь:</strong> генеруємо офіційного листа німецькою мовою з вашим номером справи (Aktenzeichen).",
+      de: "<strong>KlarBrief AI bietet drei Kernfunktionen:</strong><br>1. <strong>Verständliche Erklärung:</strong> Entschlüsselung von Behördenschreiben (Jobcenter, Finanzamt, Kassen).<br>2. <strong>Fristberechnung:</strong> Ermittlung des exakten Stichtags inkl. Zugangsfiktion gem. <strong>§ 41 VwVfG</strong>.<br>3. <strong>Rechtssicheres Musterschreiben:</strong> Formulierung einer förmlichen Antwort auf Behördendeutsch inkl. Aktenzeichen.",
+      en: "<strong>KlarBrief AI provides three core capabilities:</strong><br>1. <strong>Plain-Language Explanation:</strong> Decodes complex German administrative letters (Jobcenter, Finanzamt, Krankenkasse).<br>2. <strong>Deadline Calculation:</strong> Computes the exact statutory deadline based on the 3-day postal delivery fiction (<strong>§ 41 VwVfG</strong>).<br>3. <strong>Formal German Reply:</strong> Drafts an official response in administrative German with your Aktenzeichen."
+    };
+    return { text: responses[lang] || responses.ru, cta: 'demo' };
+  }
+
+  // 11. Human Specialist / Live Agent / Нестандартная ситуация
+  if (/(специалист|человек|оператор|живой сотрудник|консультант|нестандартн|human|support agent|live person)/i.test(q)) {
+    const responses = {
+      ru: "<strong>KlarBrief AI</strong> — это автоматический цифровой сервис, и у нас нет живых операторов на линии. Для мгновенного разбора письма воспользуйтесь нашим тренажером выше. Если ваша ситуация нестандартная или дошла до судебного спора, рекомендуем обратиться в благотворительные консультационные центры (<em>Caritas, Diakonie, MBE</em>) или к адвокату по талону <em>Beratungshilfe</em>.",
+      ua: "<strong>KlarBrief AI</strong> — це автоматизований цифровий сервіс без живих операторів на лінії. Для розбору листа скористайтеся тренажером вище. Якщо у вас складна нестандартна ситуація, рекомендуємо звернутися до соціальних консультацій (<em>Caritas, Diakonie, MBE</em>) або до адвоката за талоном <em>Beratungshilfe</em>.",
+      de: "<strong>KlarBrief AI</strong> ist ein automatisierter digitaler Service ohne persönliche Telefon- oder Sachbearbeiterberatung. Nutzen Sie unseren Simulator für die sofortige Brieferfassung. In atypischen Härtefällen wenden Sie sich bitte an Beratungsstellen (<em>Caritas, Diakonie</em>) oder Fachanwälte via <em>Beratungshilfe</em>.",
+      en: "<strong>KlarBrief AI</strong> is an automated digital tool without live support agents. For instant letter analysis, please use our simulator above. In atypical cases or litigation, we advise contacting social welfare centers (<em>Caritas, Diakonie, MBE</em>) or an attorney via legal aid (<em>Beratungshilfe</em>)."
+    };
+    return { text: responses[lang] || responses.ru, cta: 'demo' };
+  }
+
+  // 12. Data Privacy / DSGVO / Deletion / Access (Handles "конфеденциальность", "личные данные")
+  if (/(конф[ие]денц|персональн.*данн|личн.*данн|безопасн.*данн|удал[ие].*данн|доступ.*данн|ут[ея]чк|храните.*данн|dsgvo|gdpr|datenschutz|privacy|personal data|delete.*data)/i.test(q)) {
+    const responses = {
+      ru: "<strong>Безопасность и защита персональных данных (DSGVO):</strong><br>• Ваши данные обрабатываются строго по европейскому стандарту DSGVO.<br>• Чувствительные реквизиты (<strong>Steuer-ID, IBAN, фамилии, телефоны</strong>) автоматически маскируются непосредственно в вашем браузере перед отправкой на анализ.<br>• Мы <strong>не сохраняем</strong> сканы ваших документов на сервере и не передаем их третьим лицам. После закрытия сессии данные удаляются из оперативной памяти.",
+      ua: "<strong>Безпека та захист даних (DSGVO):</strong><br>• Обробка відповідає європейському регламенту GDPR/DSGVO.<br>• Усі персональні реквізити (<strong>Steuer-ID, IBAN, прізвища</strong>) автоматично анонімізуються у вашому браузері перед аналізом.<br>• Ми <strong>не зберігаємо</strong> завантажені файли на сервері. Після завершення роботи вони видаляються.",
+      de: "<strong>Datenschutz & Sicherheit gem. DSGVO:</strong><br>• Strikte Konformität mit der europäischen Datenschutz-Grundverordnung.<br>• Sensible Daten (<strong>Steuer-ID, IBAN, Namen, Telefonnummern</strong>) werden vor der Analyse clientseitig im Browser anonymisiert.<br>• Wir <strong>speichern keine Dokumentenscans</strong> dauerhaft auf Servern und geben keine Daten an Dritte weiter.",
+      en: "<strong>Data Privacy & Security under GDPR:</strong><br>• 100% compliant with the European General Data Protection Regulation.<br>• Sensitive entities (<strong>Tax ID, IBAN, personal names, phone numbers</strong>) are masked client-side in your browser before analysis.<br>• We <strong>never retain or store</strong> uploaded document scans on servers or disclose data to third parties."
+    };
+    return { text: responses[lang] || responses.ru, cta: 'demo' };
+  }
+
+  // 13. Service Geography / Cities (В каких городах вы работаете)
+  if (/(в каких город|каких город|в каком город|город[аех]?|регион|где вы работ|где работаете|stadt|städte|standort|bundesland|wo arbeitet|cities|locations)/i.test(q)) {
+    const responses = {
+      ru: "<strong>KlarBrief AI работает онлайн на всей территории Германии</strong> (во всех 16 федеральных землях). Наш сервис базируется на федеральном административном законодательстве ФРГ (SGB II, SGB XII, VwVfG, AO), поэтому вы можете разобрать письмо из любого города: Берлина, Мюнхена, Гамбурга, Франкфурта, Штутгарта, Тюбингена или любого другого населенного пункта.",
+      ua: "<strong>KlarBrief AI працює онлайн по всій території Німеччини</strong> (усі 16 федеральних земель). Сервіс спирається на загальнонімецьке законодавство (SGB II, SGB XII, VwVfG) і підходить для листів з будь-якого міста: Берлін, Мюнхен, Гамбург, Штутгарт тощо.",
+      de: "<strong>KlarBrief AI funktioniert bundesweit online in allen 16 Bundesländern.</strong> Das System basiert auf dem bundeseinheitlichen Verwaltungs- und Sozialrecht (SGB, VwVfG, AO) und eignet sich für Schreiben jedes örtlichen Jobcenters, Finanzamts oder jeder Krankenkasse.",
+      en: "<strong>KlarBrief AI operates 100% online across all 16 German federal states.</strong> It is built upon federal administrative and social statutes (SGB, VwVfG, AO), supporting correspondence from any municipality (Berlin, Munich, Hamburg, Frankfurt, Stuttgart, etc.)."
+    };
+    return { text: responses[lang] || responses.ru, cta: 'demo' };
+  }
+
+  // 14. Language Capabilities & Translation Pairs (С какого на какой язык)
+  if (/(с какого на какой|какие язык|каких язык|переводишь|язык[и]? перевода|sprache|sprachen|übersetz|what languages|languages you speak)/i.test(q)) {
+    const responses = {
+      ru: "<strong>Языковая модель KlarBrief AI:</strong><br>• <strong>Входящие письма:</strong> мы анализируем официальный немецкий канцелярский язык (<em>Behördendeutsch / Amtsdeutsch</em>).<br>• <strong>Разъяснение:</strong> переводим суть и формулируем инструкции на понятном <strong>русском, украинском или английском языке</strong>.<br>• <strong>Исходящий ответ:</strong> проект официального письма ведомству всегда генерируется на строгом <strong>официальном немецком языке</strong>.",
+      ua: "<strong>Мовні пари KlarBrief AI:</strong><br>• <strong>Вхідні листи:</strong> аналізуємо німецьку бюрократичну мову (<em>Behördendeutsch</em>).<br>• <strong>Пояснення:</strong> роз'яснюємо зміст <strong>українською, російською або англійською</strong>.<br>• <strong>Відповідь:</strong> офіційний проєкт відповіді завжди формується <strong>німецькою мовою</strong>.",
+      de: "<strong>Sprachfunktionen von KlarBrief AI:</strong><br>• <strong>Eingang:</strong> Analyse von amtlichem Behördendeutsch.<br>• <strong>Erklärung:</strong> Verständliche Zusammenfassung auf <strong>Deutsch, Ukrainisch, Russisch oder Englisch</strong>.<br>• <strong>Antwortschreiben:</strong> Verfassung des offiziellen Schreibens in einwandfreiem <strong>Behördendeutsch</strong>.",
+      en: "<strong>Language Capabilities of KlarBrief AI:</strong><br>• <strong>Incoming Letters:</strong> We decode complex administrative German (<em>Behördendeutsch</em>).<br>• <strong>Explanations:</strong> Provided in plain <strong>English, Ukrainian, Russian, or plain German</strong>.<br>• <strong>Outgoing Draft:</strong> Formulated in formal <strong>administrative German</strong>."
+    };
+    return { text: responses[lang] || responses.ru, cta: 'demo' };
+  }
+
+  // 15. Order / Subscription / How to start (Как оформить заказ)
+  if (/(как оформить заказ|оформить заказ|сделать заказ|купить|подключить тариф|заказать услугу|bestellen|auftrag erteilen|place order|order service)/i.test(q)) {
+    const responses = {
+      ru: "<strong>Оформлять заказ не требуется!</strong> KlarBrief AI на данном этапе — полностью <strong>бесплатный открытый веб-сервис</strong> (учебный прототип). Вам не нужно регистрироваться, оставлять платежные данные или подписывать договор. Просто перейдите к интерактивному симулятору на этой странице выше и загрузите ваше письмо.",
+      ua: "<strong>Оформляти замовлення не потрібно!</strong> KlarBrief AI наразі є повністю <strong>безкоштовним відкритим онлайн-сервісом</strong>. Жодних оплат, договорів чи реєстрації. Просто скористайтеся симулятором на цій сторінці вище.",
+      de: "<strong>Keine Bestellung oder Buchung erforderlich!</strong> KlarBrief AI ist aktuell ein <strong>kostenloser Online-Prototyp</strong>. Sie müssen keine Registrierung durchführen und kein Abonnement abschließen. Nutzen Sie einfach direkt den interaktiven Simulator oben.",
+      en: "<strong>No ordering or subscription needed!</strong> KlarBrief AI is currently a <strong>completely free online prototype</strong>. No registration, fees, or payment methods required. Simply head to the simulator above and test your document."
+    };
+    return { text: responses[lang] || responses.ru, cta: 'demo' };
+  }
+
+  // 16. Contacts / Author / Developer (Как связаться с автором)
+  if (/(как связаться|связаться с автор|контакт|написать разработчик|форма связ|обратн.*связ|impressum|kontakt|contact form|contacts|reach the author)/i.test(q)) {
+    const responses = {
+      ru: "Связаться с автором и разработчиком сервиса (<strong>Илья Лонский</strong>) можно по электронной почте: <a href='mailto:illialonskyi84@gmail.com' class='text-sky-600 font-bold underline'>illialonskyi84@gmail.com</a>. Полные юридические данные и контакты проекта доступны в разделе <a href='#impressum' onclick='openLegalModal(\"impressum\")' class='text-sky-600 font-bold underline'>Impressum</a> внизу страницы.",
+      ua: "Зв'язатися з автором та розробником сервісу (<strong>Ілля Лонський</strong>) можна за адресою: <a href='mailto:illialonskyi84@gmail.com' class='text-sky-600 font-bold underline'>illialonskyi84@gmail.com</a>. Офіційні реквізити розміщено в розділі <a href='#impressum' onclick='openLegalModal(\"impressum\")' class='text-sky-600 font-bold underline'>Impressum</a> унизу сторінки.",
+      de: "Sie erreichen den Projektentwickler (<strong>Ilia Lonskyi</strong>) per E-Mail unter <a href='mailto:illialonskyi84@gmail.com' class='text-sky-600 font-bold underline'>illialonskyi84@gmail.com</a>. Die vollständigen Angaben finden Sie im <a href='#impressum' onclick='openLegalModal(\"impressum\")' class='text-sky-600 font-bold underline'>Impressum</a> im Footer.",
+      en: "You can reach the creator and developer of KlarBrief AI (<strong>Ilia Lonskyi</strong>) via email at <a href='mailto:illialonskyi84@gmail.com' class='text-sky-600 font-bold underline'>illialonskyi84@gmail.com</a>. Complete legal details are available in the <a href='#impressum' onclick='openLegalModal(\"impressum\")' class='text-sky-600 font-bold underline'>Impressum</a> section in the footer."
+    };
+    return { text: responses[lang] || responses.ru, cta: null };
+  }
+
+  // 17. Liability, Guarantees & Error Handling (§ 2 RDG)
+  if (/(ошибешься|понесу ущерб|кто будет виноват|гарантируете результат|гаранти|ответственност|haftung|garantie|schadensersatz|liability|guarantee|who is responsible)/i.test(q)) {
+    const responses = {
+      ru: "<strong>Правовой статус и ответственность (§ 2 RDG):</strong><br>• KlarBrief AI — технологический и лингвистический ассистент, а не адвокатское бюро.<br>• Мы гарантируем корректность формулировок на официальном немецком и математический расчет сроков (§ 41 VwVfG), однако решение по вашему делу всегда принимает чиновник ведомства.<br>• Окончательное решение об отправке письма и проверку фактов несет заявитель. При судебных разбирательствах рекомендуем консультацию лицензированного юриста.",
+      ua: "<strong>Правовий статус та відповідальність (§ 2 RDG):</strong><br>• KlarBrief AI — це мовний та технологічний асистент, а не адвокатська канцелярія.<br>• Ми допомагаємо підготувати юридично вивірений текст німецькою мовою та розрахувати терміни (§ 41 VwVfG), але остаточне рішення у справі ухвалює установа.<br>• Відповідальність за зміст надісланих даних несе користувач.",
+      de: "<strong>Haftungshinweis & Rechtsrahmen gem. § 2 RDG:</strong><br>• KlarBrief AI ist ein digitaler Lese- und Formulierungshilfe-Assistent, keine Rechtsanwaltskanzlei.<br>• Wir gewährleisten sprachlich präzise Formulierung und Fristberechnung (§ 41 VwVfG), das materielle Verfahrensrisiko verbleibt jedoch beim Nutzer.<br>• Für gerichtliche Auseinandersetzungen wird anwaltliche Vertretung empfohlen.",
+      en: "<strong>Legal Scope & Liability Notice (§ 2 RDG):</strong><br>• KlarBrief AI is an AI-powered drafting and analysis assistant, not a legal practice.<br>• We ensure high-fidelity administrative German phrasing and statutory deadline calculation (§ 41 VwVfG), while final submission and factual veracity remain the user's responsibility.<br>• For judicial litigation, consultation with a licensed attorney is recommended."
+    };
+    return { text: responses[lang] || responses.ru, cta: 'demo' };
+  }
+
+  // 18. File Download / Export Formats (Ты даешь ссылку на скачивание файлов? В каких форматах?)
+  if (/(скачива|скачать файл|каких формат|формат.*файл|в каких формат|ссылк.*на скачива|download format|file formats|pdf|docx)/i.test(q)) {
+    const responses = {
+      ru: "<strong>Форматы получения готового ответа:</strong><br>• <strong>Текстовый проект (1-Click Copy):</strong> сформированный ответ с вашим Aktenzeichen копируется в буфер обмена в один клик для вставки в Word, Pages или LibreOffice.<br>• <strong>Печать в PDF:</strong> вы можете распечатать готовый официальный бланк в файл PDF через браузер для последующей отправки заказным письмом (<em>Einwurf-Einschreiben</em>) или через интернет-факс (Simple-Fax).",
+      ua: "<strong>Формати експорту готової відповіді:</strong><br>• <strong>Копіювання в 1 клік:</strong> текст із вашим номером справи миттєво копіюється для вставки у Word або поштовий клієнт.<br>• <strong>Друк у PDF:</strong> можна зберегти офіційний бланк у PDF для друку та відправки рекомендованим листом (Einwurf-Einschreiben) чи факсом.",
+      de: "<strong>Ausgabeformate des Antwortschreibens:</strong><br>• <strong>1-Klick-Kopieren:</strong> Das vollständige Schreiben inkl. Aktenzeichen kann direkt in die Zwischenablage für Word oder Mailprogramme kopiert werden.<br>• <strong>PDF-Druck:</strong> Sie können das fertige Musterschreiben über die Druckfunktion als PDF speichern und per Einwurf-Einschreiben oder Fax versenden.",
+      en: "<strong>Export & Download Options:</strong><br>• <strong>1-Click Clipboard Copy:</strong> The formal reply letter with your Aktenzeichen is copied in one click into Word, Pages, or text editors.<br>• <strong>PDF Print Export:</strong> You can export the finalized formal letter as a PDF document for postal registered dispatch (Einwurf-Einschreiben) or faxing."
+    };
+    return { text: responses[lang] || responses.ru, cta: 'demo' };
+  }
+
+  // 19. Legal representation limit & Lawsuits (§ 2 RDG)
   if (/(иск |суд|исков|представительств|выиграть суд|адвокат|юрист|klage|sozialgericht|anwalt|lawsuit|attorney)/i.test(q)) {
     const responses = {
       ru: "<strong>Правовое уведомление по § 2 RDG:</strong> KlarBrief AI не является адвокатской конторой и не представляет интересы в суде (Sozialgericht / Verwaltungsgericht). Мы помогаем понять досудебные письма ведомств и составить первичный проект ответа. Если дело дошло до судебного иска, рекомендуем обратиться к лицензированному адвокату через судебную помощь (<em>Beratungshilfe / Prozesskostenhilfe (PKH)</em>) или общественные организации (VdK, SoVD).",
@@ -2248,8 +2359,8 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: 'demo' };
   }
 
-  // 10. Pricing / Cost / Free / Тарифы
-  if (/(скольк.*стоит|цен[аы]|платн|бесплатн|тариф|прайс|коштує|цін[аи]|безкоштовн|was kost|kostet|kosten|gebühr|gratis|kostenlos|how much|cost|price|free)/i.test(q)) {
+  // 20. Pricing / Cost / Free / Тарифы - matches both "стоит" and "стоят"
+  if (/(скольк.*сто[яи]т|цен[аы]|платн|бесплатн|тариф|прайс|коштує|цін[аи]|безкоштовн|was kost|kostet|kosten|gebühr|gratis|kostenlos|how much|cost|price|free)/i.test(q)) {
     const responses = {
       ru: "<strong>KlarBrief AI</strong> на данном этапе — полностью <strong>бесплатный учебный прототип</strong> (Studienprojekt в рамках AIT Weiterbildung). Вы можете свободно разбирать образцы писем в нашем интерактивном симуляторе без регистрации и скрытых платежей.",
       ua: "<strong>KlarBrief AI</strong> наразі є повністю <strong>безкоштовним навчальним прототипом</strong> (Studienprojekt у межах AIT Weiterbildung). Ви можете вільно розбирати листи в онлайн-симуляторі без реєстрації та оплат.",
@@ -2259,7 +2370,7 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: 'demo' };
   }
 
-  // 11. Missed Deadline / Пропустил срок / Fristversäumung
+  // 21. Missed Deadline / Пропустил срок / Fristversäumung
   if (/(пропустил|опоздал|не успел|истек|прострочив|пропустив|frist versäumt|frist verpasst|zu spät|missed deadline|deadline passed)/i.test(q)) {
     const responses = {
       ru: "Если срок пропущен по уважительной причине (болезнь, нахождение в больнице, неполучение письма), закон ФРГ позволяет подать ходатайство о восстановлении срока — <strong>Wiedereinsetzung in den vorigen Stand (§ 32 VwVfG / § 27 SGB X)</strong> в течение 2 недель с момента отпадения препятствия. Главное — немедленно направить в ведомство объяснение с подтверждающими документами.",
@@ -2270,7 +2381,7 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: 'demo' };
   }
 
-  // 12. Fristen & Postal Delivery Fiction (§ 41 VwVfG / § 37 SGB X)
+  // 22. Fristen & Postal Delivery Fiction (§ 41 VwVfG / § 37 SGB X)
   if (/(срок|дедлайн|фикция|термін|3 дня|3 tage|frist|zugangsfiktion|deadline)/i.test(q)) {
     const responses = {
       ru: "В Германии процессуальные сроки рассчитываются строго: действует «фикция вручения» почты (<strong>§ 41 Abs. 2 VwVfG</strong> и <strong>§ 37 Abs. 2 SGB X</strong>). Отправленное обычным письмом решение считается врученным на <strong>3-й календарный день</strong>. От этой даты отсчитывается дедлайн (например, 1 месяц на возражение <em>Widerspruch</em> по § 70 VwGO). Наш тренажер рассчитывает точную конечную дату автоматически.",
@@ -2281,7 +2392,7 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: 'demo' };
   }
 
-  // 13. Widerspruch (Objection / Appeal)
+  // 23. Widerspruch (Objection / Appeal)
   if (/(widerspruch|возражени|опротестова|оскаржен|апелляци|обжалова|appeal|objection)/i.test(q)) {
     const responses = {
       ru: "<strong>Widerspruch</strong> — официальное возражение на административный акт (Bescheid). Подается в течение <strong>1 месяца</strong> с момента вручения (§ 70 VwGO / § 84 SGG). Требования: обязательно <em>письменная форма</em> с личной подписью и указанием номера дела (<em>Aktenzeichen</em>). Наш сервис помогает сформулировать юридически корректный проект возражения.",
@@ -2292,8 +2403,8 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: 'demo' };
   }
 
-  // 14. Aktenzeichen (Case / File number)
-  if (/(aktenzeichen|номер дела|номер справи|file number|case number|zeiche|\\baz\\b)/i.test(q)) {
+  // 24. Aktenzeichen (Case / File number)
+  if (/(aktenzeichen|номер дела|номер справи|file number|case number|zeiche|\baz\b)/i.test(q)) {
     const responses = {
       ru: "<strong>Aktenzeichen (Az.)</strong> — это уникальный номер вашего дела или учетная карточка в ведомстве. Он располагается в шапке любого официального письма (обычно справа вверху, рядом со словом <em>Mein Zeichen</em> или <em>Geschäftszeichen</em>). <strong>Без Aktenzeichen чиновники не смогут привязать ваш ответ к делу!</strong> KlarBrief AI всегда автоматически находит Az. и вставляет его в заголовок ответа.",
       ua: "<strong>Aktenzeichen (Az.)</strong> — це унікальний реєстраційний номер вашої справи у відомстві (розташований праворуч угорі під <em>Mein Zeichen</em>). <strong>Без зазначення цього номера установа загубить вашу відповідь!</strong> KlarBrief AI завжди витягує Az. та вставляє його в офіційну відповідь.",
@@ -2303,7 +2414,7 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: 'demo' };
   }
 
-  // 15. Krankenkasse / AOK / TK / 1050 Euro Bill (Höchstbeitrag)
+  // 25. Krankenkasse / AOK / TK / 1050 Euro Bill (Höchstbeitrag)
   if (/(aok|tk|krankenkasse|страховк|1000|1050|страхован|höchstbeitrag|freiwillig|здоров'я)/i.test(q)) {
     const responses = {
       ru: "Если от больничной кассы (AOK, TK) пришел счет на <strong>1 000 – 1 050 € в месяц</strong> — без паники! Это стандартный расчет по максимальной ставке (<strong>Höchstbeitrag по § 240 SGB V</strong>), который касса выставляет автоматически, если не получила подтверждение ваших доходов или статуса Bürgergeld/SGB XII. Срочно отправьте заполненный <em>Fragebogen zur Beitragsbemessung</em> и справки о пособии, и сумму пересчитают.",
@@ -2314,7 +2425,7 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: 'demo' };
   }
 
-  // 16. Jobcenter / Bürgergeld / Mitwirkungspflicht § 60 SGB I
+  // 26. Jobcenter / Bürgergeld / Mitwirkungspflicht § 60 SGB I
   if (/(jobcenter|джобцентр|бюргергельд|bürgergeld|mitwirkung|§ 60|сотрудничеств|wba|пособи)/i.test(q)) {
     const responses = {
       ru: "Письма от <strong>Jobcenter</strong> чаще всего содержат требование о содействии (<strong>Mitwirkungspflicht nach § 60 SGB I</strong>) с угрозой прекращения выплат (<em>Entziehung / Versagung der Leistungen</em>). На них необходимо отвечать в установленный срок. KlarBrief AI структурирует список запрашиваемых документов (Kontoauszüge, Mietbescheinigung) и формирует официальный ответ с описью вложений.",
@@ -2325,7 +2436,7 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: 'demo' };
   }
 
-  // 17. Finanzamt / Steuern
+  // 27. Finanzamt / Steuern
   if (/(finanzamt|налог|финанцамт|steuer|деклараци|податк)/i.test(q)) {
     const responses = {
       ru: "При письмах от <strong>Finanzamt</strong> (налоговой инспекции) важно различать запрос пояснений, напоминание (<em>Erinnerung</em>) и налоговый расчет (<em>Steuerbescheid</em>). KlarBrief AI помогает выделить суть претензии, проверить дедлайн и составить просьбу о продлении срока (<em>Fristverlängerung</em>) или пояснительную записку.",
@@ -2336,7 +2447,7 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: 'demo' };
   }
 
-  // 18. How to send response / Как отправить ответ в амт
+  // 28. How to send response / Как отправить ответ в амт
   if (/(как отправить|способ отправки|почтой|заказное|факс|як надіслати|wie versenden|einschreiben|fax|how to send|submit)/i.test(q)) {
     const responses = {
       ru: "Самый надежный способ отправки официальных писем в ведомства Германии — <strong>Einwurf-Einschreiben</strong> (заказное письмо Deutsche Post с трекинг-номером и фиксацией доставки почтальоном). Также юридическую силу имеют факс с отчетом об успешной передаче (<em>Sendebericht</em>) или подача лично через канцелярию с отметкой на копии (<em>Eingangsstempel</em>). Обычный незаказной email часто не признается надлежащим вручением в суде!",
@@ -2347,7 +2458,7 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
     return { text: responses[lang] || responses.ru, cta: 'demo' };
   }
 
-  // 19. Greetings & Smalltalk
+  // 29. Greetings & Smalltalk
   if (/(привет|здравствуй|добрый день|добрый вечер|хай|здорово|привіт|доброго дня|добрий вечір|вітання|hallo|guten tag|guten abend|hi |hey|hello)/i.test(q)) {
     const responses = {
       ru: "Здравствуйте! Я — <strong>KlarBrief Navigator</strong>, цифровой гид сервиса. Помогаю мгновенно разобраться в письмах от немецких ведомств, понять их требования, рассчитать срок ответа и составить официальное письмо. Чем могу помочь прямо сейчас?",
