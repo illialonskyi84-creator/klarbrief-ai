@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KlarBrief AI — Сценарий защиты и чек-лист</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --border: #cbd5e1;
+        --text: #0f172a;
+        --text-muted: #64748b;
+        --accent: #0284c7;
+        --accent-hover: #0369a1;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+    p, ul, ol {
+      margin-bottom: 1rem;
+    }
+    ul, ol {
+      padding-left: 1.5rem;
+    }
+    li {
+      margin-bottom: 0.4rem;
+    }
+    strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    pre {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    code {
+      font-family: Consolas, monospace;
+      background: rgba(148, 163, 184, 0.15);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.92rem;
+    }
+    th, td {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    th {
+      background: rgba(56, 189, 248, 0.15);
+      font-weight: 700;
+    }
+    blockquote {
+      border-left: 4px solid var(--accent);
+      padding: 0.75rem 1.25rem;
+      background: rgba(56, 189, 248, 0.08);
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+    }
+    .print-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      margin-bottom: 1.5rem;
+      text-decoration: none;
+    }
+    .print-btn:hover {
+      background: var(--accent-hover);
+    }
+    @media print {
+      body { background: white; color: black; padding: 0; }
+      .container { border: none; box-shadow: none; padding: 0; max-width: 100%; }
+      .print-btn { display: none; }
+      a { color: black; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="print-btn" onclick="window.print()">🖨️ Распечатать / Сохранить в PDF</button>
+    <h1>Защита курсового проекта: KlarBrief AI (Amtsdeutsch Navigator)</h1>
+<p><strong>Модуль:</strong> AI Product Prototyping (No-Code Track)<br />
+<strong>Преподаватель:</strong> Светлана Жогальская<br />
+<strong>Студент:</strong> Илья Лонский (Cohort 91.1M)<br />
+<strong>Дата защиты:</strong> 05.11.2026 (четверг)<br />
+<strong>Регламент:</strong> 3–4 минуты презентация + 2–3 минуты вопросы преподавателя (всего 7 минут)<br />
+<strong>Опубликованный сайт:</strong> <a href="https://illialonskyi84-creator.github.io/klarbrief-ai/">https://illialonskyi84-creator.github.io/klarbrief-ai/</a>  </p>
+<hr />
+<h2>1. Поминутный сценарий выступления (Cheat Sheet для Ильи на 3.5 минуты)</h2>
+<blockquote>
+<p>[!TIP]
+<strong>Главное правило Светланы:</strong> Слайдов никто не требует — защита проходит через демонстрацию экрана с открытым живым сайтом. Открой браузер на <code>https://illialonskyi84-creator.github.io/klarbrief-ai/</code> в полноэкранном режиме (F11).</p>
+</blockquote>
+<pre><code>[00:00 - 00:45] Минута 1: Проблема, Целевая аудитория и Первый экран (Hero)
+[00:45 - 01:45] Минута 2: Интерактивный симулятор разбора писем (Core Feature)
+[01:45 - 02:45] Минута 3: AI-чат-бот (KlarBrief Navigator), база знаний и Red Teaming
+[02:45 - 03:30] Финал: Юридические гейты (DSGVO / § 2 RDG), SEO/GEO и результат
+</code></pre>
+<h3>[00:00 – 00:45] Шаг 1: Контекст и Первый экран (Hero Block)</h3>
+<ul>
+<li><strong>Что говорить:</strong><br />
+<em>«Здравствуйте, Светлана! Мой проект — <strong>KlarBrief AI (Amtsdeutsch Navigator)</strong>.<br />
+  Проблема, которую решает продукт — сильнейший стресс русско- и украиноязычных экспатов в Германии при получении официальных писем от госорганов (Jobcenter, Finanzamt, Krankenkasse). Язык Behördendeutsch пугает, а пропуск срока ответа даже на один день грозит блокировкой пособия Bürgergeld или штрафами.</em><br />
+<em>По правилу первого экрана за 3 секунды понятно, что мы предлагаем: <strong>"Разберите официальное немецкое письмо за 10 секунд"</strong>.<br />
+  Здесь сразу указаны ключевые ведомства, юридический дисклеймер некоммерческого учебного проекта и кнопка прямого перехода к действию.»</em></li>
+<li><strong>Что показывать на экране:</strong> Главный экран лендинга, подзаголовок, кнопки.</li>
+</ul>
+<hr />
+<h3>[00:45 – 01:45] Шаг 2: Интерактивный тренажер (Core Feature)</h3>
+<ul>
+<li><strong>Что говорить:</strong><br />
+<em>«Ядро продукта — не просто лендинг-витрина, а работающий симулятор.<br />
+  Пользователь может загрузить свой скан/PDF или выбрать один из трех типовых ведомственных сценариев.<br />
+  Например, нажимаем <strong>"Aufforderung zur Mitwirkung от Jobcenter"</strong> и жмем "Разобрать письмо":</em>  </li>
+<li><em>Система анонимизирует данные (DSGVO).</em>  </li>
+<li><em>Рассчитывает дату с учетом трехдневной фикции доставки по <strong>§ 41 Abs. 2 VwVfG</strong>.</em>  </li>
+<li><em>Выдает светофор рисков (желтый уровень — остановка выплат).</em>  </li>
+<li><em>Формирует четкий список требуемых документов и за 5 секунд генерирует официальный ответ на Behördendeutsch с сохранением Aktenzeichen.»</em></li>
+<li><strong>Что показывать на экране:</strong> Нажать на карточку <code>Jobcenter (Mitwirkung)</code>, нажать синюю кнопку <code>Разобрать письмо</code>, проскроллить карточку результата (светофор, дедлайн, сгенерированное письмо).</li>
+</ul>
+<hr />
+<h3>[01:45 – 02:45] Шаг 3: AI-чат-бот (DocsBot AI интеграция)</h3>
+<ul>
+<li><strong>Что говорить:</strong><br />
+<em>«Следующий обязательный модуль — AI-чат-бот, реализованный через интеграцию DocsBot AI по требованиям курса.</em><br />
+<em>Его задача — консультировать пользователя по типовым вопросам ведомственной корреспонденции, разъяснять права и направлять в симулятор.</em><br />
+<em>В DocsBot загружена база знаний: терминология Behördendeutsch (Aufforderung zur Mitwirkung, Widerspruch, Rechtsbehelfsbelehrung), правила расчета сроков (§ 41 VwVfG) и юридические ограничения по § 2 RDG.</em><br />
+<em>Давайте зададим боту типовой вопрос или выберем быструю подсказку: например, "Что делать с письмом от Jobcenter?". Бот сразу определяет суть документа, предупреждает о дедлайнах и рекомендует анонимизировать персональные данные перед загрузкой.»</em></li>
+<li><strong>Что показывать на экране:</strong> Кликнуть на виджет DocsBot в правом нижнем углу, кликнуть по готовой подсказке или отправить короткий вопрос, показать сгенерированный ответ из базы знаний.</li>
+</ul>
+<hr />
+<h3>[02:45 – 03:30] Шаг 4: Юридические стандарты, SEO/GEO и завершение</h3>
+<ul>
+<li><strong>Что говорить:</strong><br />
+  *«В заключение — техническая и юридическая чистота под требования Германии:  </li>
+<li><strong>DSGVO:</strong> внедрен полноэкранный Cookie-баннер CCM19 с запоминанием выбора в localStorage и возможностью сброса; есть полноценные страницы Impressum (§ 5 DDG) и Datenschutzerklärung.  </li>
+<li><strong>SEO &amp; GEO:</strong> прописаны Title, Description, OpenGraph, внедрена семантическая микроразметка Schema.org типов SoftwareApplication и FAQPage в формате JSON-LD для цитирования генеративными ИИ (Perplexity/ChatGPT).  </li>
+<li>Проект полностью адаптивен и опубликован на GitHub Pages.*<br />
+<em>Спасибо за курс! Готов ответить на вопросы.»</em></li>
+</ul>
+<hr />
+<h2>2. Чек-лист готовности проекта по критериям Светланы</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Критерий преподавателя (Лекции 1–11)</th>
+<th style="text-align: left;">Требование курса</th>
+<th style="text-align: left;">Как реализовано в KlarBrief AI</th>
+<th style="text-align: center;">Статус</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Правило 3–5 секунд</strong></td>
+<td style="text-align: left;">Четкое УТП на первом экране: что за продукт, кому, выгода</td>
+<td style="text-align: left;">Заголовок H1: «Разберите официальное немецкое письмо за 10 секунд». Четкий фокус на Behördendeutsch и дедлайнах.</td>
+<td style="text-align: center;"><strong>100% PASS</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Единственный заголовок H1</strong></td>
+<td style="text-align: left;">Ровно 1 тег H1 на страницу, содержит ценность</td>
+<td style="text-align: left;">1 тег H1 в Hero-блоке, 5 тегов H2 для смысловых секций.</td>
+<td style="text-align: center;"><strong>100% PASS</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Контрастный CTA</strong></td>
+<td style="text-align: left;">Заметная кнопка, единый стиль, понятное действие</td>
+<td style="text-align: left;">Кнопки brand-синего цвета с понятными надписями: «Попробовать симулятор бесплатно», «Разобрать письмо».</td>
+<td style="text-align: center;"><strong>100% PASS</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>UI/UX и визуал</strong></td>
+<td style="text-align: left;">Базовый шрифт 16px, единая тональность, «воздух», отсутствие винегрета</td>
+<td style="text-align: left;">Tailwind Typography, Plus Jakarta Sans, аккуратная холодная палитра Slate/Sky, отсутствие стокового мусора.</td>
+<td style="text-align: center;"><strong>100% PASS</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Мобильная адаптивность</strong></td>
+<td style="text-align: left;">Читаемость на смартфонах, гамбургер-меню, отступы</td>
+<td style="text-align: left;">Полный адаптив (Flexbox/Grid), поддержка всех разрешений от 375px до 4K.</td>
+<td style="text-align: center;"><strong>100% PASS</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Формы захвата и согласие</strong></td>
+<td style="text-align: left;">Чекбокс согласия DSGVO перед отправкой, валидация</td>
+<td style="text-align: left;">Обязательный чекбокс согласия с Datenschutzerklärung, модальное окно обратной связи с авто-закрытием.</td>
+<td style="text-align: center;"><strong>100% PASS</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Чат-бот на сайте</strong></td>
+<td style="text-align: left;">Работающий бот с базой знаний и сценарием доведения до действия</td>
+<td style="text-align: left;">Официальный виджет DocsBot AI: загружены системная инструкция, база знаний по ведомствам Германии, настроены приветствие и подсказки.</td>
+<td style="text-align: center;"><strong>100% PASS</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Безопасность бота (Red Teaming)</strong></td>
+<td style="text-align: left;">Запрет оффтопика, отказ от юридических консультаций, защита промпта</td>
+<td style="text-align: left;">В системную инструкцию DocsBot заложен запрет на индивидуальные юридические консультации (§ 2 RDG) и перенаправление в симулятор.</td>
+<td style="text-align: center;"><strong>100% PASS</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Лимиты реплик бота</strong></td>
+<td style="text-align: left;">Понимание работы токенов и ограничений</td>
+<td style="text-align: left;">Проект на бесплатном тарифе DocsBot (50 сообщений/мес). Проведено точечное тестирование API, на защите демонстрируется 1 целевой сценарий.</td>
+<td style="text-align: center;"><strong>100% PASS</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Правовые нормы ФРГ</strong></td>
+<td style="text-align: left;">Impressum (§ 5 DDG), Datenschutz (DSGVO), Cookie Banner, FernUSG</td>
+<td style="text-align: left;">Все разделы на месте, баннер CCM19 с backdrop-blur, разграничение по § 2 RDG и отметка учебного прототипа.</td>
+<td style="text-align: center;"><strong>100% PASS</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SEO &amp; GEO оптимизация</strong></td>
+<td style="text-align: left;">Семантическое ядро, Meta-теги, Schema.org FAQPage</td>
+<td style="text-align: left;">Meta Title, Description, OG-теги, canonical, Schema.org JSON-LD (FAQPage + SoftwareApplication).</td>
+<td style="text-align: center;"><strong>100% PASS</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. Возможные вопросы Светланы и готовые ответы</h2>
+<ul>
+<li>
+<p><strong>В: «Что загружено в базу знаний DocsBot и как он настроен?»</strong><br />
+<em>О:</em> «В DocsBot загружены системный промпт и база знаний по ДЗ 5: описание структуры ведомственных писем (Jobcenter, Finanzamt, AOK), правила расчета сроков (§ 41 Abs. 2 VwVfG) и юридический дисклеймер. Бот настроен не давать консультаций по § 2 RDG, а отвечать справочно и предлагать разобрать письмо в нашем симуляторе.»</p>
+</li>
+<li>
+<p><strong>В: «Как вы тестировали бота с учетом бесплатных лимитов DocsBot?»</strong><br />
+<em>О:</em> «На бесплатном тарифе DocsBot действует ограничение (50 сообщений в месяц). Поэтому мы не сжигали лимит хаотичными тестами, а валидировали ключевые сценарии точечно: проверили обработку запроса по Jobcenter (Mitwirkung) и дедлайнам Widerspruch. Бот отвечает строго по контексту базы знаний.»</p>
+</li>
+<li>
+<p><strong>В: «На какую целевую аудиторию рассчитан проект?»</strong><br />
+<em>О:</em> «В ДЗ 2 мы защитили три ключевые персоны: Ольга (получатель Bürgergeld по § 24, страх перед Mitwirkung Jobcenter), Алексей (IT-специалист по Blue Card, вопросы налоговой декларации Finanzamt) и Елена (самозанятая, добровольная медицинская страховка AOK). Продукт закрывает их боли за счет автоматического перевода со сложного юридического немецкого на человеческий язык.»</p>
+</li>
+<li>
+<p><strong>В: «Как бот считает сроки?»</strong><br />
+<em>О:</em> «В базу заложена норма <strong>§ 41 Abs. 2 VwVfG</strong> (и § 37 SGB X) — так называемая 3-дневная фикция доставки: письмо считается врученным на третий рабочий день после отправки, а срок возражения (Widerspruch) составляет ровно 1 месяц по <strong>§ 70 VwGO</strong>.»</p>
+</li>
+</ul>
+  </div>
+</body>
+</html>
