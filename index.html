@@ -2501,7 +2501,16 @@ function generateBotAnswer(query, activeSiteLang = 'ru') {
         n.addEventListener("error",(e=>{r(e)}));
       });
     };
-    DocsBotAI.init({id: "5PKnfj2HvfX3ZSHCeKov/wOgBlDOOYsxfBoJHQ5cv", alignment: "right"});
+        DocsBotAI.init({
+      id: "5PKnfj2HvfX3ZSHCeKov/wOgBlDOOYsxfBoJHQ5cv",
+      alignment: "right",
+      questions: [
+        "Р§С‚Рѕ РґРµР»Р°С‚СЊ, РµСЃР»Рё РїСЂРёС€Р»Рѕ С‚СЂРµР±РѕРІР°РЅРёРµ РѕС‚ Jobcenter?",
+        "РљР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ СЃСЂРѕРє РѕС‚РІРµС‚Р° (Frist) РїРѕ С€С‚РµРјРїРµР»СЋ РЅР° РєРѕРЅРІРµСЂС‚Рµ?",
+        "РљР°Рє СЃРѕСЃС‚Р°РІРёС‚СЊ РѕС„РёС†РёР°Р»СЊРЅС‹Р№ РѕС‚РІРµС‚ РІРµРґРѕРјСЃС‚РІСѓ РЅР° РЅРµРјРµС†РєРѕРј СЏР·С‹РєРµ?",
+        "РљР°РєРёРµ РІРµРґРѕРјСЃС‚РІР° Рё С‚РёРїС‹ РїРёСЃРµРј РїРѕРґРґРµСЂР¶РёРІР°РµС‚ СЃРµСЂРІРёСЃ?"
+      ]
+    });
   </script>
 </body>
 </html>
